@@ -6,13 +6,15 @@
 #' returns the probability the individual will choose a particular response
 #' option for the test item according to the GGUM.
 #' 
-#' @k A numeric vector; the index of the item option of interest
-#' @K A numeric vector of length one; the number of options for the item
-#' @theta A numeric vector of length one; the person's latent trait parameter
-#' @alpha A numeric vector of length one; the item's discrimination parameter
-#' @delta A numeric vector of length one; the item's location parameter
-#' @tau  A numeric vector of length K; the vector threshold parameters for the
-#'   item's options (where the first element of tau should be zero).
+#' @param k A numeric vector; the index of the item option of interest
+#' @param K A numeric vector of length one; the number of options for the item
+#' @param theta A numeric vector of length one; the individual's latent trait
+#'   parameter
+#' @param alpha A numeric vector of length one; the item's discrimination
+#'   parameter
+#' @param delta A numeric vector of length one; the item's location parameter
+#' @param tau  A numeric vector of length K; the vector threshold parameters
+#'   for the item's options (where the first element of tau should be zero).
 #' 
 #' @return The probability that resopndent will choose response category k.
 probability <- function(k, K, theta, alpha, delta, tau){

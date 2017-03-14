@@ -6,7 +6,7 @@
 #' way to calculate the product of a vector is to take the exponential of the
 #' sum of the natural logarithm of each element of the vector.
 #' 
-#' @x A numeric vector
+#' @param x A numeric vector
 #' 
 #' @return The product of the elements of x.
 stableProd <- function(x){

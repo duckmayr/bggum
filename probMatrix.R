@@ -9,18 +9,18 @@
 #' observed for individual i and item j (i.e. the probability corresponding to
 #' the i,j entry in the response matrix).
 #' 
-#' @thetas A numeric vector of length N (the number of respondents); each
+#' @param thetas A numeric vector of length N (the number of respondents); each
 #'   each element of the vector is an individual's latent trait parameter
-#' @responseMatrix A numeric matrix with N rows and n (the number of items)
-#'   columns; each i,j element of the matrix gives the option chosen by
+#' @param responseMatrix A numeric matrix with N rows and n (the number of
+#'   items) columns; each i,j element of the matrix gives the option chosen by
 #'   individual i for item j
-#' @alphas A numeric vector of length n; each element of the vector is an
+#' @param alphas A numeric vector of length n; each element of the vector is an
 #'   item's discrimination parameter
-#' @deltas A numeric vector of length n; each element of the vector is an
+#' @param deltas A numeric vector of length n; each element of the vector is an
 #'   item's location parameter
-#' @taus A list of numeric vectors; each list element j is a numeric vector of
-#'   threshold parameters for item j's options (where the first element of the
-#'   vector should be zero).
+#' @param taus A list of numeric vectors; each list element j is a numeric
+#'   vector of threshold parameters for item j's options (where the first
+#'   element of the vector should be zero).
 #' 
 #' @return A matrix probabilities for the elements of the response matrix.
 probMatrix <- function(thetas, responseMatrix, alphas, deltas, taus){
