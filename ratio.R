@@ -1,4 +1,4 @@
-#' Helper function for \code{GGUM} 
+#' Helper function for \code{GGUM}
 #' 
 #' \code{ratio} computes a ratio used in the MCMC algorithm for the GGUM.
 #' 
