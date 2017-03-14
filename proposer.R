@@ -12,7 +12,7 @@
 #' @return A ratio used in the MCMC algorithm for the GGUM.
 proposer <- function(currentValue, paramType, param, paramVector){
   if (paramType == 'tau') {
-    paramVector <- sapply(paramVector, '[[', param-2)
+    paramVector <- sapply(paramVector, safeExtract, param-2)
   }
   return(rnorm(1, currentValue, sd(paramVector)))
 }
