@@ -25,10 +25,10 @@ iteration <- function(thetas, alphas, deltas, taus, responseMatrix){
             responseMatrix, 'delta')
   })
   taus <- sapply(1:length(taus), function(x){
-    sapply(2:length(taus[[x]]), function(y){
+    c(0, sapply(2:length(taus[[x]]), function(y){
       decider(y+2, 1:length(thetas), x, taus[[x]][y], alphas, deltas, taus,
               thetas, responseMatrix, 'tau')
-    })
+    }))
   })
   return(list(thetas=thetas, alphas=alphas, deltas=deltas, taus=taus))
 }
