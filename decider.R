@@ -22,7 +22,7 @@
 #' @return A ratio used in the MCMC algorithm for the GGUM.
 decider <- function(param, person, item, currentValue, alphas, deltas, taus,
                       thetas, responseMatrix, paramType){
-  proposedValue <- proposer(currentValue, paramType, item,
+  proposedValue <- proposer(currentValue, paramType,
                             switch(paramType, 'theta'=thetas, 'alpha'=alphas,
                                    'delta'=deltas, 'tau'=taus))
   reSetProb <- ratio(param, person, item, currentValue, proposedValue, alphas,

@@ -9,9 +9,9 @@
 #' @param paramVector The vector or list of values for parameter paramType
 #' 
 #' @return A ratio used in the MCMC algorithm for the GGUM.
-proposer <- function(currentValue, paramType, item, paramVector){
+proposer <- function(currentValue, paramType, paramVector){
   if (paramType == 'tau') {
-    paramVector <- paramVector[[item]]
+    paramVector <- unlist(paramVector)
   }
   return(rnorm(1, currentValue, sd(paramVector)))
 }
