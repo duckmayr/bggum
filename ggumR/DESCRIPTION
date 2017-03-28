@@ -1,0 +1,17 @@
+Package: ggumR
+Title: Generalized Graded Unfolding Model for R
+Version: 0.1
+Author: JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
+Maintainer: JB Duck-Mayr <j.duck-mayr@wustl.edu>
+Description: ggumR provides R tools for the generalized graded unfolding model.
+Depends:
+    R (>= 3.0.0),
+    stats
+Imports:
+    methods
+License: GPL (>= 2)
+Suggests:
+    devtools
+Collate:
+    'probability.R'
+RoxygenNote: 6.0.1
