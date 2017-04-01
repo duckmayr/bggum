@@ -20,6 +20,7 @@
 #'   element of the vector should be zero).
 #' 
 #' @return A matrix probabilities for the elements of the response matrix.
+#' @export
 likelihood <- function(thetas, responseMatrix, alphas, deltas, taus){
   return(stableProd(probMatrix(thetas, responseMatrix, alphas, deltas, taus)))
 }

@@ -9,6 +9,7 @@
 #' @param x A numeric vector
 #' 
 #' @return The product of the elements of x.
+#' @export
 stableProd <- function(x){
   return(exp(sum(log(x))))
 }

@@ -14,4 +14,9 @@ Suggests:
     devtools
 Collate:
     'probability.R'
+    'probMatrix.R'
+    'stableProd.R'
+    'likelihood.R'
+    'Beta_ab.R'
+    'getPrior.R'
 RoxygenNote: 6.0.1

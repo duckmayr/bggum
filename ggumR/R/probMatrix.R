@@ -23,6 +23,7 @@
 #'   element of the vector should be zero).
 #' 
 #' @return A matrix probabilities for the elements of the response matrix.
+#' @export
 probMatrix <- function(thetas, responseMatrix, alphas, deltas, taus){
   return(t(sapply(1:length(thetas), function(x){ # for each person
     sapply(1:length(alphas), function(y){ # for each item
