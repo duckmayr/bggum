@@ -17,6 +17,7 @@
 #'   for the item's options (where the first element of tau should be zero).
 #' 
 #' @return The probability that resopndent will choose response category k.
+#' @export
 probability <- function(k, K, theta, alpha, delta, tau){
   # Equation 1 in de la Torre 2006 is a quotient where the numerator expression
   # is summed for the denominator expression. The numerator expression can be
