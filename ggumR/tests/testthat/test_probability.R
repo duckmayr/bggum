@@ -1,4 +1,5 @@
 context("probability")
+
 test_that("Get the correct probability", {
   expect_that(probability(1, 2, 3, 1, 2, 3),
               equals(0.6759729))
