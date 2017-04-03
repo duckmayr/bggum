@@ -2,6 +2,7 @@ context("Test if probability produces resutls in a range of values that is
         similar to the one observed in de la Torres 2006")
 # Define parameter to use in the test.
 alpha <- 2
+delta <- 0
 theta <- 0
 tau <- c(0, -1, -0.7, -0.4)
 K <- 4
