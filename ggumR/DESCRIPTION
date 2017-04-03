@@ -19,4 +19,4 @@ Collate:
     'likelihood.R'
     'Beta_ab.R'
     'getPrior.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
