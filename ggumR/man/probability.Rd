@@ -33,3 +33,4 @@ Given parameters for the individual and the test item, \code{probabiliy}
 returns the probability the individual will choose a particular response
 option for the test item according to the GGUM.
 }
+

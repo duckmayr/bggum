@@ -3,11 +3,11 @@
 \name{Beta_ab}
 \alias{Beta_ab}
 \alias{dBeta_ab}
+\alias{eBeta_ab}
+\alias{lBeta_ab}
 \alias{pBeta_ab}
 \alias{qBeta_ab}
 \alias{rBeta_ab}
-\alias{eBeta_ab}
-\alias{lBeta_ab}
 \alias{sBeta_ab}
 \title{The four-parameter beta distribution.}
 \usage{
@@ -115,6 +115,10 @@ plot(est.par)
 lBeta_ab(data,param = est.par)
 sBeta_ab(data,param = est.par)
 }
+\author{
+Haizhen Wu and A. Jonathan R. Godfrey \cr
+Updates and bug fixes by Sarah Pirikahu.
+}
 \references{
 Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distributions,
  volume 2, chapter 25, Wiley, New York.\cr
@@ -125,7 +129,4 @@ Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distr
 \seealso{
 \pkg{\link{ExtDist}} for other standard distributions.
 }
-\author{
-Haizhen Wu and A. Jonathan R. Godfrey \cr
-Updates and bug fixes by Sarah Pirikahu.
-}
+

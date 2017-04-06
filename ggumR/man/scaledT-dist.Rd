@@ -44,3 +44,4 @@ generation for the Student's T distribution shifted by location parameter
 Jackman, Simon. 2009. \emph{Bayesian Analysis for the Social
     Sciences}. Wiley. p. 507.
 }
+
