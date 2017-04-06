@@ -8,15 +8,19 @@ Depends:
     R (>= 3.0.0),
     stats
 Imports:
-    methods
+    methods,
+    Rcpp (>= 0.12.10)
+LinkingTo: Rcpp
 License: GPL (>= 2)
 Suggests:
     devtools
 Collate:
+    'ggumR-package.R'
     'probability.R'
     'probMatrix.R'
     'stableProd.R'
     'likelihood.R'
     'Beta_ab.R'
     'getPrior.R'
+    'RcppExports.R'
 RoxygenNote: 6.0.1

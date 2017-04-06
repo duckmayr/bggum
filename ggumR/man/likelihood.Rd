@@ -4,7 +4,8 @@
 \alias{likelihood}
 \title{GGUM Likelihood}
 \usage{
-likelihood(thetas, responseMatrix, alphas, deltas, taus)
+likelihood(thetas, responseMatrix, alphas, deltas, taus, dimension = "",
+  index = 1)
 }
 \arguments{
 \item{thetas}{A numeric vector of length N (the number of respondents); each
@@ -23,15 +24,25 @@ item's location parameter}
 \item{taus}{A list of numeric vectors; each list element j is a numeric
 vector of threshold parameters for item j's options (where the first
 element of the vector should be zero).}
+
+\item{dimension}{A character vector of length one indicating whether the
+likelihood of a row or column should be given; should be one of 'row'
+or 'column'. If not given, the likelihood of the entire matrix will be
+calculated.}
+
+\item{index}{A numeric vector of length one giving the row/column to be
+included in the calculation}
 }
 \value{
-A matrix probabilities for the elements of the response matrix.
+The likelihood of the matrix or vector of interest.
 }
 \description{
-\code{likelihood} calculates the likelihood of a response matrix
+\code{likelihood} gives the likelihood of a response matrix or vector thereof
 }
 \details{
-Given parameters for the individuals and test items, and a response matrix
-recording each individual's response to each test item, \code{likelihood}
-the product of the probability corresponding to each entry in the matrix.
+Given parameters for the individuals and test items, a response matrix
+recording each individual's response to each test item, and as well as
+(optionally) an indication of the vector of interest, \code{likelihood}
+gives the product of the probability corresponding to each entry in the
+matrix or relevant vector.
 }
