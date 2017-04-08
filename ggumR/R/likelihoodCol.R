@@ -1,6 +1,6 @@
 #' GGUM Likelihood By Columns
 #' 
-#' \code{likelihood} gives the likelihood  of the paramenters (Rows)  of 
+#' \code{likelihoodCol} gives the likelihood  of the paramenters (Columns)  of 
 #' a response matrix or vector thereof
 #' 
 #' Given parameters for the individuals and test items, a response matrix
@@ -30,4 +30,5 @@ likelihoodCol <- function(thetas, responseMatrix, alphas, deltas, taus, index=1)
       return(stableProd(sapply(1:nrow(responseMatrix), function(x){
          probability(responseMatrix[x, index], length(taus[[index]]), thetas[x],
                      alphas[index], deltas[index], taus[[index]])
+      })))
 }

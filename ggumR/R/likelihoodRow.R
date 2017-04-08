@@ -5,7 +5,7 @@
 #' 
 #' Given parameters for the individuals and test items, a response matrix
 #' recording each individual's response to each test item, and as well as
-#' (optionally) an indication of the vector of interest, \code{likelihood}
+#' (optionally) an indication of the vector of interest, \code{likelihoodRow}
 #' gives the product of the probability corresponding to each entry in the
 #' matrix or relevant vector.
 #' 
