@@ -2,6 +2,7 @@
 
 export(acceptanceAlpha)
 export(acceptanceDelta)
+export(acceptanceTau)
 export(acceptanceTheta)
 export(dBeta_ab)
 export(dScaledT)

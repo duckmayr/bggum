@@ -8,9 +8,9 @@ acceptanceTheta(currentValue, proposedValue, responseMatrix, alphas, deltas,
   taus)
 }
 \arguments{
-\item{currentValue}{The current value of theta}
+\item{currentValue}{The current value of the paramenter of interest}
 
-\item{proposedValue}{The proposed value for theta}
+\item{proposedValue}{The proposed value for the paramenter of interest}
 
 \item{responseMatrix}{A numeric matrix with N (the number of individuals)
 rows and n (the number of items) columns; each i,j element of the matrix
@@ -25,10 +25,10 @@ gives the option chosen by individual i for item j}
 \item{thetas}{The vector of current values of the items' delta parameters}
 }
 \value{
-The acceptance ratio for Theta used in the MCMC algorithm for the GGUM.
+The acceptance ratio for the paramenters used in the MCMC algorithm for the GGUM.
 }
 \description{
-\code{acceptanceTheta} computes a acceptance ratio for Theta used 
+\code{acceptanceTheta} computes a acceptance ratio for the paramenters used 
 in the MCMC algorithm for the GGUM.
 }
 

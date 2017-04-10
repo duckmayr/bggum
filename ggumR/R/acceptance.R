@@ -25,14 +25,16 @@ acceptanceTheta <- function(currentValue, proposedValue, responseMatrix, alphas,
    logllProposed <- log(likelihoodRow(thetas = proposedValue,
                                       responseMatrix, alphas, deltas, taus))      
    # Calculate the prior for the proposed theta
-   logpriorCurrent <- log(getPrior(param = 'theta', value = proposedValue))
+   logpriorProposed <- log(getPrior(param = 'theta', value = proposedValue))
    # Calculate the acceptance ratio
-   acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
-   # Return the acceptance ratio for alpha
-   if(is.infinite(acceptanceR)){
+   acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
+   # Return the acceptance ratio for theta
+   if(is.infinite(acceptanceR)){ 
       return(1)
-   }else {
-      return(acceptaceR)
+   }else if(acceptanceR>1){
+      acceptanceR <- 1
+   }else{
+      return(acceptanceR)
    }
 }
 
@@ -49,12 +51,15 @@ acceptanceAlpha <- function(currentValue, proposedValue, responseMatrix, thetas,
                                       responseMatrix = responseMatrix, 
                                       thetas = thetas, deltas = deltas, taus = taus))  
    # Calculate the prior for the proposed alpha
-   logpriorCurrent <- log(getPrior(param = 'alpha', value = proposedValue))
+   logpriorProposed <- log(getPrior(param = 'alpha', value = proposedValue))
    
    # Calculate the acceptance ratio
-   acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
+   acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
    # Return the acceptance ratio for alpha
-   if(is.infinite(acceptanceR)){ return(1)
+   if(is.infinite(acceptanceR)){ 
+      return(1)
+   }else if(acceptanceR>1){
+      acceptanceR <- 1
    }else{
       return(acceptanceR)
    }
@@ -73,13 +78,15 @@ acceptanceDelta <- function(currentValue, proposedValue, responseMatrix, thetas,
                                       responseMatrix = responseMatrix, 
                                       thetas = thetas, alphas = alphas, taus = taus))  
    # Calculate the prior for the proposed delta
-   logpriorCurrent <- log(getPrior(param = 'delta', value = proposedValue))
+   logpriorProposed <- log(getPrior(param = 'delta', value = proposedValue))
    
    # Calculate the acceptance ratio
-   acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
+   acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
    # Return the acceptance ratio for delta
    if(is.infinite(acceptanceR)){ 
       return(1)
+   }else if(acceptanceR>1){
+      acceptanceR <- 1
    }else{
       return(acceptanceR)
    }
@@ -98,13 +105,15 @@ acceptanceTau <- function(currentValue, proposedValue, responseMatrix, thetas, a
                                       responseMatrix = responseMatrix, 
                                       thetas = thetas, alphas = alphas, deltas = deltas))  
    # Calculate the prior for the proposed tau
-   logpriorCurrent <- log(getPrior(param = 'tau', value = proposedValue))
+   logpriorProposed <- log(getPrior(param = 'tau', value = proposedValue))
    
    # Calculate the acceptance ratio
-   acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
+   acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
    # Return the acceptance ratio for tau
    if(is.infinite(acceptanceR)){ 
       return(1)
+   }else if(acceptanceR>1){
+      acceptanceR <- 1
    }else{
       return(acceptanceR)
    }
