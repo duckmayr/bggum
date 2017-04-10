@@ -1,10 +1,10 @@
 #' Helper function for \code{GGUM}
 #' 
-#' \code{acceptanceTheta} computes a acceptance ratio for Theta used 
+#' \code{acceptanceTheta} computes a acceptance ratio for the paramenters used 
 #' in the MCMC algorithm for the GGUM.
 #' 
-#' @param currentValue The current value of theta
-#' @param proposedValue The proposed value for theta
+#' @param currentValue The current value of the paramenter of interest
+#' @param proposedValue The proposed value for the paramenter of interest
 #' @param thetas The vector of current values of the items' delta parameters
 #' @param alphas The vector of current values of the items' alpha parameters
 #' @param deltas The vector of current values of the items' delta parameters
@@ -13,7 +13,7 @@
 #'   rows and n (the number of items) columns; each i,j element of the matrix
 #'   gives the option chosen by individual i for item j
 #' 
-#' @return The acceptance ratio for Theta used in the MCMC algorithm for the GGUM.
+#' @return The acceptance ratio for the paramenters used in the MCMC algorithm for the GGUM.
 #' @export
 acceptanceTheta <- function(currentValue, proposedValue, responseMatrix, alphas, deltas, taus){
    # Calculate the log-likelihood for the current theta
@@ -78,6 +78,31 @@ acceptanceDelta <- function(currentValue, proposedValue, responseMatrix, thetas,
    # Calculate the acceptance ratio
    acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
    # Return the acceptance ratio for delta
+   if(is.infinite(acceptanceR)){ 
+      return(1)
+   }else{
+      return(acceptanceR)
+   }
+}
+
+#' @export
+acceptanceTau <- function(currentValue, proposedValue, responseMatrix, thetas, alphas, deltas){
+   # Calculate the log-likelihood for the current tau
+   logllCurrent <- log(likelihoodCol(taus = currentValue,
+                                     responseMatrix = responseMatrix, 
+                                     thetas = thetas, alphas = alphas, deltas = deltas))
+   # Calculate the prior for the current tau
+   logpriorCurrent <- log(getPrior(param = 'tau', value = currentValue))
+   # Calculate the log-likelihood for the proposed tau
+   logllProposed <- log(likelihoodCol(taus = proposedValue,
+                                      responseMatrix = responseMatrix, 
+                                      thetas = thetas, alphas = alphas, deltas = deltas))  
+   # Calculate the prior for the proposed tau
+   logpriorCurrent <- log(getPrior(param = 'tau', value = proposedValue))
+   
+   # Calculate the acceptance ratio
+   acceptanceR <- exp(logllProposed+logpriorCurrent)-(logllCurrent+logpriorCurrent)
+   # Return the acceptance ratio for tau
    if(is.infinite(acceptanceR)){ 
       return(1)
    }else{
