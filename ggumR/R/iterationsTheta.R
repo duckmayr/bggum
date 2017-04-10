@@ -17,11 +17,11 @@
 #'   vector of threshold parameters for item j's options (where the first
 #'   element of the vector should be zero).
 #' @export
-interationsTheta <- function(startvalue, iterations, thetas, responseMatrix, alphas, deltas, taus){
+interationsTheta <- function(startvalue, iterations, responseMatrix, thetas, alphas, deltas, taus){
    currentValue <- storevector <- chain <- startvalue
    for (i in 1:iterations){
-      # Start the BurnIn period
-      if(i<5001){
+      # Start the BurnIn period. Proposer has sd = 1
+      if(i<1001){
          proposal <- proposer(chain[i])
          ratio <- acceptanceTheta(currentValue = currentValue, 
                                   proposedValue = proposal,
@@ -32,8 +32,19 @@ interationsTheta <- function(startvalue, iterations, thetas, responseMatrix, alp
          chain[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratio, 1-ratio)),
                               proposal, chain[i])
          storevector[i] <- currentValue <- chain[i+1]
-      } else {
-         j <- 1
+      }else if(i<5001){ # Still BurnIn period. Proposer has sd = last 1000 thetas
+         proposal <- proposer(chain[i])
+         sdPeriodType <- sd(tail(storevector, 1000))
+         ratio <- acceptanceTheta(currentValue = currentValue, 
+                                  proposedValue = proposal,
+                                  responseMatrix = responseMatrix, 
+                                  alphas = alphas, 
+                                  deltas = deltas, 
+                                  taus = taus)
+         chain[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratio, 1-ratio)),
+                              proposal, chain[i])
+         storevector[i] <- currentValue <- chain[i+1] 
+      } else { # End of the BurnIn period.
          sdPeriodType <- sd(tail(storevector, 1000))
          proposal <- proposer(chain[i], sdPeriodType = sdPeriodType)
          ratio <- acceptanceTheta(currentValue = currentValue, 
