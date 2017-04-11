@@ -29,6 +29,7 @@
 likelihoodRow <- function(thetas, responseMatrix, alphas, deltas, taus, index=1){
       return(sum(log(sapply(1:ncol(responseMatrix), function(x){
          probability(responseMatrix[index, x], length(taus[[x]]), thetas[index],
-                     alphas[x], deltas[x], taus[[x]]))
-      })))
+                     alphas[x], deltas[x], taus[[x]])
+      }))))
 }
+
