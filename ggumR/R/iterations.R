@@ -84,7 +84,7 @@ iterations <- function(startThetas, startAlphas, startDeltas, iterations, respon
          storeAlpha[i] <- currentAlpha <- chainAlpha[i+1] 
          # Do this for Delta
          sdPeriodType <- sd(tail(storeDelta, 1000))
-         proposalDelta <- proposer(chainDelta[i], sdPeriodType <- sd(tail(storeAlpha, 1000)))
+         proposalDelta <- proposer(chainDelta[i], sdPeriodType = sdPeriodType)
          ratioDelta <- acceptanceDelta(currentValue = currentDelta, 
                                        proposedValue = proposalDelta,
                                        responseMatrix = responseMatrix, 
