@@ -19,121 +19,95 @@
 #'   vector of threshold parameters for item j's options (where the first
 #'   element of the vector should be zero).
 #' @export
-iterate <- function(startTheta, startAlpha, startDelta, times, responseMatrix, thetas, alphas, deltas, taus){
-   currentTheta <- storeTheta <- chainTheta <- startTheta
-   currentAlpha <- storeAlpha <- chainAlpha <- startAlpha
-   currentDelta <- storeDelta <- chainDelta <- startDelta
-   for (i in 1:times){
-      # Start the BurnIn period. Proposer has sd = 1
-      if(i<1001){
+iterate <- function(startTheta, startAlpha, startDelta, startTaus, times, responseMatrix, K){
+   n <- nrow(responseMatrix)
+   m <- ncol(responseMatrix)
+   resultMatrix <- matrix(0, nrow = times+1, ncol = n+2*m+(K)*m)
+   resultMatrix[1,] <- c(startTheta, startAlpha, startDelta, unlist(startTaus))
+   for (t in 1:times){
         # Do this for Theta
-         proposalTheta <- proposer(chainTheta[i])
-         ratioTheta <- acceptanceTheta(currentValue = currentTheta, 
-                                  proposedValue = proposalTheta,
+         for(i in 1:n){
+         proposalTheta <- proposerTheta(resultMatrix[t,i])
+         proposalThetas <- resultMatrix[t, 1:n]
+         proposalThetas[i] <- proposalTheta
+         ratioTheta <- acceptanceTheta(currentValue = resultMatrix[t,i], 
+                                  proposedValue = proposalThetas[i],
+                                  proposedValuesTheta = proposalThetas,
+                                  currentValuesTheta = resultMatrix[t, 1:n],
                                   responseMatrix = responseMatrix, 
-                                  alphas = alphas, 
-                                  deltas = deltas, 
-                                  taus = taus)
-         chainTheta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioTheta, 1-ratioTheta)),
-                              proposalTheta, chainTheta[i])
-         storeTheta[i] <- currentTheta <- chainTheta[i+1]
+                                  alphas = resultMatrix[t, (n+1):(m+n)], 
+                                  deltas = resultMatrix[t, (n+m+1):(n+2*m)], 
+                                  taus =  as.list(sapply(1:m, function(x){
+                                     resultMatrix[t, (n+2*m+1+(x-1)*K):(n+2*m+K+(x-1)*K)]
+                                  }, simplify=FALSE)), 
+                                  index = i)
+         resultMatrix[t+1, i] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioTheta, 1-ratioTheta)),
+                              proposalTheta, resultMatrix[t,i])
+         }
         # Do this for Alpha
-         proposalAlpha <- proposer(chainAlpha[i])
-         ratioAlpha <- acceptanceAlpha(currentValue = currentAlpha, 
+         for(j in (n+1):(n+m)){
+         proposalAlpha <- proposerAlpha(resultMatrix[t,j])
+         proposalAlphas <- resultMatrix[t, (n+1):(n+m)]
+         proposalAlphas[i] <- proposalAlpha
+         ratioAlpha <- acceptanceAlpha(currentValue = resultMatrix[t,j], 
                                   proposedValue = proposalAlpha,
-                                  responseMatrix = responseMatrix, 
-                                  thetas = thetas, 
-                                  deltas = deltas, 
-                                  taus = taus)
-         chainAlpha[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioAlpha, 1-ratioAlpha)),
-                              proposalAlpha, chainAlpha[i])
-         storeAlpha[i] <- currentAlpha <- chainAlpha[i+1]
+                                  responseMatrix = responseMatrix,
+                                  proposedValuesAlpha = proposalAlphas,
+                                  currentValuesAlpha = resultMatrix[t, (n+1):(n+m)],
+                                  thetas = resultMatrix[t, 1:n], 
+                                  deltas = resultMatrix[t, (n+m+1):(n+2*m)], 
+                                  taus =  as.list(sapply(1:m, function(x){
+                                     resultMatrix[t, (n+2*m+1+(x-1)*K):(n+2*m+K+(x-1)*K)]
+                                  }, simplify=FALSE)),  index = j-n)
+         resultMatrix[t+1,j] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioAlpha, 1-ratioAlpha)),
+                              proposalAlpha, resultMatrix[t,j])
+         }
          # Do this for Delta
-         proposalDelta <- proposer(chainDelta[i])
-         ratioDelta <- acceptanceDelta(currentValue = currentDelta, 
+         for(j in (n+m+1):(n+2*m)){
+         proposalDelta <- proposerDelta(resultMatrix[t,j])
+         proposalDeltas <- resultMatrix[t, (n+m+1):(2*m+n)]
+         proposalDeltas[i] <- proposalDelta
+         ratioDelta <- acceptanceDelta(currentValue =  resultMatrix[t,j], 
                                        proposedValue = proposalDelta,
+                                       proposedValuesDelta = proposalDeltas,
+                                       currentValuesDelta = resultMatrix[t, (n+m+1):(2*m+n)],
                                        responseMatrix = responseMatrix, 
-                                       thetas = thetas, 
-                                       alphas = alphas, 
-                                       taus = taus)
-         chainDelta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioDelta, 1-ratioDelta)),
-                                   proposalDelta, chainDelta[i])
-         storeDelta[i] <- currentDelta <- chainDelta[i+1] 
-      }else if(i<5001){ # Still BurnIn period. Proposer has sd = last 1000 thetas
-        # Do this for Theta
-         sdPeriodType <- sd(tail(storeTheta, 1000)) 
-         proposalTheta <- proposer(chainTheta[i], sdPeriodType=sdPeriodType)
-         ratioTheta <- acceptanceTheta(currentValue = currentTheta, 
-                                      proposedValue = proposalTheta,
+                                       thetas = resultMatrix[t, 1:n], 
+                                       alphas = resultMatrix[t, (n+1):(m+n)], 
+                                       taus =  as.list(sapply(1:m, function(x){
+                                          resultMatrix[t, (n+2*m+1+(x-1)*K):(n+2*m+K+(x-1)*K)]
+                                       }, simplify=FALSE)), 
+                                       index = j-n-m)
+         resultMatrix[t+1,j] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioDelta, 1-ratioDelta)),
+                                   proposalDelta, resultMatrix[t,j])
+         }
+      # Do this for Tau
+      for(j in 1:m){
+         taus <- as.list(sapply(1:m, function(x){
+            resultMatrix[t, (n+2*m+1+(x-1)*K):(n+2*m+K+(x-1)*K)]
+         }, simplify=FALSE))
+         for(k in 2:K){
+            proposalTau <- proposerTau(resultMatrix[t, j])
+            proposalTaus <- taus
+            proposalTaus[[j]][k] <- proposalTau
+            
+            ratioTau <- acceptanceTau(currentValue = taus[[j]][k], 
+                                      currentValuesTau = taus,
+                                      proposedValue = proposalTau,
+                                      proposedValuesTau = proposalTaus,
                                       responseMatrix = responseMatrix, 
-                                      alphas = alphas, 
-                                      deltas = deltas, 
-                                      taus = taus)
-         chainTheta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioTheta, 1-ratioTheta)),
-                                  proposalTheta, chainTheta[i])
-         storeTheta[i] <- currentTheta <- chainTheta[i+1]
-         # Do this for Alpha
-         sdPeriodType <- sd(tail(storeAlpha, 1000))
-         proposalAlpha <- proposer(chainAlpha[i], sdPeriodType=sdPeriodType)
-         ratioAlpha <- acceptanceAlpha(currentValue = currentAlpha, 
-                                       proposedValue = proposalAlpha,
-                                       responseMatrix = responseMatrix, 
-                                       thetas = thetas, 
-                                       deltas = deltas, 
-                                       taus = taus)
-         chainAlpha[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioAlpha, 1-ratioAlpha)),
-                                   proposalAlpha, chainAlpha[i])
-         storeAlpha[i] <- currentAlpha <- chainAlpha[i+1] 
-         # Do this for Delta
-         sdPeriodType <- sd(tail(storeDelta, 1000))
-         proposalDelta <- proposer(chainDelta[i], sdPeriodType = sdPeriodType)
-         ratioDelta <- acceptanceDelta(currentValue = currentDelta, 
-                                       proposedValue = proposalDelta,
-                                       responseMatrix = responseMatrix, 
-                                       thetas = thetas, 
-                                       alphas = alphas, 
-                                       taus = taus)
-         chainDelta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioDelta, 1-ratioDelta)),
-                                   proposalDelta, chainDelta[i])
-         storeDelta[i] <- currentDelta <- chainDelta[i+1]  
-      } else { # End of the BurnIn period.
-        # Do this for Theta
-         sdPeriodType <- sd(tail(storeTheta, 1000))
-         proposalTheta <- proposer(chainTheta[i], sdPeriodType = sdPeriodType)
-         ratioTheta <- acceptanceTheta(currentValue = currentTheta, 
-                                       proposedValue = proposalTheta,
-                                       responseMatrix = responseMatrix, 
-                                       alphas = alphas, 
-                                       deltas = deltas, 
-                                       taus = taus)
-         chainTheta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioTheta, 1-ratioTheta)),
-                                   proposalTheta, chainTheta[i])
-         storeTheta[i] <- currentTheta <- chainTheta[i+1]
-         # Do this for Alpha
-         sdPeriodType <- sd(tail(storeAlpha, 1000))
-         proposalAlpha <- proposer(chainAlpha[i], sdPeriodType = sdPeriodType)
-         ratioAlpha <- acceptanceAlpha(currentValue = currentAlpha, 
-                                       proposedValue = proposalAlpha,
-                                       responseMatrix = responseMatrix, 
-                                       thetas = thetas, 
-                                       deltas = deltas, 
-                                       taus = taus)
-         chainAlpha[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioAlpha, 1-ratioAlpha)),
-                                   proposalAlpha, chainAlpha[i])
-         storeAlpha[i] <- currentAlpha <- chainAlpha[i+1] 
-         # Do this for Delta
-         sdPeriodType <- sd(tail(storeDelta, 1000))
-         proposalDelta <- proposer(chainDelta[i], sdPeriodType = sdPeriodType)
-         ratioDelta <- acceptanceDelta(currentValue = currentDelta, 
-                                       proposedValue = proposalDelta,
-                                       responseMatrix = responseMatrix, 
-                                       thetas = thetas, 
-                                       alphas = alphas, 
-                                       taus = taus)
-         chainDelta[i+1] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioDelta, 1-ratioDelta)),
-                                   proposalDelta, chainDelta[i])
-         storeDelta[i] <- currentDelta <- chainDelta[i+1] 
+                                      alphas = resultMatrix[t, (n+1):(m+n)], 
+                                      deltas = resultMatrix[t, (n+m+1):(n+2*m)], 
+                                      thetas = resultMatrix[t, 1:n], 
+                                      index = j)
+            taus[[j]][k] <- ifelse(sample(c(TRUE, FALSE), 1, prob = c(ratioTau, 1-ratioTau)),
+                                   proposalTau, taus[[j]][k])
+         }
+
+         resultMatrix[t+1, (2*m+n+1+(j-1)*(K)):(2*m+n+(j-1)*(K)+(K))] <- unlist(taus[[j]]) 
       }
    }
-   return(cbind(chainTheta, chainAlpha, chainDelta))
+   return(resultMatrix)
 }
+
+#print(c(length((2*m+n+1+(j-1)*(K)):(2*m+n+(j-1)*(K)+(K))), length(unlist(taus))))

@@ -4,8 +4,8 @@
 \alias{sampler}
 \title{Function for \code{GGUM}}
 \usage{
-sampler(responseMatrix, times = 6000, thetas, alphas, deltas, taus,
-  startTheta = 1, startAlpha = 1, startDelta = 1)
+sampler(responseMatrix, times = 7000, thetas, alphas, deltas, taus,
+  startTheta = NULL, startAlpha = NULL, startDelta = NULL)
 }
 \arguments{
 \item{responseMatrix}{A numeric matrix with N (the number of individuals)

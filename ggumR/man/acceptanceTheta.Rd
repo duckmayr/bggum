@@ -4,8 +4,8 @@
 \alias{acceptanceTheta}
 \title{Helper function for \code{GGUM}}
 \usage{
-acceptanceTheta(currentValue, proposedValue, responseMatrix, alphas, deltas,
-  taus)
+acceptanceTheta(currentValue, proposedValue, responseMatrix, currentValuesTheta,
+  proposedValuesTheta, alphas, deltas, taus, index = 1)
 }
 \arguments{
 \item{currentValue}{The current value of the paramenter of interest}

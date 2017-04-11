@@ -4,8 +4,7 @@
 \alias{iterate}
 \title{GGUM interations for Thetas, Alphas and Deltas.}
 \usage{
-iterate(startTheta, startAlpha, startDelta, times, responseMatrix, thetas,
-  alphas, deltas, taus)
+iterate(startTheta, startAlpha, startDelta, startTaus, times, responseMatrix, K)
 }
 \arguments{
 \item{startAlpha}{A numeric vector of length 1.}
@@ -17,6 +16,8 @@ iterate(startTheta, startAlpha, startDelta, times, responseMatrix, thetas,
 \item{responseMatrix}{A numeric matrix with N rows and n (the number of
 items) columns; each i,j element of the matrix gives the option chosen by
 individual i for item j}
+
+\item{startThetas}{A numeric vector of length 1.}
 
 \item{thetas}{A numeric vector of length N (the number of respondents); each
 each element of the vector is an individual's latent trait parameter}
@@ -30,8 +31,6 @@ item's location parameter}
 \item{taus}{A list of numeric vectors; each list element j is a numeric
 vector of threshold parameters for item j's options (where the first
 element of the vector should be zero).}
-
-\item{startThetas}{A numeric vector of length 1.}
 }
 \description{
 \code{MCMC} runs the MCMC algorithm  for GGUM

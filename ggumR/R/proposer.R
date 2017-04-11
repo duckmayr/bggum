@@ -7,7 +7,25 @@
 #' to draw the proposer.
 #' 
 #' @return A proposed value for the paramenters used in the MCMC algorithm for the GGUM.
-
-proposer <- function(currentValue, sdPeriodType = 1){
-   return(rScaledT(1, df = 1, mu = currentValue, sigma = sdPeriodType))
+#' @export
+proposerTheta <- function(currentValue, sdPeriodType = 1){
+   return(r_TruncNorm(mu = currentValue, sigma = sdPeriodType, a = -10, b = 10))
 }
+#' @export
+proposerAlpha <- function(currentValue, sdPeriodType = 1){
+   return(r_TruncNorm(mu = currentValue, sigma = sdPeriodType, a = 0.25, b = 4))
+}
+#' @export
+proposerDelta <- function(currentValue, sdPeriodType = 1){
+   return(r_TruncNorm(mu = currentValue, sigma = sdPeriodType, a = -5, b = 5))
+}
+#' @export
+proposerTau <- function(currentValue, sdPeriodType = 1){
+   return(r_TruncNorm(mu = currentValue, sigma = sdPeriodType, a = -5, b = 5))
+}
+
+
+
+#proposerTheta <- function(currentValue, sdPeriodType = 1){
+#   return(rScaledT(1, df = 1, mu = currentValue, sigma = sdPeriodType))
+#}

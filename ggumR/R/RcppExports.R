@@ -50,3 +50,9 @@ rScaledT <- function(n, df, mu, sigma) {
     .Call('ggumR_rScaledT', PACKAGE = 'ggumR', n, df, mu, sigma)
 }
 
+#' @rdname scaledT-dist
+#' @export
+r_TruncNorm <- function(mu, sigma, a, b) {
+    .Call('ggumR_r_TruncNorm', PACKAGE = 'ggumR', mu, sigma, a, b)
+}
+

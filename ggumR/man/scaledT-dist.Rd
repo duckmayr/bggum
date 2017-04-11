@@ -6,6 +6,7 @@
 \alias{pScaledT}
 \alias{qScaledT}
 \alias{rScaledT}
+\alias{r_TruncNorm}
 \title{The location-scale Student's T distribution.}
 \usage{
 dScaledT(x, df, mu, sigma)
@@ -15,6 +16,8 @@ pScaledT(q, df, mu, sigma)
 qScaledT(p, df, mu, sigma)
 
 rScaledT(n, df, mu, sigma)
+
+r_TruncNorm(mu, sigma, a, b)
 }
 \arguments{
 \item{x, q}{A numeric vector of the quantiles of interest}

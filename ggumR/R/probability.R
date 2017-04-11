@@ -27,5 +27,6 @@ probability <- function(k, K, theta, alpha, delta, tau){
   lgExpr1 <- exp(alpha * (0:(K-1) * (theta - delta) - smExpr))
   lgExpr2 <- exp(alpha * ((2*K - (0:(K-1)) - 1) * (theta - delta) - smExpr))
   numerator <- lgExpr1 + lgExpr2
-  return(numerator[k]/sum(numerator)) # we only want the kth element
+  prob <- numerator[k]/sum(numerator)
+  return(ifelse(prob < 1e-300, 1e-299, prob))  # we only want the kth element
 }

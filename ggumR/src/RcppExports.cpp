@@ -61,3 +61,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// r_TruncNorm
+double r_TruncNorm(double mu, double sigma, double a, double b);
+RcppExport SEXP ggumR_r_TruncNorm(SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_TruncNorm(mu, sigma, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}

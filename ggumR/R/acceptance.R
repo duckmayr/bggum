@@ -15,15 +15,17 @@
 #' 
 #' @return The acceptance ratio for the paramenters used in the MCMC algorithm for the GGUM.
 #' @export
-acceptanceTheta <- function(currentValue, proposedValue, responseMatrix, alphas, deltas, taus){
+acceptanceTheta <- function(currentValue, proposedValue, responseMatrix, 
+                            currentValuesTheta, proposedValuesTheta, alphas, deltas, taus, index = 1){
+   # Calculate the log-likelihood for the proposed theta
+   logllProposed <- likelihoodRow(thetas = proposedValuesTheta,
+                                  responseMatrix, alphas, deltas, taus, index = index)  
+   if(is.infinite(logllProposed)) return(0)
    # Calculate the log-likelihood for the current theta
-   logllCurrent <- likelihoodRow(thetas = currentValue,
-                                     responseMatrix, alphas, deltas, taus)
+   logllCurrent <- likelihoodRow(thetas = currentValuesTheta,
+                                     responseMatrix, alphas, deltas, taus, index = index)
    # Calculate the prior for the current theta
    logpriorCurrent <- log(getPrior(param = 'theta', value = currentValue))
-   # Calculate the log-likelihood for the proposed theta
-   logllProposed <- likelihoodRow(thetas = proposedValue,
-                                      responseMatrix, alphas, deltas, taus)     
    # Calculate the prior for the proposed theta
    logpriorProposed <- log(getPrior(param = 'theta', value = proposedValue))
    # Calculate the acceptance ratio
@@ -39,20 +41,21 @@ acceptanceTheta <- function(currentValue, proposedValue, responseMatrix, alphas,
 }
 
 #' @export
-acceptanceAlpha <- function(currentValue, proposedValue, responseMatrix, thetas, deltas, taus){
+acceptanceAlpha <- function(currentValue, proposedValue, responseMatrix, 
+                            currentValuesAlpha, proposedValuesAlpha, thetas, deltas, taus, index = 1){
    # Calculate the prior for the proposed alpha
    logpriorProposed <- log(getPrior(param = 'alpha', value = proposedValue)+0.00001)
    if(is.nan(logpriorProposed))return(0)
    # Calculate the log-likelihood for the current alpha
-   logllCurrent <- likelihoodCol(alphas = currentValue,
+   logllCurrent <- likelihoodCol(alphas = currentValuesAlpha,
                                      responseMatrix = responseMatrix, 
-                                     thetas = thetas, deltas = deltas, taus = taus)
+                                     thetas = thetas, deltas = deltas, taus = taus, index = index)
    # Calculate the prior for the current alpha
    logpriorCurrent <- log(getPrior(param = 'alpha', value = currentValue)+0.00001)
    # Calculate the log-likelihood for the proposed alpha
-   logllProposed <- likelihoodCol(alphas = proposedValue,
+   logllProposed <- likelihoodCol(alphas = proposedValuesAlpha,
                                       responseMatrix = responseMatrix, 
-                                      thetas = thetas, deltas = deltas, taus = taus)  
+                                      thetas = thetas, deltas = deltas, taus = taus, index = index)  
 
    
    # Calculate the acceptance ratio
@@ -68,22 +71,21 @@ acceptanceAlpha <- function(currentValue, proposedValue, responseMatrix, thetas,
 }
 
 #' @export
-acceptanceDelta <- function(currentValue, proposedValue, responseMatrix, thetas, alphas, taus){
+acceptanceDelta <- function(currentValue, proposedValue, currentValuesDelta, proposedValuesDelta, 
+                            responseMatrix, thetas, alphas, taus, index = 1){
    # Calculate the prior for the proposed delta
    logpriorProposed <- log(getPrior(param = 'delta', value = proposedValue)+0.00001)
    if(is.nan(logpriorProposed)) return(0)
    # Calculate the log-likelihood for the current delta
-   logllCurrent <- likelihoodCol(deltas = currentValue,
+   logllCurrent <- likelihoodCol(deltas = currentValuesDelta,
                                      responseMatrix = responseMatrix, 
-                                     thetas = thetas, alphas = alphas, taus = taus)
+                                     thetas = thetas, alphas = alphas, taus = taus, index = index)
    # Calculate the prior for the current delta
    logpriorCurrent <- log(getPrior(param = 'delta', value = currentValue)+0.00001)
    # Calculate the log-likelihood for the proposed delta
-   logllProposed <- likelihoodCol(deltas = proposedValue,
+   logllProposed <- likelihoodCol(deltas = proposedValuesDelta,
                                       responseMatrix = responseMatrix, 
-                                      thetas = thetas, alphas = alphas, taus = taus)  
-
-   
+                                      thetas = thetas, alphas = alphas, taus = taus, index = index)  
    # Calculate the acceptance ratio
    acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
    # Return the acceptance ratio for delta
@@ -97,20 +99,21 @@ acceptanceDelta <- function(currentValue, proposedValue, responseMatrix, thetas,
 }
 
 #' @export
-acceptanceTau <- function(currentValue, proposedValue, responseMatrix, thetas, alphas, deltas){
+acceptanceTau <- function(currentValue, proposedValue, currentValuesTau, 
+                          proposedValuesTau, responseMatrix, thetas, alphas, deltas, index = 1){
    # Calculate the prior for the proposed tau
    logpriorProposed <- log(getPrior(param = 'tau', value = proposedValue)+0.00001)
    if(is.nan(logpriorProposed)) return(0)
    # Calculate the log-likelihood for the current tau
-   logllCurrent <- likelihoodCol(taus = currentValue,
+   logllCurrent <- likelihoodCol(taus = currentValuesTau,
                                      responseMatrix = responseMatrix, 
-                                     thetas = thetas, alphas = alphas, deltas = deltas)
+                                     thetas = thetas, alphas = alphas, deltas = deltas, index = index)
    # Calculate the prior for the current tau
    logpriorCurrent <- log(getPrior(param = 'tau', value = currentValue)+0.00001)
    # Calculate the log-likelihood for the proposed tau
-   logllProposed <- likelihoodCol(taus = proposedValue,
+   logllProposed <- likelihoodCol(taus = proposedValuesTau,
                                       responseMatrix = responseMatrix, 
-                                      thetas = thetas, alphas = alphas, deltas = deltas)  
+                                      thetas = thetas, alphas = alphas, deltas = deltas, index = index)  
    # Calculate the acceptance ratio
    acceptanceR <- exp((logllProposed+logpriorProposed)-(logllCurrent+logpriorCurrent))
    # Return the acceptance ratio for tau
