@@ -1,4 +1,3 @@
-
 ## Package Development File Template ##
 library(devtools)
 library(roxygen2)
@@ -8,3 +7,5 @@ document(current.code)
 # check(current.code)
 # install(pkg=current.code, local=TRUE)
 # build(current.code, path=getwd())
+
+load("exampleData.RData", .GlobalEnv)
