@@ -27,8 +27,8 @@
 #' @return The likelihood of the matrix or vector of interest.
 #' @export
 likelihoodRow <- function(thetas, responseMatrix, alphas, deltas, taus, index=1){
-      return(stableProd(sapply(1:ncol(responseMatrix), function(x){
+      return(sum(log(sapply(1:ncol(responseMatrix), function(x){
          probability(responseMatrix[index, x], length(taus[[x]]), thetas[index],
-                     alphas[x], deltas[x], taus[[x]])
+                     alphas[x], deltas[x], taus[[x]]))
       })))
 }
