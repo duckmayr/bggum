@@ -12,9 +12,18 @@
 #' 
 #' @return the iteration matrix with K (the number of iteration stages) rows and n (the number of items) columns.
 #' @export
-sampler <- function(responseMatrix, times = 6000, 
+sampler <- function(responseMatrix, times = 7000, 
                     thetas, alphas, deltas, taus, 
-                    startTheta = 1, startAlpha = 1, startDelta = 1){
+                    startTheta = NULL, startAlpha = NULL, startDelta = NULL){
+  if(is.null(startTheta)){
+    startTheta <- rnorm(n = nrow(responseMatrix), mean = 0, sd = 1)
+  }
+  if(is.null(startAlpha)){
+    startAlpha <- rep(x = 1, times = ncol(responseMatrix))
+  }
+  if(is.null(startDelta)){
+    startDelta <- seq(from = -2.45, to = 2.45, by = ncol(responseMatrix))
+  }
   iterate(responseMatrix = responseMatrix,
              times = times,
              thetas = thetas, 
