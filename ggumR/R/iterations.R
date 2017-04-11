@@ -2,8 +2,10 @@
 #' 
 #' \code{MCMC} runs the MCMC algorithm  for GGUM
 #' 
-#' @param startvalue A numeric vector of length 1.
-#' @param iterations A numeric vector of length 1. 
+#' @param startThetas A numeric vector of length 1.
+#' @param startAlpha A numeric vector of length 1.
+#' @param startDelta A numeric vector of length 1.
+#' @param times A numeric vector of length 1. 
 #' @param thetas A numeric vector of length N (the number of respondents); each
 #'   each element of the vector is an individual's latent trait parameter
 #' @param responseMatrix A numeric matrix with N rows and n (the number of
@@ -17,11 +19,11 @@
 #'   vector of threshold parameters for item j's options (where the first
 #'   element of the vector should be zero).
 #' @export
-iterations <- function(startThetas, startAlphas, startDeltas, iterations, responseMatrix, thetas, alphas, deltas, taus){
-   currentTheta <- storeTheta <- chainTheta <- startThetas
-   currentAlpha <- storeAlpha <- chainAlpha <- startAlphas
-   currentDelta <- storeDelta <- chainDelta <- startDeltas
-   for (i in 1:iterations){
+iterate <- function(startTheta, startAlpha, startDelta, times, responseMatrix, thetas, alphas, deltas, taus){
+   currentTheta <- storeTheta <- chainTheta <- startTheta
+   currentAlpha <- storeAlpha <- chainAlpha <- startAlpha
+   currentDelta <- storeDelta <- chainDelta <- startDelta
+   for (i in 1:times){
       # Start the BurnIn period. Proposer has sd = 1
       if(i<1001){
         # Do this for Theta
