@@ -54,3 +54,13 @@ NumericVector qScaledT(NumericVector p, double df, double mu, double sigma){
 NumericVector rScaledT(int n, double df, double mu, double sigma){
     return rt(n, df) * sigma + mu;
 }
+
+//' @rdname scaledT-dist
+//' @export
+//[[Rcpp::export]]
+double r_TruncNorm(double mu, double sigma, double a, double b){
+    double F_a = R::pnorm(a, mu, sigma, 1, 0);
+    double F_b = R::pnorm(b, mu, sigma, 1, 0);
+    double q = R::qnorm(F_a + R::unif_rand() * (F_b - F_a), mu, sigma, 1, 0);
+    return std::min(std::max(a, q), b);
+}
