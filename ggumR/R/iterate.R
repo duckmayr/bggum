@@ -1,10 +1,11 @@
-#' GGUM interations for Thetas, Alphas and Deltas.
+#' GGUM iterations for Thetas, Alphas and Deltas.
 #' 
 #' \code{MCMC} runs the MCMC algorithm  for GGUM
 #' 
 #' @param startThetas A numeric vector of length 1.
 #' @param startAlpha A numeric vector of length 1.
 #' @param startDelta A numeric vector of length 1.
+#' @param startTaus A numeric vector of length K.
 #' @param times A numeric vector of length 1. 
 #' @param thetas A numeric vector of length N (the number of respondents); each
 #'   each element of the vector is an individual's latent trait parameter
