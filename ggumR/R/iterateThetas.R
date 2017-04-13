@@ -1,6 +1,6 @@
 #' GGUM iterations for Thetas
 #' 
-#' \code{iterateThetas} runs the GGUM MCMC algorithm thetas
+#' \code{iterateThetas} runs the GGUM MCMC algorithm for thetas
 #' 
 #' @param alphas A numeric vector of length n; each element of the vector is an
 #'   item's discrimination parameter
@@ -9,7 +9,8 @@
 #' @param taus A list of numeric vectors; each list element j is a numeric
 #'   vector of threshold parameters for item j's options (where the first
 #'   element of the vector should be zero).
-#' @param times A numeric vector of length 1. 
+#' @param times A numeric vector of length 1 giving the number of iterations
+#'   the algorithm should run for. 
 #' @param responseMatrix A numeric matrix with N rows and n (the number of
 #'   items) columns; each i,j element of the matrix gives the option chosen by
 #'   individual i for item j
@@ -21,14 +22,13 @@
 #' @export
 iterateThetas <- function(alphas, deltas, taus, times, responseMatrix, K){
   n <- nrow(responseMatrix)
-  m <- ncol(responseMatrix)
   thetas <- rnorm(n)
   resultMatrix <- matrix(0, nrow=times+1, ncol=n)
   resultMatrix[1, ] <- thetas
   for ( t in 1:times ) {
     for ( i in 1:n ) {
       if ( t < 1001 ) {
-        proposalSD <- 0.2
+        proposalSD <- 1
       } else {
         proposalSD <- sd(resultMatrix[(t-1000):t, i])
       }
