@@ -1,10 +1,12 @@
-source('~/ggum/ggumR/R/getPrior')
+source('~/ggum/ggumR/R/getPrior.R')
 source('~/ggum/ggumR/R/probability.R')
-load('~/ggum/exampleData.RData')
+load('~/ggum/exampleData.RData.R')
 source('~/ggum/ggumR/R/Beta_ab.R')
 source('~/ggum/ggumR/R/llCol.R')
 source('~/ggum/ggumR/R/iterateAlphas.R')
 source('~/ggum/ggumR/R/proposer.R')
+
+## Function to give the rate of proposal acceptance for one parameter:
 acceptanceRate <- function(chainVec){
   result <- 0
   for ( i in 2:length(chainVec) ) {
@@ -14,13 +16,20 @@ acceptanceRate <- function(chainVec){
   }
   return(result/length(chainVec))
 }
+
+# Do 5000 iterations of the algorithm for alphas given true values for all the
+# other parameters:
 testMat <- iterateAlphas(thetas, deltas, taus, 5000, responseMatrix[1:200, ], 4)
+# Find the acceptance rate:
 apply(testMat, 2, acceptanceRate)
+# How are the estimates?
 chainLength <- nrow(testMat)
 ests <- apply(testMat[(chainLength/2):chainLength, ], 2, acceptanceRate)
-mean(abs(ests - alphas))
+mean(abs(ests - alphas)) # Not great
+# Save the results for future examination:
 save(testMat, file='testMatIterateAlphas.RData')
 
+# Let's look at densities and trace plots:
 pdf('alphaDensities.pdf', width=9, height=13)
 layout(matrix(1:10, ncol=2))
 invisible(sapply(1:10, function(x){
