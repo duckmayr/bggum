@@ -8,3 +8,6 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stats dbeta dnorm pbeta qbeta rbeta
 NULL
+.onUnload <- function (libpath) {
+  library.dynam.unload('ggumR', libpath)
+}
