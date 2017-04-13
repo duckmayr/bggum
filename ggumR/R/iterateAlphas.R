@@ -27,12 +27,12 @@ iterateAlphas <- function(thetas, deltas, taus, times, responseMatrix, K){
   for ( t in 1:times ) {
     for ( j in 1:m ) {
       if ( t < 1001 ) {
-        proposalSD <- 1
+        proposalSD <- 0.15
       } else {
         proposalSD <- sd(resultMatrix[(t-1000):t, j])
       }
       currentVal <- alphas[j]
-      proposal <- proposerTheta(currentVal, proposalSD)
+      proposal <- proposerAlpha(currentVal, proposalSD)
       llCurrent <- llCol(thetas, responseMatrix[ , j], alphas[j], deltas[j],
                          taus[[j]])
       llProposed <- llCol(thetas, responseMatrix[ , j], proposal, deltas[j],
