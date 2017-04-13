@@ -23,7 +23,7 @@
 #' @export
 llRow <- function(theta, responseVector, alphas, deltas, taus){
       return(sum(log(sapply(1:length(responseVector), function(x){
-         probability(responseVector[x], length(taus[[x]]), thetas, alphas[x],
+         probability(responseVector[x], length(taus[[x]]), theta, alphas[x],
                      deltas[x], taus[[x]])
       }))))
 }
