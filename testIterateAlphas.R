@@ -24,8 +24,8 @@ testMat <- iterateAlphas(thetas, deltas, taus, 5000, responseMatrix[1:200, ], 4)
 apply(testMat, 2, acceptanceRate)
 # How are the estimates?
 chainLength <- nrow(testMat)
-ests <- apply(testMat[(chainLength/2):chainLength, ], 2, acceptanceRate)
-mean(abs(ests - alphas)) # Not great
+ests <- apply(testMat[(chainLength/2):chainLength, ], 2, mean)
+mean(abs(ests - alphas)) # Not too bad
 # Save the results for future examination:
 save(testMat, file='testMatIterateAlphas.RData')
 

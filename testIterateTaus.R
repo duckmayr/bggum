@@ -5,11 +5,6 @@ source('~/ggum/ggumR/R/Beta_ab.R')
 source('~/ggum/ggumR/R/llCol.R')
 source('~/ggum/ggumR/R/iterateTaus.R')
 source('~/ggum/ggumR/R/proposer.R')
-library(truncdist)
-proposerTau <- function(currentValue, sdPeriodType = 1){
-  return(rtrunc(1, 'norm', -6, 6, currentValue, sdPeriodType))
-  return(r_TruncNorm(mu = currentValue, sigma = sdPeriodType, a = -5, b = 5))
-}
 
 # Function to give the rate of proposal acceptance for one parameter:
 acceptanceRate <- function(chainVec){
