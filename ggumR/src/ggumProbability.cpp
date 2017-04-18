@@ -20,7 +20,7 @@ NumericVector probRow(NumericVector responseVec, double theta,
     int m = responseVec.size();
     NumericVector result(m);
     for ( int j = 0; j < m; j++ ) {
-        if ( isnan(responseVec[j]) != 0 ) {
+        if ( ISNA(responseVec[j]) ) {
             result[j] = NA_REAL;
             continue;
         }
@@ -35,7 +35,7 @@ NumericVector probCol(NumericVector responseVec, NumericVector thetas,
     int n = responseVec.size();
     NumericVector result(n);
     for ( int i = 0; i < n; i++ ) {
-        if ( isnan(responseVec[i]) != 0 ) {
+        if ( ISNA(responseVec[i]) ) {
             result[i] = NA_REAL;
             continue;
         }
