@@ -56,3 +56,15 @@ all(sapply(quizData, as.numeric) == responseMatrix)
 
 save(thetas, alphas, deltas, taus, quizData, responseMatrix,
      file='~/ggum/exampleData.RData')
+
+## Make a larger data set:
+
+thetas <- rnorm(1000)
+alphas <- rBeta_ab(20, params=alphaDistParams)
+deltas <- rBeta_ab(20, params=deltaDistParams)
+taus <- as.list(sapply(1:20, function(x){
+  c(0, rBeta_ab(3, params=tauDistParams))
+}, simplify=FALSE))
+responseMatrix <- mkResponseMatrix(thetas, alphas, deltas, taus)
+apply(responseMatrix, 2, function(x) length(unique(x)))
+save(thetas, alphas, deltas, taus, responseMatrix, file='lgExData.RData')
