@@ -38,3 +38,4 @@ probability individual i chose the particular response to item j that we
 observed for individual i and item j (i.e. the probability corresponding to
 the i,j entry in the response matrix).
 }
+

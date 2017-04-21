@@ -18,3 +18,4 @@ A proposed value for the paramenters used in the MCMC algorithm for the GGUM.
 \description{
 \code{proposer} generates proposed values for parameters.
 }
+
