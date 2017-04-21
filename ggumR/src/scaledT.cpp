@@ -55,3 +55,14 @@ NumericVector rlst(int n, double df, double mu, double sigma){
     return rt(n, df) * sigma + mu;
 }
 
+// These scalar versions are not for the user, they are just used by other
+// c++ functions in the package
+//[[Rcpp::export]]
+double d_lst(double x, double df, double mu, double sigma){
+    return (1 / sigma) * R::dt((x - mu)/sigma, df, 0);
+}
+
+//[[Rcpp::export]]
+double p_lst(double q, double df, double mu, double sigma){
+    return R::pt((q - mu)/sigma, df, 1, 0);
+}
