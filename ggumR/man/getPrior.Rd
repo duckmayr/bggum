@@ -19,4 +19,3 @@ The probability of drawing value from a prior distribution for param.
 \code{getPrior} gives the probability of drawing value from the prior
 distribution for param.
 }
-
