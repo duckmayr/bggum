@@ -20,4 +20,3 @@ While base R provides the function \code{prod}, a more numerically stable
 way to calculate the product of a vector is to take the exponential of the
 sum of the natural logarithm of each element of the vector.
 }
-

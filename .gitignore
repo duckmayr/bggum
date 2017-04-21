@@ -2,8 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-/src/*.o
-/src/*.o-*
-/src/*.d
-/src/*.so
+/ggumR/src/*.o
+/ggumR/src/*.o-*
+/ggumR/src/*.d
+/ggumR/src/*.so
 *.dll
