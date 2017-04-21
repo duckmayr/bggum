@@ -60,10 +60,6 @@ NumericVector qtruncnorm(NumericVector p, double mean, double SD,
         double a, double b){
     double F_a = R::pnorm(a, mean, SD, 1, 0);
     double F_b = R::pnorm(b, mean, SD, 1, 0);
-//    for ( int l = 0; l < p.size(); l++ ) {
-//        p[l] = std::min(b, std::max(a,
-//                    R::qnorm(F_a + p[l] * (F_b - F_a), mean, SD, 1, 0)));
-//    }
     return pmin(b, pmax(a, qnorm(F_a + p * (F_b - F_a), mean, SD)));
 }
 
