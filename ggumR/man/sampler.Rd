@@ -26,4 +26,3 @@ the iteration matrix with K (the number of iteration stages) rows and n (the num
 \description{
 \code{sampler} takes in a matrix of all responses and returns the iteration matrix.
 }
-

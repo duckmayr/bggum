@@ -31,4 +31,3 @@ The acceptance ratio for the paramenters used in the MCMC algorithm for the GGUM
 \code{acceptanceTheta} computes a acceptance ratio for the paramenters used 
 in the MCMC algorithm for the GGUM.
 }
-

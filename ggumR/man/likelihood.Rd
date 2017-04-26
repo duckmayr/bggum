@@ -46,4 +46,3 @@ recording each individual's response to each test item, and as well as
 gives the product of the probability corresponding to each entry in the
 matrix or relevant vector.
 }
-
