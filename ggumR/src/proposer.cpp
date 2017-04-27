@@ -20,18 +20,21 @@ double proposerTheta(NumericVector cv, NumericVector SD){
    return pv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double proposerAlpha(NumericVector cv, NumericVector SD) {
    double pv = r_trunclst(1, cv[0], SD[0], 0.25, 4);
    return pv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double proposerDelta(NumericVector cv, NumericVector SD){
    double pv = r_trunclst(1, cv[0], SD[0], -5, 5);
    return pv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double proposerTau(NumericVector cv, NumericVector SD){
    double pv = r_trunclst(1, cv[0], SD[0], -6, 6);

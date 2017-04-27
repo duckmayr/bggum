@@ -29,6 +29,7 @@ double loglikelihoodAlpha(NumericVector responses, NumericVector thetas,
    return llAlpha;
 }
 
+//' @export
 //[[Rcpp::export]]
 double loglikelihoodDelta(NumericVector responses, NumericVector thetas,
                           double alpha, double delta, NumericVector taus){
@@ -37,6 +38,7 @@ double loglikelihoodDelta(NumericVector responses, NumericVector thetas,
    return llDelta;
 }
 
+//' @export
 //[[Rcpp::export]]
 double loglikelihoodTau(NumericVector responses, NumericVector thetas,
                         double alpha, double delta, NumericVector taus){
