@@ -20,6 +20,7 @@ double proposerTheta(NumericVector cv, NumericVector SD){
    return pv;
 }
 
+//' @rdname ggumProposer
 //' @export
 //[[Rcpp::export]]
 double proposerAlpha(NumericVector cv, NumericVector SD) {
@@ -27,6 +28,7 @@ double proposerAlpha(NumericVector cv, NumericVector SD) {
    return pv;
 }
 
+//' @rdname ggumProposer
 //' @export
 //[[Rcpp::export]]
 double proposerDelta(NumericVector cv, NumericVector SD){
@@ -34,6 +36,7 @@ double proposerDelta(NumericVector cv, NumericVector SD){
    return pv;
 }
 
+//' @rdname ggumProposer
 //' @export
 //[[Rcpp::export]]
 double proposerTau(NumericVector cv, NumericVector SD){

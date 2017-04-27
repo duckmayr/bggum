@@ -160,10 +160,12 @@ loglikelihoodAlpha <- function(responses, thetas, alpha, delta, taus) {
     .Call('ggumR_loglikelihoodAlpha', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
 }
 
+#' @export
 loglikelihoodDelta <- function(responses, thetas, alpha, delta, taus) {
     .Call('ggumR_loglikelihoodDelta', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
 }
 
+#' @export
 loglikelihoodTau <- function(responses, thetas, alpha, delta, taus) {
     .Call('ggumR_loglikelihoodTau', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
 }
@@ -206,14 +208,20 @@ proposerTheta <- function(cv, SD) {
     .Call('ggumR_proposerTheta', PACKAGE = 'ggumR', cv, SD)
 }
 
+#' @rdname ggumProposer
+#' @export
 proposerAlpha <- function(cv, SD) {
     .Call('ggumR_proposerAlpha', PACKAGE = 'ggumR', cv, SD)
 }
 
+#' @rdname ggumProposer
+#' @export
 proposerDelta <- function(cv, SD) {
     .Call('ggumR_proposerDelta', PACKAGE = 'ggumR', cv, SD)
 }
 
+#' @rdname ggumProposer
+#' @export
 proposerTau <- function(cv, SD) {
     .Call('ggumR_proposerTau', PACKAGE = 'ggumR', cv, SD)
 }
