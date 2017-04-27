@@ -2,6 +2,22 @@
 
 using namespace Rcpp;
 
+//' GGUM acceptance
+//'
+//' Computes an acceptance ratio for the paramenters used in the MCMC algorithm
+//' for the GGUM.
+//' 
+//' @param responses A numeric vector giving the response by each respondent to each item
+//' @param cv The current value of the paramenter of interest
+//' @param thetas The numeric vector of current values of the items' theta parameters
+//' @param alphas The numeric vector of current values of the items' alpha parameters
+//' @param delta The numeric vector of current values of the items' delta parameters
+//' @param thetas The vector of current values of the items' delta parameters
+//' @param SD The standard deviation of the truncated location-scale T distribution
+//'
+//' @return The proposed value or current value, according to the acceptance ratio, to
+//' be used in the MCMC algorithm for the GGUM.
+//' @export
 //[[Rcpp::export]]
 double acceptanceTheta(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
