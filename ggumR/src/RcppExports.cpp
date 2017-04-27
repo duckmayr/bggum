@@ -188,6 +188,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// proposerTheta
+double proposerTheta(NumericVector cv, NumericVector SD);
+RcppExport SEXP ggumR_proposerTheta(SEXP cvSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(proposerTheta(cv, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
+// proposerAlpha
+double proposerAlpha(NumericVector cv, NumericVector SD);
+RcppExport SEXP ggumR_proposerAlpha(SEXP cvSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(proposerAlpha(cv, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
+// proposerDelta
+double proposerDelta(NumericVector cv, NumericVector SD);
+RcppExport SEXP ggumR_proposerDelta(SEXP cvSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(proposerDelta(cv, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
+// proposerTau
+double proposerTau(NumericVector cv, NumericVector SD);
+RcppExport SEXP ggumR_proposerTau(SEXP cvSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(proposerTau(cv, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
 // dlst
 NumericVector dlst(NumericVector x, double df, double mu, double sigma);
 RcppExport SEXP ggumR_dlst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {

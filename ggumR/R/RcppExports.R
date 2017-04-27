@@ -121,6 +121,34 @@ ggumProbability <- function(k, theta, alpha, delta, tau) {
     .Call('ggumR_ggumProbability', PACKAGE = 'ggumR', k, theta, alpha, delta, tau)
 }
 
+#' GGUM Proposer
+#' 
+#' Propose new values for the parameters Theta, Alpha, Delta, and Taus
+#' for the GGUM.
+#' 
+#' @param cv A numeric vector of length one. The current value of the parameter of interest.
+#' @param SD A numeric vector of length one. The standard deviation used to generate the 
+#' proposed value.
+#' 
+#' @return A numeric vector of length one. The propose value for the paramenter of interest.
+#' @rdname ggumProposer
+#' @export
+proposerTheta <- function(cv, SD) {
+    .Call('ggumR_proposerTheta', PACKAGE = 'ggumR', cv, SD)
+}
+
+proposerAlpha <- function(cv, SD) {
+    .Call('ggumR_proposerAlpha', PACKAGE = 'ggumR', cv, SD)
+}
+
+proposerDelta <- function(cv, SD) {
+    .Call('ggumR_proposerDelta', PACKAGE = 'ggumR', cv, SD)
+}
+
+proposerTau <- function(cv, SD) {
+    .Call('ggumR_proposerTau', PACKAGE = 'ggumR', cv, SD)
+}
+
 #' The location-scale T distribution.
 #'
 #' Density, distribution function, quantile function, and random number

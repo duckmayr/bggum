@@ -7,3 +7,5 @@
 /ggumR/src/*.d
 /ggumR/src/*.so
 *.dll
+
+chainMats.RData

@@ -25,3 +25,4 @@ A chain matrix; a numeric matrix with \code{iterations} rows and
 MCMC sampler for the generalized graded unfolding model (GGUM), utilizing
 a Metropolis-Hastings algorithm
 }
+

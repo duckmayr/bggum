@@ -38,3 +38,4 @@ item given item and respondent parameters. The user can calculate the
 probability of one particular response or for any number of the possible
 responses to the item (see the \code{k} parameter described below).
 }
+
