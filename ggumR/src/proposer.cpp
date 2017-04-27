@@ -16,24 +16,24 @@ using namespace Rcpp;
 //' @export
 //[[Rcpp::export]]
 double proposerTheta(NumericVector cv, NumericVector SD){
-   double pv = r_trunclst(1, cv, SD, -10, 10);
+   double pv = r_trunclst(1, cv[0], SD[0], -10, 10);
    return pv;
 }
 
 //[[Rcpp::export]]
 double proposerAlpha(NumericVector cv, NumericVector SD) {
-   double pv = r_trunclst(1, cv, SD, 0.25, 4);
+   double pv = r_trunclst(1, cv[0], SD[0], 0.25, 4);
    return pv;
 }
 
 //[[Rcpp::export]]
 double proposerDelta(NumericVector cv, NumericVector SD){
-   double pv = r_trunclst(1, cv, SD, -5, 5);
+   double pv = r_trunclst(1, cv[0], SD[0], -5, 5);
    return pv;
 }
 
 //[[Rcpp::export]]
 double proposerTau(NumericVector cv, NumericVector SD){
-   double pv = r_trunclst(1, cv, SD, -6, 6);
+   double pv = r_trunclst(1, cv[0], SD[0], -6, 6);
    return pv;
 }

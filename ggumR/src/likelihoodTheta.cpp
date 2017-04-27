@@ -23,7 +23,7 @@ using namespace Rcpp;
 //[[Rcpp::export]]
 double loglikelihoodTheta(NumericVector responses, double theta,
                        NumericVector alphas, NumericVector deltas, List taus){
-   NumericVector thetaProbs = probRow(responses, cv = theta, alphas, deltas, taus);
+   NumericVector thetaProbs = probRow(responses, theta, alphas, deltas, taus);
    double llTheta = sum(log(thetaProbs));
    return llTheta;
 }

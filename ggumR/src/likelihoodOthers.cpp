@@ -24,7 +24,7 @@ using namespace Rcpp;
 //[[Rcpp::export]]
 double loglikelihoodAlpha(NumericVector responses, NumericVector thetas,
                           double alpha, double delta, NumericVector taus){
-   NumericVector AlphaProbs = probCol(responses, thetas, cv = alpha, delta, taus);
+   NumericVector AlphaProbs = probCol(responses, thetas, alpha, delta, taus);
    double llAlpha = sum(log(AlphaProbs));
    return llAlpha;
 }
@@ -32,7 +32,7 @@ double loglikelihoodAlpha(NumericVector responses, NumericVector thetas,
 //[[Rcpp::export]]
 double loglikelihoodDelta(NumericVector responses, NumericVector thetas,
                           double alpha, double delta, NumericVector taus){
-   NumericVector DeltaProbs = probCol(responses, thetas, alpha, cv = delta, taus);
+   NumericVector DeltaProbs = probCol(responses, thetas, alpha, delta, taus);
    double llDelta = sum(log(DeltaProbs));
    return llDelta;
 }
