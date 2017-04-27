@@ -12,7 +12,7 @@ using namespace Rcpp;
 //' @param thetas The numeric vector of current values of the items' theta parameters
 //' @param alphas The numeric vector of current values of the items' alpha parameters
 //' @param delta The numeric vector of current values of the items' delta parameters
-//' @param thetas The vector of current values of the items' delta parameters
+//' @param tau The vector of current values of the items' tau parameters
 //' @param SD The standard deviation of the truncated location-scale T distribution
 //'
 //' @return The proposed value or current value, according to the acceptance ratio, to
@@ -35,6 +35,7 @@ double acceptanceTheta(NumericVector responses, double cv,
     return cv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double acceptanceAlpha(NumericVector responses, NumericVector thetas,
         double cv, double delta, NumericVector taus, double SD){
@@ -51,6 +52,7 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
     return cv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double acceptanceDelta(NumericVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD){
@@ -67,6 +69,7 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
     return cv;
 }
 
+//' @export
 //[[Rcpp::export]]
 double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD){
