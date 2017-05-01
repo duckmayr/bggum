@@ -6,7 +6,7 @@ using namespace Rcpp;
 //' 
 //' Calculate the log likelihood of data for the GGUM given parameter values.
 //'
-//' This function calculates the log likelihood of a \textbf{vector} of
+//' This function calculates the log likelihood of a \bold{vector} of
 //' responses given values for the parameters relevant to the responses.
 //' This could be all of a respondent \eqn{i}'s responses to every item \eqn{j},
 //' or all respondents' responses to an item \eqn{j}. We calculate likelihood
