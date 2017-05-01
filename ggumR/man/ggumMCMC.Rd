@@ -13,15 +13,64 @@ respondent to each item}
 \item{Kvector}{A numeric vector of length m (the number of items), each
 element j of which gives the number of options (K) for item j}
 
-\item{iterations}{A numeric vector of length one; the number of iterations}
+\item{iterations}{A numeric vector of length one; the number of iterations
+(NOTE: \code{iterations} should be at least 5000, and preferably around
+25000, though only values of 1000 or less will cause an error)}
 }
 \value{
 A chain matrix; a numeric matrix with \code{iterations} rows and
   one column for every parameter of the model, so that each element of the
   matrix gives the value of a parameter for a particular iteration of the
-  algorithm
+  MCMC algorithm.
 }
 \description{
 MCMC sampler for the generalized graded unfolding model (GGUM), utilizing
 a Metropolis-Hastings algorithm
+}
+\details{
+\code{ggumMCMC} provides \code{R} implementation of an MCMC sampler for
+the GGUM, based heavily on the algorithm given in de la Torre et al (2006);
+though the package allows parameter estimation from \code{R},
+the functions are actually written in \code{C++} to allow for reasonable
+execution time.
+Our sampler creates random ititial values for the parameters of the model,
+according to their prior distributions (see \code{\link{getPrior}}).
+Then, for the first 1000 iterations, the sampler, one parameter at a time,
+will make a proposal from the truncated location-scale T distribution
+specified in \code{\link{proposer}} where \eqn{SD = 1}, and accept the
+proposal probabilistically according to the ratio in
+\code{\link{acceptance}}. For the remainder of the iterations, the same
+process is followed, but the \eqn{\sigma} parameter for the proposal
+density is the standard deviation of the previous 1000 values of the
+parameter. A matrix is returned giving the value of every parameter at
+every iteration.
+}
+\section{Warning}{
+
+Typically, up to 5000 iterations are needed for convergence.
+Also, theta and delta parameters often have multi-modal posterior
+distributions, and in some cases chains may converge to the wrong
+mode for both parameters; in other words, the questions with the most
+negative delta parameters will be estimated as having the most positive
+delta parameters and vice versa, but only if the same happens with
+the theta parameters. Future package updates will provide a way to
+specify the expected sign of at least one theta and delta parameter
+to prevent this occurrence.
+}
+
+\references{
+Roberts, James S., John R. Donoghue, and James E. Laughlin.
+  2000. ``A General Item Response Theory Model for Unfolding
+  Unidimensional Polytomous Responses." \emph{Applied Psychological
+  Measurement} 24(1): 3--32.
+
+de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
+  Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
+  Parameters for the Generalized Graded Unfolding Model." \emph{Applied
+  Psychological Measurement} 30(3): 216--232.
+  algorithm
+}
+\seealso{
+\code{\link{ggumProbability}}, \code{\link{acceptance}},
+  \code{\link{getPrior}}, \code{\link{proposer}}
 }
