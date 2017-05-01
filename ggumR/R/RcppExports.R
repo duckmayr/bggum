@@ -187,6 +187,55 @@ getPriorTaus <- function(cv) {
     .Call('ggumR_getPriorTaus', PACKAGE = 'ggumR', cv)
 }
 
+#' GGUM Log Likelihood
+#' 
+#' Calculate the log likelihood of data for the GGUM given parameter values.
+#'
+#' This function calculates the log likelihood of a \textbf{vector} of
+#' responses given values for the parameters relevant to the responses.
+#' This could be all of a respondent \eqn{i}'s responses to every item \eqn{j},
+#' or all respondents' responses to an item \eqn{j}. We calculate likelihood
+#' of vectors rather than the likelihood of the entire response matrix since
+#' when computing acceptance ratios for the MCMC algorithm, we divide products
+#' of probabilities, most of which will cancel out -- thus, we only ever need
+#' the likelihood of one vector at any given time.
+#' 
+#' @param theta For \code{loglikelihoodRow}, a numeric vector of length one
+#'   giving the individual's latent trait parameter
+#' @param responses For \code{loglikelihoodRow}, a numeric vector of length
+#'   length n (the number of items) giving the option chosen by the individual
+#'   for each item j; for \code{loglikelihoodCol}, a numeric vector of length
+#'   N (the number of respondents), giving the option chosen by each individual
+#'   i to the item
+#' @param alphas A numeric vector of length n; each element of the vector is an
+#'   item's discrimination parameter
+#' @param deltas A numeric vector of length n; each element of the vector is an
+#'   item's location parameter
+#' @param taus For \code{loglikelihoodRow}, a list of numeric vectors where
+#'   each list element j is a numeric vector of threshold parameters for item
+#'   j's options (where the first element of the vector should be zero);
+#'   for \code{loglikelihoodCol}, this is only the numeric vector of threshold
+#'   parameters for the item of interest
+#' @param thetas A numeric vector of length N, each each element of which is
+#'   an individual's latent trait parameter
+#' @param alpha A numeric vector of length one giving the item's
+#'   discrimination parameter
+#' @param delta A numeric vector of length one giving the item's
+#'   location parameter
+#'
+#' @return The (log) likelihood of the vector of interest.
+#' @rdname ggumLogLikelihood
+#' @export
+loglikelihoodRow <- function(responses, theta, alphas, deltas, taus) {
+    .Call('ggumR_loglikelihoodRow', PACKAGE = 'ggumR', responses, theta, alphas, deltas, taus)
+}
+
+#' @rdname ggumLogLikelihood
+#' @export
+loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
+    .Call('ggumR_loglikelihoodCol', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
+}
+
 #' GGUM MCMC Sampler
 #'
 #' MCMC sampler for the generalized graded unfolding model (GGUM), utilizing
@@ -268,61 +317,6 @@ ggumMCMC <- function(responseMatrix, Kvector, iterations) {
 #' @export
 ggumProbability <- function(k, theta, alpha, delta, tau) {
     .Call('ggumR_ggumProbability', PACKAGE = 'ggumR', k, theta, alpha, delta, tau)
-}
-
-#' GGUM LogLikelihood Alpha, Delta, and Taus.
-#' 
-#' Calculate the Log Likelihood parameters Alpha, Delta, and Taus
-#' for the GGUM.
-#' 
-#' @param thetas A numeric vector of length N (the number of respondents); each
-#'   each element of the vector is an individual's latent trait parameter
-#' @param responseVector A numeric vector of length n (the number of items)
-#'   giving the option chosen by individual i for the item
-#' @param alpha A numeric vector of length one giving the item's discrimination
-#'   parameter
-#' @param delta A numeric vector of length one giving the item's location
-#'   parameter
-#' @param taus A numeric vector of length K (the number of options) giving the
-#'   threshold parameter for each option; the first element should be zero.
-#' 
-#' @return The (log) likelihood of the vector of interest.
-#' @rdname ggumLogLikelihoodOthers
-#' @export
-loglikelihoodAlpha <- function(responses, thetas, alpha, delta, taus) {
-    .Call('ggumR_loglikelihoodAlpha', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
-}
-
-#' @export
-loglikelihoodDelta <- function(responses, thetas, alpha, delta, taus) {
-    .Call('ggumR_loglikelihoodDelta', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
-}
-
-#' @export
-loglikelihoodTau <- function(responses, thetas, alpha, delta, taus) {
-    .Call('ggumR_loglikelihoodTau', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
-}
-
-#' GGUM LogLikelihood - Theta
-#' 
-#' Calculate the Log Likelihood parameters Theta for the GGUM.
-#' 
-#' @param theta A numeric vector of length one giving the individual's latent
-#'   trait parameter
-#' @param responseVector A numeric vector of length N (the number of
-#'   respondents) giving the option chosen the individual for each item j
-#' @param alphas A numeric vector of length n; each element of the vector is an
-#'   item's discrimination parameter
-#' @param deltas A numeric vector of length n; each element of the vector is an
-#'   item's location parameter
-#' @param taus A list of numeric vectors; each list element j is a numeric
-#'   vector of threshold parameters for item j's options (where the first
-#'   element of the vector should be zero).
-#' @return The (log) likelihood of the vector of interest.
-#' @rdname ggumLogLikelihoodTheta
-#' @export
-loglikelihoodTheta <- function(responses, theta, alphas, deltas, taus) {
-    .Call('ggumR_loglikelihoodTheta', PACKAGE = 'ggumR', responses, theta, alphas, deltas, taus)
 }
 
 #' GGUM Proposer

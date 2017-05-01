@@ -204,6 +204,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// loglikelihoodRow
+double loglikelihoodRow(NumericVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
+RcppExport SEXP ggumR_loglikelihoodRow(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
+    rcpp_result_gen = Rcpp::wrap(loglikelihoodRow(responses, theta, alphas, deltas, taus));
+    return rcpp_result_gen;
+END_RCPP
+}
+// loglikelihoodCol
+double loglikelihoodCol(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
+RcppExport SEXP ggumR_loglikelihoodCol(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type taus(tausSEXP);
+    rcpp_result_gen = Rcpp::wrap(loglikelihoodCol(responses, thetas, alpha, delta, taus));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ggumMCMC
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations);
 RcppExport SEXP ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP) {
@@ -229,66 +259,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type tau(tauSEXP);
     rcpp_result_gen = Rcpp::wrap(ggumProbability(k, theta, alpha, delta, tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodAlpha
-double loglikelihoodAlpha(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
-RcppExport SEXP ggumR_loglikelihoodAlpha(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodAlpha(responses, thetas, alpha, delta, taus));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodDelta
-double loglikelihoodDelta(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
-RcppExport SEXP ggumR_loglikelihoodDelta(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodDelta(responses, thetas, alpha, delta, taus));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodTau
-double loglikelihoodTau(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
-RcppExport SEXP ggumR_loglikelihoodTau(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodTau(responses, thetas, alpha, delta, taus));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodTheta
-double loglikelihoodTheta(NumericVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
-RcppExport SEXP ggumR_loglikelihoodTheta(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodTheta(responses, theta, alphas, deltas, taus));
     return rcpp_result_gen;
 END_RCPP
 }
