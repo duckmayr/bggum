@@ -40,4 +40,3 @@ rtruncnorm(n, mean, SD, a, b)
 Provides probability density, cumulative distribution, quantile, and random
 number generating functions for the truncated normal distribution.
 }
-

@@ -160,6 +160,50 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getPriorTheta
+double getPriorTheta(double cv);
+RcppExport SEXP ggumR_getPriorTheta(SEXP cvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    rcpp_result_gen = Rcpp::wrap(getPriorTheta(cv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getPriorAlpha
+double getPriorAlpha(double cv);
+RcppExport SEXP ggumR_getPriorAlpha(SEXP cvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    rcpp_result_gen = Rcpp::wrap(getPriorAlpha(cv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getPriorDelta
+double getPriorDelta(double cv);
+RcppExport SEXP ggumR_getPriorDelta(SEXP cvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    rcpp_result_gen = Rcpp::wrap(getPriorDelta(cv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getPriorTaus
+double getPriorTaus(double cv);
+RcppExport SEXP ggumR_getPriorTaus(SEXP cvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    rcpp_result_gen = Rcpp::wrap(getPriorTaus(cv));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ggumMCMC
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations);
 RcppExport SEXP ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP) {

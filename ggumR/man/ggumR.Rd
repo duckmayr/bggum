@@ -11,4 +11,3 @@ ggumR provides R tools for the generalized graded unfolding model.
 \author{
 JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
 }
-

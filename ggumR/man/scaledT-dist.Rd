@@ -44,4 +44,3 @@ scaled by 'sigma'.
 Jackman, Simon. 2009. \emph{Bayesian Analysis for the Social
     Sciences}. Wiley. p. 507.
 }
-

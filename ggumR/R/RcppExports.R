@@ -3,32 +3,52 @@
 
 #' GGUM acceptance
 #'
-#' Computes an acceptance ratio for the paramenters used in the MCMC algorithm
+#' Computes an acceptance ratio for the parameters used in the MCMC algorithm
 #' for the GGUM.
 #' 
-#' @param responses A numeric vector giving the response by each respondent to each item
+#' @param responses A numeric vector giving the responses by the respondent
+#'   or item of interest; for \code{acceptanceTheta} this would be one row of
+#'   the response matrix, while for \code{acceptanceAlpha},
+#'   \code{acceptanceDelta}, or \code{acceptanceTau} this would be one column
+#'   of the response matrix
 #' @param cv The current value of the paramenter of interest
-#' @param thetas The numeric vector of current values of the items' theta parameters
-#' @param alphas The numeric vector of current values of the items' alpha parameters
-#' @param delta The numeric vector of current values of the items' delta parameters
-#' @param thetas The vector of current values of the items' delta parameters
-#' @param SD The standard deviation of the truncated location-scale T distribution
+#' @param thetas The numeric vector of current values of the items' theta
+#'   parameters
+#' @param alphas The numeric vector of current values of the items' alpha
+#'   parameters
+#' @param alpha The alpha parameter for the item of interest (for
+#'   \code{acceptanceDelta} and \code{acceptanceTau}, there is only one
+#'   alpha needed for the calculations)
+#' @param deltas The numeric vector of current values of the items' delta
+#'   parameters
+#' @param delta The delta parameter for the item of interest (for
+#'   \code{acceptanceAlpha} and \code{acceptanceTau}, there is only one
+#'   delta needed for the calculations)
+#' @param taus The list or vector of current values of the items' tau
+#'   parameters (for \code{acceptanceTheta} this is a list because there are
+#'   multiple tau vectors that must be used, but for the other acceptance
+#'   functions, only one numeric vector is needed)
+#' @param SD The sigma parameter to be used for the proposal distribution
 #'
-#' @return The proposed value or current value, according to the acceptance ratio, to
-#' be used in the MCMC algorithm for the GGUM.
+#' @return If the acceptance ratio is greater than one or greater than a
+#'   number randomly generated from the standard uniform distribution,
+#'   the proposed value is returned; otherwise, the \code{cv} is returned.
 #' @export
 acceptanceTheta <- function(responses, cv, alphas, deltas, taus, SD) {
     .Call('ggumR_acceptanceTheta', PACKAGE = 'ggumR', responses, cv, alphas, deltas, taus, SD)
 }
 
+#' @export
 acceptanceAlpha <- function(responses, thetas, cv, delta, taus, SD) {
     .Call('ggumR_acceptanceAlpha', PACKAGE = 'ggumR', responses, thetas, cv, delta, taus, SD)
 }
 
+#' @export
 acceptanceDelta <- function(responses, thetas, alpha, cv, taus, SD) {
     .Call('ggumR_acceptanceDelta', PACKAGE = 'ggumR', responses, thetas, alpha, cv, taus, SD)
 }
 
+#' @export
 acceptanceTau <- function(k, responses, thetas, alpha, delta, taus, SD) {
     .Call('ggumR_acceptanceTau', PACKAGE = 'ggumR', k, responses, thetas, alpha, delta, taus, SD)
 }
@@ -86,6 +106,37 @@ r_4beta <- function(shape1, shape2, a, b) {
     .Call('ggumR_r_4beta', PACKAGE = 'ggumR', shape1, shape2, a, b)
 }
 
+#' GGUM getPrior
+#' 
+#' Get the prior probability of values for the GGUM parameters theta, alpha,
+#' delta, and tau.
+#' 
+#' @param cv A numeric vector of length one; the current value of the
+#'   parameter of interest
+#' 
+#' @return A numeric vector of length one. The prior probability of observing
+#'   \code{cv} for the paramenter of interest.
+#' @rdname getPrior
+#' @export
+getPriorTheta <- function(cv) {
+    .Call('ggumR_getPriorTheta', PACKAGE = 'ggumR', cv)
+}
+
+#' @export
+getPriorAlpha <- function(cv) {
+    .Call('ggumR_getPriorAlpha', PACKAGE = 'ggumR', cv)
+}
+
+#' @export
+getPriorDelta <- function(cv) {
+    .Call('ggumR_getPriorDelta', PACKAGE = 'ggumR', cv)
+}
+
+#' @export
+getPriorTaus <- function(cv) {
+    .Call('ggumR_getPriorTaus', PACKAGE = 'ggumR', cv)
+}
+
 #' GGUM MCMC Sampler
 #'
 #' MCMC sampler for the generalized graded unfolding model (GGUM), utilizing
@@ -116,6 +167,28 @@ ggumMCMC <- function(responseMatrix, Kvector, iterations) {
 #' item given item and respondent parameters. The user can calculate the
 #' probability of one particular response or for any number of the possible
 #' responses to the item (see the \code{k} parameter described below).
+#'
+#' The probability that respondent \eqn{i} chooses option \eqn{k} for item
+#' \eqn{j} is given by
+#' \deqn{\frac{\exp (\alpha_j [k (\theta_i - \delta_j) -
+#' \sum_{m=0}^k \tau_{jm}]) + \exp (\alpha_j [(2K - k - 1)
+#' (\theta_i - \delta_j) - \sum_{m=0}^k \tau_{jm}])}{%
+#' \sum_{l=0}^{K-1} [\exp (\alpha_j [l (\theta_i - \delta_j) -
+#' \sum_{m=0}^l \tau_{jm}]) + \exp (\alpha_j [(2K - l - 1)
+#' (\theta_i - \delta_j) - \sum_{m=0}^l \tau_{jm}])]}}{%
+#' (exp(\alpha_j [k(\theta_i-\delta_j) - 
+#' \Sigma_{m=0}^k \tau_{jm}]) + exp(\alpha_j [(2K - k - 1)
+#' (\theta_i - \delta_j) - \Sigma_{m=0}^k \tau_{jm}])) /
+#' (\Sigma_{l=0}^{K-1} [exp (\alpha_j [l (\theta_i - \delta_j) -
+#' \Sigma_{m=0}^l \tau_{jm}]) + exp (\alpha_j [(2K - l - 1)
+#' (\theta_i - \delta_j) - \Sigma_{m=0}^l \tau_{jm}])])},
+#' where \eqn{\theta_i} is \eqn{i}'s latent trait parameter,
+#' \eqn{\alpha_j} is the item's discrimination paramter,
+#' \eqn{\delta_j} is the item's location paramter,
+#' \eqn{\tau_{j0}, \ldots, \tau_{j(K-1)}} are the options' threshold
+#' parameters, and \eqn{\tau_{j0}} is 0,
+#' \eqn{K} is the number of options for item \eqn{j}, and
+#' the options are indexed by \eqn{k = 0, \ldots, K-1}.
 #' 
 #' @param k A numeric vector giving the item(s) for which response
 #'   probability should be calculated
@@ -131,6 +204,16 @@ ggumMCMC <- function(responseMatrix, Kvector, iterations) {
 #'
 #' @return A numeric vector the same length of \code{k} giving the response
 #'   probabilities
+#'
+#' @references Roberts, James S., John R. Donoghue, and James E. Laughlin.
+#'   2000. ``A General Item Response Theory Model for Unfolding
+#'   Unidimensional Polytomous Responses." \emph{Applied Psychological
+#'   Measurement} 24(1): 3--32.
+#' @references de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
+#'   Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
+#'   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
+#'   Psychological Measurement} 30(3): 216--232.
+#'
 #' @rdname ggumProbability
 #' @export
 ggumProbability <- function(k, theta, alpha, delta, tau) {

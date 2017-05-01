@@ -29,4 +29,3 @@ The (log) likelihood of the vector of interest.
 Calculate the Log Likelihood parameters Alpha, Delta, and Taus
 for the GGUM.
 }
-

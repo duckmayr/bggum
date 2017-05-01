@@ -17,4 +17,4 @@ Suggests:
 Collate:
     'ggumR-package.R'
     'RcppExports.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

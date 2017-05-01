@@ -40,4 +40,3 @@ r4beta(n, shape1, shape2, a, b)
 Provides probability density, cumulative distribution, quantile, and random
 number generating functions for the four parameter beta distribution.
 }
-

@@ -7,26 +7,44 @@
 acceptanceTheta(responses, cv, alphas, deltas, taus, SD)
 }
 \arguments{
-\item{responses}{A numeric vector giving the response by each respondent to each item}
+\item{responses}{A numeric vector giving the responses by the respondent
+or item of interest; for \code{acceptanceTheta} this would be one row of
+the response matrix, while for \code{acceptanceAlpha},
+\code{acceptanceDelta}, or \code{acceptanceTau} this would be one column
+of the response matrix}
 
 \item{cv}{The current value of the paramenter of interest}
 
-\item{alphas}{The numeric vector of current values of the items' alpha parameters}
+\item{alphas}{The numeric vector of current values of the items' alpha
+parameters}
 
-\item{SD}{The standard deviation of the truncated location-scale T distribution}
+\item{deltas}{The numeric vector of current values of the items' delta
+parameters}
 
-\item{thetas}{The numeric vector of current values of the items' theta parameters}
+\item{taus}{The list or vector of current values of the items' tau
+parameters (for \code{acceptanceTheta} this is a list because there are
+multiple tau vectors that must be used, but for the other acceptance
+functions, only one numeric vector is needed)}
 
-\item{delta}{The numeric vector of current values of the items' delta parameters}
+\item{SD}{The sigma parameter to be used for the proposal distribution}
 
-\item{thetas}{The vector of current values of the items' delta parameters}
+\item{thetas}{The numeric vector of current values of the items' theta
+parameters}
+
+\item{alpha}{The alpha parameter for the item of interest (for
+\code{acceptanceDelta} and \code{acceptanceTau}, there is only one
+alpha needed for the calculations)}
+
+\item{delta}{The delta parameter for the item of interest (for
+\code{acceptanceAlpha} and \code{acceptanceTau}, there is only one
+delta needed for the calculations)}
 }
 \value{
-The proposed value or current value, according to the acceptance ratio, to
-be used in the MCMC algorithm for the GGUM.
+If the acceptance ratio is greater than one or greater than a
+  number randomly generated from the standard uniform distribution,
+  the proposed value is returned; otherwise, the \code{cv} is returned.
 }
 \description{
-Computes an acceptance ratio for the paramenters used in the MCMC algorithm
+Computes an acceptance ratio for the parameters used in the MCMC algorithm
 for the GGUM.
 }
-

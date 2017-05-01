@@ -29,4 +29,3 @@ The (log) likelihood of the vector of interest.
 \description{
 Calculate the Log Likelihood parameters Theta for the GGUM.
 }
-
