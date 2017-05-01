@@ -13,7 +13,8 @@ Imports:
 LinkingTo: Rcpp
 License: GPL (>= 2)
 Suggests:
-    devtools
+    devtools,
+    testthat
 Collate:
     'ggumR-package.R'
     'RcppExports.R'
