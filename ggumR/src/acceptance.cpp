@@ -71,13 +71,13 @@ double acceptanceTheta(NumericVector responses, double cv,
     // the current value (cvPrior) and proposed value (pvPrior):
     double pvPrior = R::dnorm(pv, 0, 1, 0);
     double cvPrior = R::dnorm(cv, 0, 1, 0);
-    // And the vector of probabilities that we would observe the values in
+    // And the vectors of probabilities that we would observe the values in
     // responses given the current value of theta and the propposed value:
-    NumericVector cvProbs = probRow(responses, cv, alphas, deltas, taus);
-    NumericVector pvProbs = probRow(responses, pv, alphas, deltas, taus);
+    NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
+    NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
     // Then we calculate the acceptance rate:
-    double acceptRate = exp(sum(log(pvProbs)) + log(pvPrior)
-            - sum(log(cvProbs)) - log(cvPrior));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
     // If the acceptance rate is greater than one, not a number,
     // or larger than a uniform deviate, we accept the proposal:
     if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
@@ -95,10 +95,10 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
     double pv = r_trunclst(1, cv, SD, 0.25, 4);
     double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4);
     double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4);
-    NumericVector cvProbs = probCol(responses, thetas, cv, delta, taus);
-    NumericVector pvProbs = probCol(responses, thetas, pv, delta, taus);
-    double acceptRate = exp(sum(log(pvProbs)) + log(pvPrior)
-            - sum(log(cvProbs)) - log(cvPrior));
+    NumericVector cvPs = na_omit(probCol(responses, thetas, cv, delta, taus));
+    NumericVector pvPs = na_omit(probCol(responses, thetas, pv, delta, taus));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
     if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
         return pv;
     }
@@ -113,10 +113,10 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
     double pv = r_trunclst(1, cv, SD, -5, 5);
     double pvPrior = d_4beta(pv, 2, 2, -5, 5);
     double cvPrior = d_4beta(cv, 2, 2, -5, 5);
-    NumericVector cvProbs = probCol(responses, thetas, alpha, cv, taus);
-    NumericVector pvProbs = probCol(responses, thetas, alpha, pv, taus);
-    double acceptRate = exp(sum(log(pvProbs)) + log(pvPrior)
-            - sum(log(cvProbs)) - log(cvPrior));
+    NumericVector cvPs = na_omit(probCol(responses, thetas, alpha, cv, taus));
+    NumericVector pvPs = na_omit(probCol(responses, thetas, alpha, pv, taus));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
     if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
         return pv;
     }
@@ -136,10 +136,11 @@ double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
     pv[k] = r_trunclst(1, taus[k], SD, -6, 6);
     double pvPrior = d_4beta(pv[k], 2, 2, -6, 6);
     double cvPrior = d_4beta(taus[k], 2, 2, -6, 6);
-    NumericVector cvProbs = probCol(responses, thetas, alpha, delta, taus);
-    NumericVector pvProbs = probCol(responses, thetas, alpha, delta, pv);
-    double acceptRate = exp(sum(log(pvProbs)) + log(pvPrior)
-            - sum(log(cvProbs)) - log(cvPrior));
+    NumericVector cvPs = na_omit(probCol(responses, thetas, alpha, delta,
+                taus));
+    NumericVector pvPs = na_omit(probCol(responses, thetas, alpha, delta, pv));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
     if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
         return pv[k];
     }
