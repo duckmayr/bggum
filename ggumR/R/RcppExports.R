@@ -327,14 +327,30 @@ loglikelihoodTheta <- function(responses, theta, alphas, deltas, taus) {
 
 #' GGUM Proposer
 #' 
-#' Propose new values for the parameters Theta, Alpha, Delta, and Taus
-#' for the GGUM.
+#' Propose new values for the GGUM parameters Theta, Alpha, Delta, and Tau
 #' 
-#' @param cv A numeric vector of length one. The current value of the parameter of interest.
-#' @param SD A numeric vector of length one. The standard deviation used to generate the 
-#' proposed value.
+#' Given a current value of the parameter of interest,
+#' and a sigma parameter for the proposal distribution,
+#' a new proposal for the parameter's value is given.
+#' The following proposal densities are used:
+#' \itemize{
+#'   \item Theta -- A location-scale T distribution shifted by \code{cv} and
+#'     scaled by \code{SD}, truncated at -10 and 10
+#'   \item Alpha -- A location-scale T distribution shifted by \code{cv} and
+#'     scaled by \code{SD}, truncated at 0.25 and 4
+#'   \item Delta -- A location-scale T distribution shifted by \code{cv} and
+#'     scaled by \code{SD}, truncated at -5 and 5
+#'   \item Tau -- A location-scale T distribution shifted by \code{cv} and
+#'     scaled by \code{SD}, truncated at -6 and 6
+#' }
+#'
+#' @param cv A numeric vector of length one;
+#'   the current value of the parameter of interest.
+#' @param SD A numeric vector of length one;
+#'   the sigma parameter used to generate the proposed value.
 #' 
-#' @return A numeric vector of length one. The propose value for the paramenter of interest.
+#' @return A numeric vector of length one;
+#'   the proposed value for the parameter of interest.
 #' @rdname ggumProposer
 #' @export
 proposerTheta <- function(cv, SD) {
