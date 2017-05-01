@@ -57,6 +57,8 @@
 #'   the proposed value is returned; otherwise, the \code{cv} is returned.
 #'
 #' @name GGUM MCMC Proposal Acceptance
+#' @aliases acceptanceTheta, acceptanceAlpha, acceptanceDelta, acceptanceTau,
+#'   acceptance
 #' @rdname acceptance
 #' @export
 acceptanceTheta <- function(responses, cv, alphas, deltas, taus, SD) {
@@ -163,6 +165,7 @@ r_4beta <- function(shape1, shape2, a, b) {
 #'   Psychological Measurement} 30(3): 216--232.
 #'
 #' @name GGUM Priors
+#' @aliases getPriorTheta, getPriorAlpha, getPriorDelta, getPriorTau, getPrior
 #' @rdname getPrior
 #' @export
 getPriorTheta <- function(cv) {
@@ -224,6 +227,8 @@ getPriorTaus <- function(cv) {
 #'   location parameter
 #'
 #' @return The (log) likelihood of the vector of interest.
+#' @name ggumLogLikelihood
+#' @aliases loglikelihoodRow, loglikelihoodCol, ggumLogLikelihood
 #' @rdname ggumLogLikelihood
 #' @export
 loglikelihoodRow <- function(responses, theta, alphas, deltas, taus) {
@@ -388,6 +393,9 @@ ggumProbability <- function(k, theta, alpha, delta, tau) {
 #' 
 #' @return A numeric vector of length one;
 #'   the proposed value for the parameter of interest.
+#' @name GGUM MCMC Proposal Densities
+#' @aliases proposerTheta, proposerAlpha, proposerDelta, proposerTau,
+#'   proposer
 #' @rdname ggumProposer
 #' @export
 proposerTheta <- function(cv, SD) {

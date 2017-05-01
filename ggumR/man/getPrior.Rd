@@ -3,6 +3,11 @@
 \name{GGUM Priors}
 \alias{GGUM Priors}
 \alias{getPriorTheta}
+\alias{getPriorTheta,}
+\alias{getPriorAlpha,}
+\alias{getPriorDelta,}
+\alias{getPriorTau,}
+\alias{getPrior}
 \alias{getPriorAlpha}
 \alias{getPriorDelta}
 \alias{getPriorTaus}

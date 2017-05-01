@@ -31,6 +31,7 @@ using namespace Rcpp;
 //'   Psychological Measurement} 30(3): 216--232.
 //'
 //' @name GGUM Priors
+//' @aliases getPriorTheta, getPriorAlpha, getPriorDelta, getPriorTau, getPrior
 //' @rdname getPrior
 //' @export
 //[[Rcpp::export]]

@@ -39,6 +39,8 @@ using namespace Rcpp;
 //'   location parameter
 //'
 //' @return The (log) likelihood of the vector of interest.
+//' @name ggumLogLikelihood
+//' @aliases loglikelihoodRow, loglikelihoodCol, ggumLogLikelihood
 //' @rdname ggumLogLikelihood
 //' @export
 //[[Rcpp::export]]

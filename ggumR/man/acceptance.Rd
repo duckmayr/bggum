@@ -3,6 +3,11 @@
 \name{GGUM MCMC Proposal Acceptance}
 \alias{GGUM MCMC Proposal Acceptance}
 \alias{acceptanceTheta}
+\alias{acceptanceTheta,}
+\alias{acceptanceAlpha,}
+\alias{acceptanceDelta,}
+\alias{acceptanceTau,}
+\alias{acceptance}
 \alias{acceptanceAlpha}
 \alias{acceptanceDelta}
 \alias{acceptanceTau}

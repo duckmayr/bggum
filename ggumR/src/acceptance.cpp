@@ -58,6 +58,8 @@ using namespace Rcpp;
 //'   the proposed value is returned; otherwise, the \code{cv} is returned.
 //'
 //' @name GGUM MCMC Proposal Acceptance
+//' @aliases acceptanceTheta, acceptanceAlpha, acceptanceDelta, acceptanceTau,
+//'   acceptance
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]

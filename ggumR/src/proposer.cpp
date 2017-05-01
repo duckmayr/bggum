@@ -28,6 +28,9 @@ using namespace Rcpp;
 //' 
 //' @return A numeric vector of length one;
 //'   the proposed value for the parameter of interest.
+//' @name GGUM MCMC Proposal Densities
+//' @aliases proposerTheta, proposerAlpha, proposerDelta, proposerTau,
+//'   proposer
 //' @rdname ggumProposer
 //' @export
 //[[Rcpp::export]]
