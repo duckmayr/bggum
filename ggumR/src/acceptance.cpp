@@ -4,9 +4,27 @@ using namespace Rcpp;
 
 //' GGUM acceptance
 //'
-//' Computes an acceptance ratio for the parameters used in the MCMC algorithm
+//' Determines a new value for the parameters used in the MCMC algorithm
 //' for the GGUM.
 //' 
+//' Given a current value \code{cv} for the parameter of interest,
+//' as well as the responses and other parameters relevant to estimating the
+//' parameter of interest, a new proposal for the parameter is generated
+//' and accepted with probability
+//' \deqn{\min \{1, \frac{\mathcal{L}(X|\theta^*)\pi(\theta^*)}{%
+//' \mathcal{L}(X|\theta)\pi(\theta)}\}}{%
+//' min {1, (L(X|\theta*)\pi(\theta*) / (L(X|\theta)\pi(\theta))}}
+//' where \eqn{\theta^*}{\theta*} is the proposed value,
+//' \eqn{\theta} is the current value, \eqn{\pi(\cdot)}{\pi(.)}
+//' is the prior probability a parameter takes a value, and
+//' \eqn{\mathcal{L}(X|\cdot)}{L(X|.)} is the likelihood of observing the
+//' responses given a parameter value.
+//'
+//' @section Warning:
+//' For \code{acceptanceTau}, the tau vector is indexed beginning with 0!
+//' When using this function, you must supply an index of one less than the
+//' index you would supply if subsetting in \code{R}.
+//'
 //' @param responses A numeric vector giving the responses by the respondent
 //'   or item of interest; for \code{acceptanceTheta} this would be one row of
 //'   the response matrix, while for \code{acceptanceAlpha},
@@ -30,10 +48,17 @@ using namespace Rcpp;
 //'   multiple tau vectors that must be used, but for the other acceptance
 //'   functions, only one numeric vector is needed)
 //' @param SD The sigma parameter to be used for the proposal distribution
+//' @param k For \code{acceptanceTau}, an integer giving the index
+//'   (NOTE: the index must be specified as the vector would be indexed in
+//'   C++; i.e., the R index - 1 since C++ begins indexing at 0) in the
+//'   tau vector of the tau parameter of interest.
 //'
 //' @return If the acceptance ratio is greater than one or greater than a
 //'   number randomly generated from the standard uniform distribution,
 //'   the proposed value is returned; otherwise, the \code{cv} is returned.
+//'
+//' @name GGUM MCMC Proposal Acceptance
+//' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
 double acceptanceTheta(NumericVector responses, double cv,
@@ -62,6 +87,7 @@ double acceptanceTheta(NumericVector responses, double cv,
     return cv;
 }
 
+//' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
 double acceptanceAlpha(NumericVector responses, NumericVector thetas,
@@ -79,6 +105,7 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
     return cv;
 }
 
+//' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
 double acceptanceDelta(NumericVector responses, NumericVector thetas,
@@ -96,6 +123,7 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
     return cv;
 }
 
+//' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
 double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
