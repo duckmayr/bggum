@@ -1,8 +1,8 @@
 context("probability")
 
-test_that("Get the correct probability", {
-  expect_that(probability(1, 2, 3, 1, 2, 3),
-              equals(0.675972863168057))
-  expect_that(probability(1, 4, 1, 1, 1, c(-2, -1, 1, 2)),
-              equals(0.206031909190019))
+test_that("ggumProbability gets the correct probability", {
+  expect_equal(ggumProbability(1, 3, 1, 2, c(-2, -1, 1, 2)), 0.46361,
+               tolerance=0.00001)
+  expect_equal(ggumProbability(1, 1, 1, 1, c(-2, -1, 1, 2)), 0.20603,
+               tolerance=0.00001)
 })
