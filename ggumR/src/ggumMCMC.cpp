@@ -64,8 +64,10 @@ using namespace Rcpp;
 //[[Rcpp::export]]
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
                        int iterations){
+    // It will be convenient to store the number of items and respondents:
     int n = responseMatrix.nrow();
     int m = responseMatrix.ncol();
+    // Then we draw initial parameter values from their prior distributions:
     NumericVector thetas = rnorm(n, 0, 1);
     NumericVector alphas = r4beta(m, 1.5, 1.5, 0.25, 4);
     NumericVector deltas = r4beta(m,  2, 2, -5, 5);
@@ -76,16 +78,22 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
         thisTau[Range(1, K-1)] = r4beta(K-1, 2, 2, -6, 6);
         taus[j] = thisTau;
     }
+    // It will also be convenient to store the total number of tau parameters:
     int numberOfTaus = 0;
     for ( int j = 0; j < m; j++ ) {
         numberOfTaus += Kvector[j];
     }
+    // This makes an empty matrix to store parameter values for every iteration:
     NumericMatrix chainMatrix(iterations, n+(2*m)+numberOfTaus);
+    // For the first 1000 iterations we use a fixed sigma for proposals:
     for ( int iter = 0; iter < 1000; iter++ ) {
         for ( int i = 0; i < n; i++ ) {
+            // Copy the parameter of interest:
             double theta = thetas[i];
+            // Replace it (or not):
             thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
                     deltas, taus, 1);
+            // And store the parameter value for this iteration in the matrix:
             chainMatrix(iter, i) = thetas[i];
         }
         for ( int j = 0; j < m; j++ ) {
@@ -102,6 +110,10 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
                     delta, taus[j], 1);
             chainMatrix(iter, j+n+m) = deltas[j];
         }
+        // For taus, we need to keep track of where in the chain matrix we
+        // should be storing values, so we create the variable Ksum, which
+        // when added with (n + 2 * m + k) gives us the column of the matrix
+        // in which to inser values
         int Ksum = 0;
         for ( int j = 0; j < m; j++ ) {
             double alpha = alphas[j];
@@ -117,6 +129,8 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             Ksum += K;
         }
     }
+    // Then, for the remaining iterations we use the standard deviation of
+    // the past 1000 draws for the sigma parameter
     for ( int iter = 1000; iter < iterations; iter ++ ) {
         for ( int i = 0; i < n; i++ ) {
             double theta = thetas[i];
@@ -161,5 +175,6 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             Ksum += K;
         }
     }
+    // And finally, we return the chain matrix
     return chainMatrix;
 }
