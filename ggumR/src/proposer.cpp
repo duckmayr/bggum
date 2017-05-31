@@ -51,8 +51,11 @@ double proposerAlpha(NumericVector cv, NumericVector SD) {
 //' @export
 //[[Rcpp::export]]
 double proposerDelta(NumericVector cv, NumericVector SD){
-   double pv = r_trunclst(1, cv[0], SD[0], -5, 5);
-   return pv;
+    if ( R::runif(0, 1) < 0.25 ) {
+        return -1 * cv;
+    }
+    double pv = r_trunclst(1, cv[0], SD[0], -5, 5);
+    return pv;
 }
 
 //' @rdname ggumProposer
