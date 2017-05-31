@@ -25,7 +25,8 @@ using namespace Rcpp;
 //' every iteration.
 //'
 //' @section Warning:
-//' Typically, up to 5000 iterations are needed for convergence.
+//' Typically, up to 5000 iterations are needed for convergence,
+//' and specifying less than 5000 iterations will cause an error.
 //' Also, theta and delta parameters often have multi-modal posterior
 //' distributions, and in some cases chains may converge to the wrong
 //' mode for both parameters; in other words, the questions with the most
@@ -40,8 +41,8 @@ using namespace Rcpp;
 //' @param Kvector A numeric vector of length m (the number of items), each
 //'   element j of which gives the number of options (K) for item j
 //' @param iterations A numeric vector of length one; the number of iterations
-//'   (NOTE: \code{iterations} should be at least 5000, and preferably around
-//'   25000, though only values of 1000 or less will cause an error)
+//'   (NOTE: \code{iterations} should be at least 10000, and preferably around
+//'   25000, though only values of 5000 or less will cause an error)
 //'
 //' @return A chain matrix; a numeric matrix with \code{iterations} rows and
 //'   one column for every parameter of the model, so that each element of the
@@ -129,9 +130,54 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             Ksum += K;
         }
     }
-    // Then, for the remaining iterations we use the standard deviation of
-    // the past 1000 draws for the sigma parameter
-    for ( int iter = 1000; iter < iterations; iter ++ ) {
+    // For the next 4000 iterations we use the standard deviation of the past
+    // 1000 draws for the sigma parameter for every parameter except tau,
+    // which we continue to use a fixed sigma for
+    for ( int iter = 1000; iter < 5000; iter ++ ) {
+        for ( int i = 0; i < n; i++ ) {
+            double theta = thetas[i];
+            NumericVector pastDraws = chainMatrix(_, i);
+            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
+                    deltas, taus, SD);
+            chainMatrix(iter, i) = thetas[i];
+        }
+        for ( int j = 0; j < m; j++ ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            NumericVector pastDraws = chainMatrix(_, j+n);
+            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            alphas[j] = acceptanceAlpha(responseMatrix(_, j), thetas, alpha,
+                    delta, taus[j], SD);
+            chainMatrix(iter, j+n) = alphas[j];
+        }
+        for ( int j = 0; j < m; j++ ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            NumericVector pastDraws = chainMatrix(_, j+n+m);
+            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            deltas[j] = acceptanceDelta(responseMatrix(_, j), thetas, alpha,
+                    delta, taus[j], SD);
+            chainMatrix(iter, j+n+m) = deltas[j];
+        }
+        int Ksum = 0;
+        for ( int j = 0; j < m; j++ ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            int K = Kvector[j];
+            NumericVector thisTau = taus[j];
+            for ( int k = 1; k < K; k++ ) {
+                thisTau[k] = acceptanceTau(k, responseMatrix(_, j), thetas,
+                        alpha, delta, thisTau, 1);
+                chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
+            }
+            taus[j] = thisTau;
+            Ksum += K;
+        }
+    }
+    // For the remaining iterations we use the standard deviation of the past
+    // 1000 draws for the sigma parameter for every parameter
+    for ( int iter = 5000; iter < iterations; iter ++ ) {
         for ( int i = 0; i < n; i++ ) {
             double theta = thetas[i];
             NumericVector pastDraws = chainMatrix(_, i);
