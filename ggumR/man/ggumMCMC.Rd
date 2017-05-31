@@ -14,8 +14,8 @@ respondent to each item}
 element j of which gives the number of options (K) for item j}
 
 \item{iterations}{A numeric vector of length one; the number of iterations
-(NOTE: \code{iterations} should be at least 5000, and preferably around
-25000, though only values of 1000 or less will cause an error)}
+(NOTE: \code{iterations} should be at least 10000, and preferably around
+25000, though only values of 5000 or less will cause an error)}
 }
 \value{
 A chain matrix; a numeric matrix with \code{iterations} rows and
@@ -47,7 +47,8 @@ every iteration.
 }
 \section{Warning}{
 
-Typically, up to 5000 iterations are needed for convergence.
+Typically, up to 5000 iterations are needed for convergence,
+and specifying less than 5000 iterations will cause an error.
 Also, theta and delta parameters often have multi-modal posterior
 distributions, and in some cases chains may converge to the wrong
 mode for both parameters; in other words, the questions with the most
