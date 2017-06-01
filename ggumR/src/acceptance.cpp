@@ -112,7 +112,13 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
 //[[Rcpp::export]]
 double acceptanceDelta(NumericVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD){
-    double pv = r_trunclst(1, cv, SD, -5, 5);
+    double pv;
+    if ( R::runif(0, 1) < 0.25 ) {
+        pv = -1 * cv;
+    }
+    else {
+        pv = r_trunclst(1, cv, SD, -5, 5);
+    }
     double pvPrior = d_4beta(pv, 2, 2, -5, 5);
     double cvPrior = d_4beta(cv, 2, 2, -5, 5);
     NumericVector cvPs = na_omit(probCol(responses, thetas, alpha, cv, taus));
