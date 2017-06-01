@@ -41,7 +41,7 @@ specified in \code{\link{proposer}} where \eqn{SD = 1}, and accept the
 proposal probabilistically according to the ratio in
 \code{\link{acceptance}}. For the remainder of the iterations, the same
 process is followed, but the \eqn{\sigma} parameter for the proposal
-density is the standard deviation of the previous 1000 values of the
+density is the standard deviation of the previous 5000 values of the
 parameter. A matrix is returned giving the value of every parameter at
 every iteration.
 }

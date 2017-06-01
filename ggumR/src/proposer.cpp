@@ -51,7 +51,7 @@ double proposerAlpha(NumericVector cv, NumericVector SD) {
 //' @export
 //[[Rcpp::export]]
 double proposerDelta(NumericVector cv, NumericVector SD){
-    if ( R::runif(0, 1) < 0.25 ) {
+    if ( R::runif(0, 1) < 0.1 ) {
         return -1 * cv[0];
     }
     double pv = r_trunclst(1, cv[0], SD[0], -5, 5);

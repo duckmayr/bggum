@@ -113,7 +113,7 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
 double acceptanceDelta(NumericVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD){
     double pv;
-    if ( R::runif(0, 1) < 0.25 ) {
+    if ( R::runif(0, 1) < 0.1 ) {
         pv = -1 * cv;
     }
     else {

@@ -20,7 +20,7 @@ using namespace Rcpp;
 //' proposal probabilistically according to the ratio in
 //' \code{\link{acceptance}}. For the remainder of the iterations, the same
 //' process is followed, but the \eqn{\sigma} parameter for the proposal
-//' density is the standard deviation of the previous 1000 values of the
+//' density is the standard deviation of the previous 5000 values of the
 //' parameter. A matrix is returned giving the value of every parameter at
 //' every iteration.
 //'
@@ -86,8 +86,8 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
     }
     // This makes an empty matrix to store parameter values for every iteration:
     NumericMatrix chainMatrix(iterations, n+(2*m)+numberOfTaus);
-    // For the first 1000 iterations we use a fixed sigma for proposals:
-    for ( int iter = 0; iter < 1000; iter++ ) {
+    // For the first 5000 iterations we use a fixed sigma for proposals:
+    for ( int iter = 0; iter < 5000; iter++ ) {
         for ( int i = 0; i < n; i++ ) {
             // Copy the parameter of interest:
             double theta = thetas[i];
@@ -130,58 +130,13 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             Ksum += K;
         }
     }
-    // For the next 4000 iterations we use the standard deviation of the past
-    // 1000 draws for the sigma parameter for every parameter except tau,
-    // which we continue to use a fixed sigma for
-    for ( int iter = 1000; iter < 5000; iter ++ ) {
-        for ( int i = 0; i < n; i++ ) {
-            double theta = thetas[i];
-            NumericVector pastDraws = chainMatrix(_, i);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
-            thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
-                    deltas, taus, SD);
-            chainMatrix(iter, i) = thetas[i];
-        }
-        for ( int j = 0; j < m; j++ ) {
-            double alpha = alphas[j];
-            double delta = deltas[j];
-            NumericVector pastDraws = chainMatrix(_, j+n);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
-            alphas[j] = acceptanceAlpha(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], SD);
-            chainMatrix(iter, j+n) = alphas[j];
-        }
-        for ( int j = 0; j < m; j++ ) {
-            double alpha = alphas[j];
-            double delta = deltas[j];
-            NumericVector pastDraws = chainMatrix(_, j+n+m);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
-            deltas[j] = acceptanceDelta(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], SD);
-            chainMatrix(iter, j+n+m) = deltas[j];
-        }
-        int Ksum = 0;
-        for ( int j = 0; j < m; j++ ) {
-            double alpha = alphas[j];
-            double delta = deltas[j];
-            int K = Kvector[j];
-            NumericVector thisTau = taus[j];
-            for ( int k = 1; k < K; k++ ) {
-                thisTau[k] = acceptanceTau(k, responseMatrix(_, j), thetas,
-                        alpha, delta, thisTau, 1);
-                chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
-            }
-            taus[j] = thisTau;
-            Ksum += K;
-        }
-    }
     // For the remaining iterations we use the standard deviation of the past
-    // 1000 draws for the sigma parameter for every parameter
+    // 5000 draws for the sigma parameter for every parameter
     for ( int iter = 5000; iter < iterations; iter ++ ) {
         for ( int i = 0; i < n; i++ ) {
             double theta = thetas[i];
             NumericVector pastDraws = chainMatrix(_, i);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            double SD = sd(pastDraws[Range(iter-5000, iter)]);
             thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
                     deltas, taus, SD);
             chainMatrix(iter, i) = thetas[i];
@@ -190,7 +145,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             double alpha = alphas[j];
             double delta = deltas[j];
             NumericVector pastDraws = chainMatrix(_, j+n);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            double SD = sd(pastDraws[Range(iter-5000, iter)]);
             alphas[j] = acceptanceAlpha(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], SD);
             chainMatrix(iter, j+n) = alphas[j];
@@ -199,7 +154,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             double alpha = alphas[j];
             double delta = deltas[j];
             NumericVector pastDraws = chainMatrix(_, j+n+m);
-            double SD = sd(pastDraws[Range(iter-1000, iter)]);
+            double SD = sd(pastDraws[Range(iter-5000, iter)]);
             deltas[j] = acceptanceDelta(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], SD);
             chainMatrix(iter, j+n+m) = deltas[j];
@@ -212,7 +167,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
             NumericVector thisTau = taus[j];
             for ( int k = 1; k < K; k++ ) {
                 NumericVector pastDraws = chainMatrix(_, n+Ksum+k+(2*m));
-                double SD = sd(pastDraws[Range(iter-1000, iter)]);
+                double SD = sd(pastDraws[Range(iter-5000, iter)]);
                 thisTau[k] = acceptanceTau(k, responseMatrix(_, j), thetas,
                         alpha, delta, thisTau, SD);
                 chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
