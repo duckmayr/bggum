@@ -141,9 +141,9 @@ double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
     // So that when we replace one of its values with a proposed value,
     // we can still compute probability of responses according to the GGUM
     // under the original tau vector
-    pv[k] = r_trunclst(1, taus[k], SD, -6, 6);
-    double pvPrior = d_4beta(pv[k], 2, 2, -6, 6);
-    double cvPrior = d_4beta(taus[k], 2, 2, -6, 6);
+    pv[k] = r_trunclst(1, taus[k], SD, -2, 0);
+    double pvPrior = d_4beta(pv[k], 2, 2, -2, 0);
+    double cvPrior = d_4beta(taus[k], 2, 2, -2, 0);
     NumericVector cvPs = na_omit(probCol(responses, thetas, alpha, delta,
                 taus));
     NumericVector pvPs = na_omit(probCol(responses, thetas, alpha, delta, pv));
