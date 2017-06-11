@@ -22,6 +22,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// acceptanceThetaNeg
+double acceptanceThetaNeg(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
+RcppExport SEXP ggumR_acceptanceThetaNeg(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
+    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptanceThetaNeg(responses, cv, alphas, deltas, taus, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acceptanceThetaPos
+double acceptanceThetaPos(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
+RcppExport SEXP ggumR_acceptanceThetaPos(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
+    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptanceThetaPos(responses, cv, alphas, deltas, taus, SD));
+    return rcpp_result_gen;
+END_RCPP
+}
 // acceptanceAlpha
 double acceptanceAlpha(NumericVector responses, NumericVector thetas, double cv, double delta, NumericVector taus, double SD);
 RcppExport SEXP ggumR_acceptanceAlpha(SEXP responsesSEXP, SEXP thetasSEXP, SEXP cvSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
@@ -235,15 +267,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations);
-RcppExport SEXP ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP) {
+NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
+RcppExport SEXP ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type responseMatrix(responseMatrixSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type Kvector(KvectorSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, Kvector, iterations));
+    Rcpp::traits::input_parameter< int >::type low(lowSEXP);
+    Rcpp::traits::input_parameter< int >::type high(highSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, Kvector, iterations, low, high));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -544,6 +578,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a(aSEXP);
     Rcpp::traits::input_parameter< double >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(r_truncnorm(mean, SD, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// d_truncnorm
+double d_truncnorm(double x, double mean, double SD, double a, double b);
+RcppExport SEXP ggumR_d_truncnorm(SEXP xSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(d_truncnorm(x, mean, SD, a, b));
     return rcpp_result_gen;
 END_RCPP
 }

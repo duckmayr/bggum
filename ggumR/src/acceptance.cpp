@@ -89,6 +89,38 @@ double acceptanceTheta(NumericVector responses, double cv,
     return cv;
 }
 
+//[[Rcpp::export]]
+double acceptanceThetaNeg(NumericVector responses, double cv,
+        NumericVector alphas, NumericVector deltas, List taus, double SD){
+    double pv = r_trunclst(1, cv, SD, -10, 0);
+    double pvPrior = d_truncnorm(pv, 0, 1, -10, 0);
+    double cvPrior = d_truncnorm(pv, 0, 1, -10, 0);
+    NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
+    NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
+    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+        return pv;
+    }
+    return cv;
+}
+
+//[[Rcpp::export]]
+double acceptanceThetaPos(NumericVector responses, double cv,
+        NumericVector alphas, NumericVector deltas, List taus, double SD){
+    double pv = r_trunclst(1, cv, SD, 0, 10);
+    double pvPrior = d_truncnorm(pv, 0, 1, 0, 10);
+    double cvPrior = d_truncnorm(pv, 0, 1, 0, 10);
+    NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
+    NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
+    double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
+            - sum(log(cvPs)) - log(cvPrior));
+    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+        return pv;
+    }
+    return cv;
+}
+
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]

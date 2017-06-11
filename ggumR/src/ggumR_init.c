@@ -3,10 +3,6 @@
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-/* FIXME: 
-   Check these declarations against the C/Fortran source code.
-*/
-
 /* .Call calls */
 extern SEXP ggumR_acceptanceAlpha(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_acceptanceDelta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -22,7 +18,7 @@ extern SEXP ggumR_getPriorAlpha(SEXP);
 extern SEXP ggumR_getPriorDelta(SEXP);
 extern SEXP ggumR_getPriorTaus(SEXP);
 extern SEXP ggumR_getPriorTheta(SEXP);
-extern SEXP ggumR_ggumMCMC(SEXP, SEXP, SEXP);
+extern SEXP ggumR_ggumMCMC(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_ggumProbability(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_loglikelihoodCol(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_loglikelihoodRow(SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -62,7 +58,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ggumR_getPriorDelta",    (DL_FUNC) &ggumR_getPriorDelta,    1},
     {"ggumR_getPriorTaus",     (DL_FUNC) &ggumR_getPriorTaus,     1},
     {"ggumR_getPriorTheta",    (DL_FUNC) &ggumR_getPriorTheta,    1},
-    {"ggumR_ggumMCMC",         (DL_FUNC) &ggumR_ggumMCMC,         3},
+    {"ggumR_ggumMCMC",         (DL_FUNC) &ggumR_ggumMCMC,         5},
     {"ggumR_ggumProbability",  (DL_FUNC) &ggumR_ggumProbability,  5},
     {"ggumR_loglikelihoodCol", (DL_FUNC) &ggumR_loglikelihoodCol, 5},
     {"ggumR_loglikelihoodRow", (DL_FUNC) &ggumR_loglikelihoodRow, 5},

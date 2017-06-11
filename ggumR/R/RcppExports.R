@@ -65,6 +65,14 @@ acceptanceTheta <- function(responses, cv, alphas, deltas, taus, SD) {
     .Call('ggumR_acceptanceTheta', PACKAGE = 'ggumR', responses, cv, alphas, deltas, taus, SD)
 }
 
+acceptanceThetaNeg <- function(responses, cv, alphas, deltas, taus, SD) {
+    .Call('ggumR_acceptanceThetaNeg', PACKAGE = 'ggumR', responses, cv, alphas, deltas, taus, SD)
+}
+
+acceptanceThetaPos <- function(responses, cv, alphas, deltas, taus, SD) {
+    .Call('ggumR_acceptanceThetaPos', PACKAGE = 'ggumR', responses, cv, alphas, deltas, taus, SD)
+}
+
 #' @rdname acceptance
 #' @export
 acceptanceAlpha <- function(responses, thetas, cv, delta, taus, SD) {
@@ -282,6 +290,10 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #' @param iterations A numeric vector of length one; the number of iterations
 #'   (NOTE: \code{iterations} should be at least 10000, and preferably around
 #'   25000, though only values of 5000 or less will cause an error)
+#' @param low A numeric vector of length one giving the row number for a
+#'   respondent whose theta parameter will be restricted to be negative
+#' @param high A numeric vector of length one giving the row number for a
+#'   respondent whose theta parameter will be restricted to be positive
 #'
 #' @return A chain matrix; a numeric matrix with \code{iterations} rows and
 #'   one column for every parameter of the model, so that each element of the
@@ -301,8 +313,8 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #'   Psychological Measurement} 30(3): 216--232.
 #'   algorithm
 #' @export
-ggumMCMC <- function(responseMatrix, Kvector, iterations) {
-    .Call('ggumR_ggumMCMC', PACKAGE = 'ggumR', responseMatrix, Kvector, iterations)
+ggumMCMC <- function(responseMatrix, Kvector, iterations, low, high) {
+    .Call('ggumR_ggumMCMC', PACKAGE = 'ggumR', responseMatrix, Kvector, iterations, low, high)
 }
 
 #' GGUM Probability Function
@@ -576,5 +588,9 @@ rtruncnorm <- function(n, mean, SD, a, b) {
 
 r_truncnorm <- function(mean, SD, a, b) {
     .Call('ggumR_r_truncnorm', PACKAGE = 'ggumR', mean, SD, a, b)
+}
+
+d_truncnorm <- function(x, mean, SD, a, b) {
+    .Call('ggumR_d_truncnorm', PACKAGE = 'ggumR', x, mean, SD, a, b)
 }
 

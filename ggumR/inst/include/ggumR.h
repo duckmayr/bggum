@@ -26,6 +26,10 @@ NumericVector ggumProbability(NumericVector k, double theta, double alpha,
 // pv stands for proposed value, cv for current value
 double acceptanceTheta(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
+double acceptanceThetaNeg(NumericVector responses, double cv,
+        NumericVector alphas, NumericVector deltas, List taus, double SD);
+double acceptanceThetaPos(NumericVector responses, double cv,
+        NumericVector alphas, NumericVector deltas, List taus, double SD);
 double acceptanceAlpha(NumericVector responses, NumericVector thetas,
         double cv, double delta, NumericVector taus, double SD);
 double acceptanceDelta(NumericVector responses, NumericVector thetas,
@@ -33,7 +37,7 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
 double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD);
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
-                       int iterations);
+                       int iterations, int low, int high);
 
 
 // The Truncated Normal Distribution
@@ -47,6 +51,7 @@ NumericVector rtruncnorm(int n, double mean, double sd, double a, double b);
 // The following scalar version won't be available to the user
 // It's just for faster calculation in the MCMC sampler
 double r_truncnorm(double mean, double sd, double a, double b);
+double d_truncnorm(double x, double mean, double SD, double a, double b);
 
 
 // The Four Parameter Beta Distribution

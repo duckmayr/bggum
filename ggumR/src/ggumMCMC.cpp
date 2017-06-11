@@ -43,6 +43,10 @@ using namespace Rcpp;
 //' @param iterations A numeric vector of length one; the number of iterations
 //'   (NOTE: \code{iterations} should be at least 10000, and preferably around
 //'   25000, though only values of 5000 or less will cause an error)
+//' @param low A numeric vector of length one giving the row number for a
+//'   respondent whose theta parameter will be restricted to be negative
+//' @param high A numeric vector of length one giving the row number for a
+//'   respondent whose theta parameter will be restricted to be positive
 //'
 //' @return A chain matrix; a numeric matrix with \code{iterations} rows and
 //'   one column for every parameter of the model, so that each element of the
@@ -64,7 +68,10 @@ using namespace Rcpp;
 //' @export
 //[[Rcpp::export]]
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
-                       int iterations){
+                       int iterations, int low, int high){
+    // This deals with indexing differences between R and C++
+    low -= 1;
+    high -= 1;
     // It will be convenient to store the number of items and respondents:
     int n = responseMatrix.nrow();
     int m = responseMatrix.ncol();
@@ -76,7 +83,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
     for ( int j = 0; j < m; j++ ){
         int K = Kvector[j];
         NumericVector thisTau(K);
-        thisTau[Range(1, K-1)] = r4beta(K-1, 2, 2, -6, 6);
+        thisTau[Range(1, K-1)] = r4beta(K-1, 2, 2, -2, 0);
         taus[j] = thisTau;
     }
     // It will also be convenient to store the total number of tau parameters:
@@ -86,9 +93,42 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
     }
     // This makes an empty matrix to store parameter values for every iteration:
     NumericMatrix chainMatrix(iterations, n+(2*m)+numberOfTaus);
+    // Now we need to deal with restrictions;
+    // if our theta draws for don't respect the restrictions,
+    // we need to change them:
+    if ( thetas[low] > 0 ) {
+        thetas[low] = thetas[low] * -1;
+    }
+    if ( thetas[high] < 0 ) {
+        thetas[high] = thetas[high] * -1;
+    }
+    // Now it will be convenient to have a vector giving the indices
+    // of the unconstrained theta parameters (there are n - 2 of them):
+    IntegerVector unconstrained(n-2);
+    // If one of the constrained parameters is theta[0],
+    // we need to make sure the first element of this vector is 1:
+    if ( low == 0 || high == 0 ) {
+        unconstrained[0] = 1;
+    }
+    // Then we can get the rest of the vector's elements easily:
+    for ( int i = 1; i < n-2; i++ ) {
+        unconstrained[i] = unconstrained[i-1] + 1;
+        if ( unconstrained[i] == low || unconstrained[i] == high ) {
+            unconstrained[i] += 1;
+        }
+    }
     // For the first 5000 iterations we use a fixed sigma for proposals:
     for ( int iter = 0; iter < 5000; iter++ ) {
-        for ( int i = 0; i < n; i++ ) {
+        double theta = thetas[low];
+        thetas[low] = acceptanceThetaNeg(responseMatrix(low, _), theta,
+                alphas, deltas, taus, 1);
+        chainMatrix(iter, low) = thetas[low];
+        theta = thetas[high];
+        thetas[low] = acceptanceThetaPos(responseMatrix(high, _), theta,
+                alphas, deltas, taus, 1);
+        chainMatrix(iter, high) = thetas[high];
+        for ( int ind = 0; ind < n-2; ind++ ) {
+            int i = unconstrained[ind];
             // Copy the parameter of interest:
             double theta = thetas[i];
             // Replace it (or not):
@@ -133,7 +173,20 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
     // For the remaining iterations we use the standard deviation of the past
     // 5000 draws for the sigma parameter for every parameter
     for ( int iter = 5000; iter < iterations; iter ++ ) {
-        for ( int i = 0; i < n; i++ ) {
+        double theta = thetas[low];
+        NumericVector pastDraws = chainMatrix(_, low);
+        double SD = sd(pastDraws[Range(iter-5000, iter)]);
+        thetas[low] = acceptanceThetaNeg(responseMatrix(low, _), theta,
+                alphas, deltas, taus, SD);
+        chainMatrix(iter, low) = thetas[low];
+        theta = thetas[high];
+        pastDraws = chainMatrix(_, high);
+        SD = sd(pastDraws[Range(iter-5000, iter)]);
+        thetas[low] = acceptanceThetaPos(responseMatrix(high, _), theta,
+                alphas, deltas, taus, 1);
+        chainMatrix(iter, high) = thetas[high];
+        for ( int ind = 0; ind < n-2; ind++ ) {
+            int i = unconstrained[ind];
             double theta = thetas[i];
             NumericVector pastDraws = chainMatrix(_, i);
             double SD = sd(pastDraws[Range(iter-5000, iter)]);

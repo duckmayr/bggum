@@ -70,12 +70,21 @@ NumericVector rtruncnorm(int n, double mean, double SD, double a, double b){
     return qtruncnorm(runif(n), mean, SD, a, b);
 }
 
-// The following scalar version won't be available to the user
-// It's just for faster calculation in the MCMC sampler
+// The following scalar versions won't be available to the user
+// They're just for faster calculation in the MCMC sampler
 //[[Rcpp::export]]
 double r_truncnorm(double mean, double SD, double a, double b){
     double F_a = R::pnorm(a, mean, SD, 1, 0);
     double F_b = R::pnorm(b, mean, SD, 1, 0);
     double q = R::qnorm(F_a + R::unif_rand() * (F_b - F_a), mean, SD, 1, 0);
     return std::min(std::max(a, q), b);
+}
+
+//[[Rcpp::export]]
+double d_truncnorm(double x, double mean, double SD, double a, double b){
+    if ( x < a || x > b ) {
+        return 0;
+    }
+    double scale = R::pnorm(b, mean, SD, 1, 0) - R::pnorm(a, mean, SD, 1, 0);
+    return R::dnorm(x, mean, SD, 0) / scale;
 }
