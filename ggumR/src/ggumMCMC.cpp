@@ -182,7 +182,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
         theta = thetas[high];
         pastDraws = chainMatrix(_, high);
         SD = sd(pastDraws[Range(iter-5000, iter)]);
-        thetas[low] = acceptanceThetaPos(responseMatrix(high, _), theta,
+        thetas[high] = acceptanceThetaPos(responseMatrix(high, _), theta,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, high) = thetas[high];
         for ( int ind = 0; ind < n-2; ind++ ) {
