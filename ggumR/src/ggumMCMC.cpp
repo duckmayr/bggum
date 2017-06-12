@@ -124,7 +124,7 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, low) = thetas[low];
         theta = thetas[high];
-        thetas[low] = acceptanceThetaPos(responseMatrix(high, _), theta,
+        thetas[high] = acceptanceThetaPos(responseMatrix(high, _), theta,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, high) = thetas[high];
         for ( int ind = 0; ind < n-2; ind++ ) {
