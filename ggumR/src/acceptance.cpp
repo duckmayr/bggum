@@ -93,8 +93,8 @@ double acceptanceTheta(NumericVector responses, double cv,
 double acceptanceThetaNeg(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
     double pv = r_trunclst(1, cv, SD, -10, 0);
-    double pvPrior = d_truncnorm(pv, -1*(sqrt(2)/sqrt(pi)), 1, -10, 0);
-    double cvPrior = d_truncnorm(pv, -1*(sqrt(2)/sqrt(pi)), 1, -10, 0);
+    double pvPrior = d_truncnorm(pv, -1*M_SQRT_2dPI, 1, -10, 0);
+    double cvPrior = d_truncnorm(pv, -1*M_SQRT_2dPI, 1, -10, 0);
     NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
     NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
     double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
@@ -109,8 +109,8 @@ double acceptanceThetaNeg(NumericVector responses, double cv,
 double acceptanceThetaPos(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
     double pv = r_trunclst(1, cv, SD, 0, 10);
-    double pvPrior = d_truncnorm(pv, (sqrt(2)/sqrt(pi)), 1, 0, 10);
-    double cvPrior = d_truncnorm(pv, (sqrt(2)/sqrt(pi)), 1, 0, 10);
+    double pvPrior = d_truncnorm(pv, M_SQRT_2dPI, 1, 0, 10);
+    double cvPrior = d_truncnorm(pv, M_SQRT_2dPI, 1, 0, 10);
     NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
     NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
     double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
