@@ -541,6 +541,10 @@ r_trunclst <- function(df, mu, sigma, a, b) {
     .Call('ggumR_r_trunclst', PACKAGE = 'ggumR', df, mu, sigma, a, b)
 }
 
+d_trunclst <- function(x, df, mu, sigma, a, b) {
+    .Call('ggumR_d_trunclst', PACKAGE = 'ggumR', x, df, mu, sigma, a, b)
+}
+
 #' The Truncated Normal Distribution
 #'
 #' Provides probability density, cumulative distribution, quantile, and random

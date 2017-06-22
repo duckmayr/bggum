@@ -13,6 +13,7 @@ extern SEXP ggumR_d_4beta(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_dlst(SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_d_lst(SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_dtrunclst(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP ggumR_d_trunclst(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_dtruncnorm(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP ggumR_getPriorAlpha(SEXP);
 extern SEXP ggumR_getPriorDelta(SEXP);
@@ -53,6 +54,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ggumR_dlst",             (DL_FUNC) &ggumR_dlst,             4},
     {"ggumR_d_lst",            (DL_FUNC) &ggumR_d_lst,            4},
     {"ggumR_dtrunclst",        (DL_FUNC) &ggumR_dtrunclst,        6},
+    {"ggumR_d_trunclst",       (DL_FUNC) &ggumR_d_trunclst,       6},
     {"ggumR_dtruncnorm",       (DL_FUNC) &ggumR_dtruncnorm,       5},
     {"ggumR_getPriorAlpha",    (DL_FUNC) &ggumR_getPriorAlpha,    1},
     {"ggumR_getPriorDelta",    (DL_FUNC) &ggumR_getPriorDelta,    1},

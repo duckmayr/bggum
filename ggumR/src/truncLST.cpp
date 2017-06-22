@@ -73,12 +73,22 @@ NumericVector rtrunclst(int n, double df, double mu, double sigma,
     return qtrunclst(runif(n), df, mu, sigma, a, b);
 }
 
-// The following scalar version won't be available to the user;
-// it's just for faster calculation in the MCMC sampler
+// The following scalar versions won't be available to the user;
+// they're just for faster calculation in the MCMC sampler
 //[[Rcpp::export]]
 double r_trunclst(double df, double mu, double sigma, double a, double b){
     double F_a = R::pt((a - mu)/sigma, df, 1, 0);
     double F_b = R::pt((b - mu)/sigma, df, 1, 0);
     double q = R::qt(F_a + R::unif_rand() * (F_b - F_a), df, 1, 0) * sigma + mu;
     return std::min(std::max(a, q), b);
+}
+
+//[[Rcpp::export]]
+double d_trunclst(double x, double df, double mu, double sigma, double a,
+        double b){
+    if ( x < a || x > b ) {
+        return 0;
+    }
+    double scale = p_lst(b, df, mu, sigma) - p_lst(a, df, mu, sigma);
+    return d_lst(x, df, mu, sigma) / scale;
 }

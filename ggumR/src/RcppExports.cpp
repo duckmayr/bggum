@@ -507,6 +507,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// d_trunclst
+double d_trunclst(double x, double df, double mu, double sigma, double a, double b);
+RcppExport SEXP ggumR_d_trunclst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(d_trunclst(x, df, mu, sigma, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // dtruncnorm
 NumericVector dtruncnorm(NumericVector x, double mean, double SD, double a, double b);
 RcppExport SEXP ggumR_dtruncnorm(SEXP xSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {

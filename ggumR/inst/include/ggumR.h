@@ -91,6 +91,8 @@ NumericVector rtrunclst(int n, double df, double mu, double sigma,
 // The following scalar version won't be available to the user
 // It's just for use by other c++ functions
 double r_trunclst(double df, double mu, double sigma, double a, double b);
+double d_trunclst(double x, double df, double mu, double sigma, double a,
+        double b);
 
 
 # endif
