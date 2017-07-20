@@ -66,3 +66,8 @@ double d_lst(double x, double df, double mu, double sigma){
 double p_lst(double q, double df, double mu, double sigma){
     return R::pt((q - mu)/sigma, df, 1, 0);
 }
+
+//[[Rcpp::export]]
+double r_lst(double df, double mu, double sigma){
+    return R::rt(df) * sigma + mu;
+}

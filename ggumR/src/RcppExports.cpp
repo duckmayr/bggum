@@ -6,9 +6,98 @@
 
 using namespace Rcpp;
 
+// d4beta
+NumericVector d4beta(NumericVector x, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_d4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(d4beta(x, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p4beta
+NumericVector p4beta(NumericVector q, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_p4beta(SEXP qSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p4beta(q, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// q4beta
+NumericVector q4beta(NumericVector p, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_q4beta(SEXP pSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(q4beta(p, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r4beta
+NumericVector r4beta(int n, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_r4beta(SEXP nSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(r4beta(n, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// d_4beta
+double d_4beta(double x, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_d_4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(d_4beta(x, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_4beta
+double r_4beta(double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggumR_r_4beta(SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_4beta(shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // acceptanceTheta
 double acceptanceTheta(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
-RcppExport SEXP ggumR_acceptanceTheta(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceTheta(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,7 +113,7 @@ END_RCPP
 }
 // acceptanceThetaNeg
 double acceptanceThetaNeg(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
-RcppExport SEXP ggumR_acceptanceThetaNeg(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceThetaNeg(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -40,7 +129,7 @@ END_RCPP
 }
 // acceptanceThetaPos
 double acceptanceThetaPos(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
-RcppExport SEXP ggumR_acceptanceThetaPos(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceThetaPos(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,7 +145,7 @@ END_RCPP
 }
 // acceptanceAlpha
 double acceptanceAlpha(NumericVector responses, NumericVector thetas, double cv, double delta, NumericVector taus, double SD);
-RcppExport SEXP ggumR_acceptanceAlpha(SEXP responsesSEXP, SEXP thetasSEXP, SEXP cvSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceAlpha(SEXP responsesSEXP, SEXP thetasSEXP, SEXP cvSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,7 +161,7 @@ END_RCPP
 }
 // acceptanceDelta
 double acceptanceDelta(NumericVector responses, NumericVector thetas, double alpha, double cv, NumericVector taus, double SD);
-RcppExport SEXP ggumR_acceptanceDelta(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP cvSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceDelta(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP cvSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -88,7 +177,7 @@ END_RCPP
 }
 // acceptanceTau
 double acceptanceTau(int k, NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus, double SD);
-RcppExport SEXP ggumR_acceptanceTau(SEXP kSEXP, SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
+RcppExport SEXP _ggumR_acceptanceTau(SEXP kSEXP, SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -103,98 +192,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// d4beta
-NumericVector d4beta(NumericVector x, double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_d4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d4beta(x, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p4beta
-NumericVector p4beta(NumericVector q, double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_p4beta(SEXP qSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p4beta(q, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// q4beta
-NumericVector q4beta(NumericVector p, double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_q4beta(SEXP pSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(q4beta(p, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r4beta
-NumericVector r4beta(int n, double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_r4beta(SEXP nSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r4beta(n, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// d_4beta
-double d_4beta(double x, double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_d_4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d_4beta(x, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_4beta
-double r_4beta(double shape1, double shape2, double a, double b);
-RcppExport SEXP ggumR_r_4beta(SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_4beta(shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // getPriorTheta
 double getPriorTheta(double cv);
-RcppExport SEXP ggumR_getPriorTheta(SEXP cvSEXP) {
+RcppExport SEXP _ggumR_getPriorTheta(SEXP cvSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -205,7 +205,7 @@ END_RCPP
 }
 // getPriorAlpha
 double getPriorAlpha(double cv);
-RcppExport SEXP ggumR_getPriorAlpha(SEXP cvSEXP) {
+RcppExport SEXP _ggumR_getPriorAlpha(SEXP cvSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -216,7 +216,7 @@ END_RCPP
 }
 // getPriorDelta
 double getPriorDelta(double cv);
-RcppExport SEXP ggumR_getPriorDelta(SEXP cvSEXP) {
+RcppExport SEXP _ggumR_getPriorDelta(SEXP cvSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -227,7 +227,7 @@ END_RCPP
 }
 // getPriorTaus
 double getPriorTaus(double cv);
-RcppExport SEXP ggumR_getPriorTaus(SEXP cvSEXP) {
+RcppExport SEXP _ggumR_getPriorTaus(SEXP cvSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -238,7 +238,7 @@ END_RCPP
 }
 // loglikelihoodRow
 double loglikelihoodRow(NumericVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
-RcppExport SEXP ggumR_loglikelihoodRow(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
+RcppExport SEXP _ggumR_loglikelihoodRow(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -253,7 +253,7 @@ END_RCPP
 }
 // loglikelihoodCol
 double loglikelihoodCol(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
-RcppExport SEXP ggumR_loglikelihoodCol(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
+RcppExport SEXP _ggumR_loglikelihoodCol(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -268,7 +268,7 @@ END_RCPP
 }
 // ggumMCMC
 NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
-RcppExport SEXP ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
+RcppExport SEXP _ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -283,7 +283,7 @@ END_RCPP
 }
 // ggumProbability
 NumericVector ggumProbability(NumericVector k, double theta, double alpha, double delta, NumericVector tau);
-RcppExport SEXP ggumR_ggumProbability(SEXP kSEXP, SEXP thetaSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tauSEXP) {
+RcppExport SEXP _ggumR_ggumProbability(SEXP kSEXP, SEXP thetaSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -296,57 +296,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// proposerTheta
-double proposerTheta(NumericVector cv, NumericVector SD);
-RcppExport SEXP ggumR_proposerTheta(SEXP cvSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(proposerTheta(cv, SD));
-    return rcpp_result_gen;
-END_RCPP
-}
-// proposerAlpha
-double proposerAlpha(NumericVector cv, NumericVector SD);
-RcppExport SEXP ggumR_proposerAlpha(SEXP cvSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(proposerAlpha(cv, SD));
-    return rcpp_result_gen;
-END_RCPP
-}
-// proposerDelta
-double proposerDelta(NumericVector cv, NumericVector SD);
-RcppExport SEXP ggumR_proposerDelta(SEXP cvSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(proposerDelta(cv, SD));
-    return rcpp_result_gen;
-END_RCPP
-}
-// proposerTau
-double proposerTau(NumericVector cv, NumericVector SD);
-RcppExport SEXP ggumR_proposerTau(SEXP cvSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(proposerTau(cv, SD));
-    return rcpp_result_gen;
-END_RCPP
-}
 // dlst
 NumericVector dlst(NumericVector x, double df, double mu, double sigma);
-RcppExport SEXP ggumR_dlst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_dlst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -360,7 +312,7 @@ END_RCPP
 }
 // plst
 NumericVector plst(NumericVector q, double df, double mu, double sigma);
-RcppExport SEXP ggumR_plst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_plst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -374,7 +326,7 @@ END_RCPP
 }
 // qlst
 NumericVector qlst(NumericVector p, double df, double mu, double sigma);
-RcppExport SEXP ggumR_qlst(SEXP pSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_qlst(SEXP pSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -388,7 +340,7 @@ END_RCPP
 }
 // rlst
 NumericVector rlst(int n, double df, double mu, double sigma);
-RcppExport SEXP ggumR_rlst(SEXP nSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_rlst(SEXP nSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -402,7 +354,7 @@ END_RCPP
 }
 // d_lst
 double d_lst(double x, double df, double mu, double sigma);
-RcppExport SEXP ggumR_d_lst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_d_lst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -416,7 +368,7 @@ END_RCPP
 }
 // p_lst
 double p_lst(double q, double df, double mu, double sigma);
-RcppExport SEXP ggumR_p_lst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _ggumR_p_lst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -428,187 +380,52 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// dtrunclst
-NumericVector dtrunclst(NumericVector x, double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_dtrunclst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(dtrunclst(x, df, mu, sigma, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// ptrunclst
-NumericVector ptrunclst(NumericVector q, double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_ptrunclst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(ptrunclst(q, df, mu, sigma, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qtrunclst
-NumericVector qtrunclst(NumericVector p, double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_qtrunclst(SEXP pSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(qtrunclst(p, df, mu, sigma, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rtrunclst
-NumericVector rtrunclst(int n, double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_rtrunclst(SEXP nSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(rtrunclst(n, df, mu, sigma, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_trunclst
-double r_trunclst(double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_r_trunclst(SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
+// r_lst
+double r_lst(double df, double mu, double sigma);
+RcppExport SEXP _ggumR_r_lst(SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type df(dfSEXP);
     Rcpp::traits::input_parameter< double >::type mu(muSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_trunclst(df, mu, sigma, a, b));
+    rcpp_result_gen = Rcpp::wrap(r_lst(df, mu, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
-// d_trunclst
-double d_trunclst(double x, double df, double mu, double sigma, double a, double b);
-RcppExport SEXP ggumR_d_trunclst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d_trunclst(x, df, mu, sigma, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// dtruncnorm
-NumericVector dtruncnorm(NumericVector x, double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_dtruncnorm(SEXP xSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(dtruncnorm(x, mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// ptruncnorm
-NumericVector ptruncnorm(NumericVector q, double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_ptruncnorm(SEXP qSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(ptruncnorm(q, mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qtruncnorm
-NumericVector qtruncnorm(NumericVector p, double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_qtruncnorm(SEXP pSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(qtruncnorm(p, mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rtruncnorm
-NumericVector rtruncnorm(int n, double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_rtruncnorm(SEXP nSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(rtruncnorm(n, mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_truncnorm
-double r_truncnorm(double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_r_truncnorm(SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_truncnorm(mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// d_truncnorm
-double d_truncnorm(double x, double mean, double SD, double a, double b);
-RcppExport SEXP ggumR_d_truncnorm(SEXP xSEXP, SEXP meanSEXP, SEXP SDSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d_truncnorm(x, mean, SD, a, b));
-    return rcpp_result_gen;
-END_RCPP
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_ggumR_d4beta", (DL_FUNC) &_ggumR_d4beta, 5},
+    {"_ggumR_p4beta", (DL_FUNC) &_ggumR_p4beta, 5},
+    {"_ggumR_q4beta", (DL_FUNC) &_ggumR_q4beta, 5},
+    {"_ggumR_r4beta", (DL_FUNC) &_ggumR_r4beta, 5},
+    {"_ggumR_d_4beta", (DL_FUNC) &_ggumR_d_4beta, 5},
+    {"_ggumR_r_4beta", (DL_FUNC) &_ggumR_r_4beta, 4},
+    {"_ggumR_acceptanceTheta", (DL_FUNC) &_ggumR_acceptanceTheta, 6},
+    {"_ggumR_acceptanceThetaNeg", (DL_FUNC) &_ggumR_acceptanceThetaNeg, 6},
+    {"_ggumR_acceptanceThetaPos", (DL_FUNC) &_ggumR_acceptanceThetaPos, 6},
+    {"_ggumR_acceptanceAlpha", (DL_FUNC) &_ggumR_acceptanceAlpha, 6},
+    {"_ggumR_acceptanceDelta", (DL_FUNC) &_ggumR_acceptanceDelta, 6},
+    {"_ggumR_acceptanceTau", (DL_FUNC) &_ggumR_acceptanceTau, 7},
+    {"_ggumR_getPriorTheta", (DL_FUNC) &_ggumR_getPriorTheta, 1},
+    {"_ggumR_getPriorAlpha", (DL_FUNC) &_ggumR_getPriorAlpha, 1},
+    {"_ggumR_getPriorDelta", (DL_FUNC) &_ggumR_getPriorDelta, 1},
+    {"_ggumR_getPriorTaus", (DL_FUNC) &_ggumR_getPriorTaus, 1},
+    {"_ggumR_loglikelihoodRow", (DL_FUNC) &_ggumR_loglikelihoodRow, 5},
+    {"_ggumR_loglikelihoodCol", (DL_FUNC) &_ggumR_loglikelihoodCol, 5},
+    {"_ggumR_ggumMCMC", (DL_FUNC) &_ggumR_ggumMCMC, 5},
+    {"_ggumR_ggumProbability", (DL_FUNC) &_ggumR_ggumProbability, 5},
+    {"_ggumR_dlst", (DL_FUNC) &_ggumR_dlst, 4},
+    {"_ggumR_plst", (DL_FUNC) &_ggumR_plst, 4},
+    {"_ggumR_qlst", (DL_FUNC) &_ggumR_qlst, 4},
+    {"_ggumR_rlst", (DL_FUNC) &_ggumR_rlst, 4},
+    {"_ggumR_d_lst", (DL_FUNC) &_ggumR_d_lst, 4},
+    {"_ggumR_p_lst", (DL_FUNC) &_ggumR_p_lst, 4},
+    {"_ggumR_r_lst", (DL_FUNC) &_ggumR_r_lst, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_ggumR(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

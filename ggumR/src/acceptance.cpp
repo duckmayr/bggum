@@ -68,7 +68,7 @@ double acceptanceTheta(NumericVector responses, double cv,
     // pv stands for proposed value, cv for current value
     // First we propose a new value for the current theta;
     // we use a truncated location-scale T distribution:
-    double pv = r_trunclst(1, cv, SD, -10, 10);
+    double pv = r_lst(1, cv, SD);
     // Then we get the prior probabilities that theta is equal to
     // the current value (cvPrior) and proposed value (pvPrior):
     double pvPrior = R::dnorm(pv, 0, 1, 0);
@@ -92,9 +92,9 @@ double acceptanceTheta(NumericVector responses, double cv,
 //[[Rcpp::export]]
 double acceptanceThetaNeg(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
-    double pv = r_trunclst(1, cv, SD, -10, 0);
-    double pvPrior = d_truncnorm(pv, -1*M_SQRT_2dPI, 1, -10, 0);
-    double cvPrior = d_truncnorm(pv, -1*M_SQRT_2dPI, 1, -10, 0);
+    double pv = r_lst(1, cv, SD);
+    double pvPrior = R::dnorm(pv, 0, 1, 0);
+    double cvPrior = R::dnorm(cv, 0, 1, 0);
     NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
     NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
     double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
@@ -108,9 +108,9 @@ double acceptanceThetaNeg(NumericVector responses, double cv,
 //[[Rcpp::export]]
 double acceptanceThetaPos(NumericVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
-    double pv = r_trunclst(1, cv, SD, 0, 10);
-    double pvPrior = d_truncnorm(pv, M_SQRT_2dPI, 1, 0, 10);
-    double cvPrior = d_truncnorm(pv, M_SQRT_2dPI, 1, 0, 10);
+    double pv = r_lst(1, cv, SD);
+    double pvPrior = R::dnorm(pv, 0, 1, 0);
+    double cvPrior = R::dnorm(cv, 0, 1, 0);
     NumericVector cvPs = na_omit(probRow(responses, cv, alphas, deltas, taus));
     NumericVector pvPs = na_omit(probRow(responses, pv, alphas, deltas, taus));
     double acceptRate = exp(sum(log(pvPs)) + log(pvPrior)
@@ -126,7 +126,7 @@ double acceptanceThetaPos(NumericVector responses, double cv,
 //[[Rcpp::export]]
 double acceptanceAlpha(NumericVector responses, NumericVector thetas,
         double cv, double delta, NumericVector taus, double SD){
-    double pv = r_trunclst(1, cv, SD, 0.25, 4);
+    double pv = r_lst(1, cv, SD);
     double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4);
     double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4);
     NumericVector cvPs = na_omit(probCol(responses, thetas, cv, delta, taus));
@@ -149,7 +149,7 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
         pv = -1 * cv;
     }
     else {
-        pv = r_trunclst(1, cv, SD, -5, 5);
+        pv = r_lst(1, cv, SD);
     }
     double pvPrior = d_4beta(pv, 2, 2, -5, 5);
     double cvPrior = d_4beta(cv, 2, 2, -5, 5);
@@ -173,7 +173,7 @@ double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
     // So that when we replace one of its values with a proposed value,
     // we can still compute probability of responses according to the GGUM
     // under the original tau vector
-    pv[k] = r_trunclst(1, taus[k], SD, -2, 0);
+    pv[k] = r_lst(1, taus[k], SD);
     double pvPrior = d_4beta(pv[k], 2, 2, -2, 0);
     double cvPrior = d_4beta(taus[k], 2, 2, -2, 0);
     NumericVector cvPs = na_omit(probCol(responses, thetas, alpha, delta,

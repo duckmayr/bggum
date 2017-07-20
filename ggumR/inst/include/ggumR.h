@@ -40,20 +40,6 @@ NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
                        int iterations, int low, int high);
 
 
-// The Truncated Normal Distribution
-NumericVector dtruncnorm(NumericVector x, double mean, double sd,
-        double a, double b);
-NumericVector ptruncnorm(NumericVector q, double mean, double sd,
-        double a, double b);
-NumericVector qtruncnorm(NumericVector p, double mean, double sd,
-        double a, double b);
-NumericVector rtruncnorm(int n, double mean, double sd, double a, double b);
-// The following scalar version won't be available to the user
-// It's just for faster calculation in the MCMC sampler
-double r_truncnorm(double mean, double sd, double a, double b);
-double d_truncnorm(double x, double mean, double SD, double a, double b);
-
-
 // The Four Parameter Beta Distribution
 NumericVector d4beta(NumericVector x, double shape1, double shape2,
         double a, double b);
@@ -77,22 +63,7 @@ NumericVector rlst(int n, double df, double mu, double sigma);
 // They're just for use by other c++ functions
 double d_lst(double x, double df, double mu, double sigma);
 double p_lst(double q, double df, double mu, double sigma);
-
-
-// The Truncated Location-Scale T Distribution
-NumericVector dtrunclst(NumericVector x, double df, double mu, double sigma,
-        double a, double b);
-NumericVector ptrunclst(NumericVector q, double df, double mu, double sigma,
-        double a, double b);
-NumericVector qtrunclst(NumericVector p, double df, double mu, double sigma,
-        double a, double b);
-NumericVector rtrunclst(int n, double df, double mu, double sigma,
-        double a, double b);
-// The following scalar version won't be available to the user
-// It's just for use by other c++ functions
-double r_trunclst(double df, double mu, double sigma, double a, double b);
-double d_trunclst(double x, double df, double mu, double sigma, double a,
-        double b);
+double r_lst(double df, double mu, double sigma);
 
 
 # endif
