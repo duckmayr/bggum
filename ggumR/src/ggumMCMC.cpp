@@ -67,7 +67,7 @@ using namespace Rcpp;
 //'   algorithm
 //' @export
 //[[Rcpp::export]]
-NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
                        int iterations, int low, int high){
     // This deals with indexing differences between R and C++
     low -= 1;

@@ -44,7 +44,7 @@ using namespace Rcpp;
 //' @rdname ggumLogLikelihood
 //' @export
 //[[Rcpp::export]]
-double loglikelihoodRow(NumericVector responses, double theta,
+double loglikelihoodRow(IntegerVector responses, double theta,
         NumericVector alphas, NumericVector deltas, List taus){
     return sum(log(na_omit(probRow(responses, theta, alphas, deltas, taus))));
 }
@@ -52,7 +52,7 @@ double loglikelihoodRow(NumericVector responses, double theta,
 //' @rdname ggumLogLikelihood
 //' @export
 //[[Rcpp::export]]
-double loglikelihoodCol(NumericVector responses, NumericVector thetas,
+double loglikelihoodCol(IntegerVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus){
     return sum(log(na_omit(probCol(responses, thetas, alpha, delta, taus))));
 }

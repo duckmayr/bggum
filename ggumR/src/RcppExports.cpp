@@ -96,12 +96,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceTheta
-double acceptanceTheta(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
+double acceptanceTheta(IntegerVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
 RcppExport SEXP _ggumR_acceptanceTheta(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
@@ -112,12 +112,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceThetaNeg
-double acceptanceThetaNeg(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
+double acceptanceThetaNeg(IntegerVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
 RcppExport SEXP _ggumR_acceptanceThetaNeg(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
@@ -128,12 +128,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceThetaPos
-double acceptanceThetaPos(NumericVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
+double acceptanceThetaPos(IntegerVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
 RcppExport SEXP _ggumR_acceptanceThetaPos(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
@@ -144,12 +144,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceAlpha
-double acceptanceAlpha(NumericVector responses, NumericVector thetas, double cv, double delta, NumericVector taus, double SD);
+double acceptanceAlpha(IntegerVector responses, NumericVector thetas, double cv, double delta, NumericVector taus, double SD);
 RcppExport SEXP _ggumR_acceptanceAlpha(SEXP responsesSEXP, SEXP thetasSEXP, SEXP cvSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
     Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
@@ -160,12 +160,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceDelta
-double acceptanceDelta(NumericVector responses, NumericVector thetas, double alpha, double cv, NumericVector taus, double SD);
+double acceptanceDelta(IntegerVector responses, NumericVector thetas, double alpha, double cv, NumericVector taus, double SD);
 RcppExport SEXP _ggumR_acceptanceDelta(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP cvSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
@@ -176,13 +176,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // acceptanceTau
-double acceptanceTau(int k, NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus, double SD);
+double acceptanceTau(int k, IntegerVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus, double SD);
 RcppExport SEXP _ggumR_acceptanceTau(SEXP kSEXP, SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP, SEXP SDSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
@@ -237,12 +237,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // loglikelihoodRow
-double loglikelihoodRow(NumericVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
+double loglikelihoodRow(IntegerVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
 RcppExport SEXP _ggumR_loglikelihoodRow(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
@@ -252,12 +252,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // loglikelihoodCol
-double loglikelihoodCol(NumericVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
+double loglikelihoodCol(IntegerVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
 RcppExport SEXP _ggumR_loglikelihoodCol(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type responses(responsesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
@@ -267,12 +267,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
 RcppExport SEXP _ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type responseMatrix(responseMatrixSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type responseMatrix(responseMatrixSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type Kvector(KvectorSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type low(lowSEXP);

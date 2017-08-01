@@ -101,7 +101,7 @@ double prob(int k, double theta, double alpha, double delta,
    return numerator[k-1]/denominator;
 }
 
-NumericVector probRow(NumericVector responseVec, double theta,
+NumericVector probRow(IntegerVector responseVec, double theta,
                       NumericVector alphas, NumericVector deltas, List taus){
    int m = responseVec.size();
    NumericVector result(m);
@@ -116,7 +116,7 @@ NumericVector probRow(NumericVector responseVec, double theta,
    return result;
 }
 
-NumericVector probCol(NumericVector responseVec, NumericVector thetas,
+NumericVector probCol(IntegerVector responseVec, NumericVector thetas,
                       double alpha, double delta, NumericVector taus){
    int n = responseVec.size();
    NumericVector result(n);

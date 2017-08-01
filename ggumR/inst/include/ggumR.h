@@ -17,26 +17,26 @@ using namespace Rcpp;
 
 // The Generalized Graded Unfolding Model (GGUM)
 double prob(int k, double theta, double alpha, double delta, NumericVector tau);
-NumericVector probRow(NumericVector responseVec, double theta,
+NumericVector probRow(IntegerVector responseVec, double theta,
                       NumericVector alphas, NumericVector deltas, List taus);
-NumericVector probCol(NumericVector responseVec, NumericVector thetas,
+NumericVector probCol(IntegerVector responseVec, NumericVector thetas,
                       double alpha, double delta, NumericVector taus);
 NumericVector ggumProbability(NumericVector k, double theta, double alpha,
         double delta, NumericVector tau);
 // pv stands for proposed value, cv for current value
-double acceptanceTheta(NumericVector responses, double cv,
+double acceptanceTheta(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceThetaNeg(NumericVector responses, double cv,
+double acceptanceThetaNeg(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceThetaPos(NumericVector responses, double cv,
+double acceptanceThetaPos(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceAlpha(NumericVector responses, NumericVector thetas,
+double acceptanceAlpha(IntegerVector responses, NumericVector thetas,
         double cv, double delta, NumericVector taus, double SD);
-double acceptanceDelta(NumericVector responses, NumericVector thetas,
+double acceptanceDelta(IntegerVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD);
-double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
+double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD);
-NumericMatrix ggumMCMC(NumericMatrix responseMatrix, IntegerVector Kvector,
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
                        int iterations, int low, int high);
 
 

@@ -63,7 +63,7 @@ using namespace Rcpp;
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
-double acceptanceTheta(NumericVector responses, double cv,
+double acceptanceTheta(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
     // pv stands for proposed value, cv for current value
     // First we propose a new value for the current theta;
@@ -90,7 +90,7 @@ double acceptanceTheta(NumericVector responses, double cv,
 }
 
 //[[Rcpp::export]]
-double acceptanceThetaNeg(NumericVector responses, double cv,
+double acceptanceThetaNeg(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
     double pv = r_lst(1, cv, SD);
     double pvPrior = R::dnorm(pv, 0, 1, 0);
@@ -106,7 +106,7 @@ double acceptanceThetaNeg(NumericVector responses, double cv,
 }
 
 //[[Rcpp::export]]
-double acceptanceThetaPos(NumericVector responses, double cv,
+double acceptanceThetaPos(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD){
     double pv = r_lst(1, cv, SD);
     double pvPrior = R::dnorm(pv, 0, 1, 0);
@@ -124,7 +124,7 @@ double acceptanceThetaPos(NumericVector responses, double cv,
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
-double acceptanceAlpha(NumericVector responses, NumericVector thetas,
+double acceptanceAlpha(IntegerVector responses, NumericVector thetas,
         double cv, double delta, NumericVector taus, double SD){
     double pv = r_lst(1, cv, SD);
     double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4);
@@ -142,7 +142,7 @@ double acceptanceAlpha(NumericVector responses, NumericVector thetas,
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
-double acceptanceDelta(NumericVector responses, NumericVector thetas,
+double acceptanceDelta(IntegerVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD){
     double pv;
     if ( R::runif(0, 1) < 0.1 ) {
@@ -166,7 +166,7 @@ double acceptanceDelta(NumericVector responses, NumericVector thetas,
 //' @rdname acceptance
 //' @export
 //[[Rcpp::export]]
-double acceptanceTau(int k, NumericVector responses, NumericVector thetas,
+double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD){
     // For taus, we need a copy of the entire vector
     NumericVector pv = clone(taus);
