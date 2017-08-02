@@ -78,7 +78,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one,
                     continue;
                 }
                 double theta = th_t[i];
-                theta = updateTheta(theta, data(i, _), a_t, d_t, t_t, temp);
+                theta = updateTheta(theta, data(i, _), a_t, d_t, t_t, temp,
+                        r_one_val, r_two_val);
                 thetas(t, i) = theta;
             }
             for ( int j = 0; j < m; ++j) { // for each item

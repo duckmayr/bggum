@@ -475,8 +475,8 @@ r_lst <- function(df, mu, sigma) {
     .Call('_ggumR_r_lst', PACKAGE = 'ggumR', df, mu, sigma)
 }
 
-updateTheta <- function(cv, choices, a, d, t, temp) {
-    .Call('_ggumR_updateTheta', PACKAGE = 'ggumR', cv, choices, a, d, t, temp)
+updateTheta <- function(cv, choices, a, d, t, temp, hi, lo) {
+    .Call('_ggumR_updateTheta', PACKAGE = 'ggumR', cv, choices, a, d, t, temp, hi, lo)
 }
 
 updateAlpha <- function(cv, choices, th, d, t, temp) {

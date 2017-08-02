@@ -457,8 +457,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // updateTheta
-double updateTheta(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp);
-RcppExport SEXP _ggumR_updateTheta(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+double updateTheta(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp, double hi, double lo);
+RcppExport SEXP _ggumR_updateTheta(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP, SEXP hiSEXP, SEXP loSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -468,7 +468,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
     Rcpp::traits::input_parameter< List >::type t(tSEXP);
     Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
-    rcpp_result_gen = Rcpp::wrap(updateTheta(cv, choices, a, d, t, temp));
+    Rcpp::traits::input_parameter< double >::type hi(hiSEXP);
+    Rcpp::traits::input_parameter< double >::type lo(loSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateTheta(cv, choices, a, d, t, temp, hi, lo));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -554,7 +556,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_d_lst", (DL_FUNC) &_ggumR_d_lst, 4},
     {"_ggumR_p_lst", (DL_FUNC) &_ggumR_p_lst, 4},
     {"_ggumR_r_lst", (DL_FUNC) &_ggumR_r_lst, 3},
-    {"_ggumR_updateTheta", (DL_FUNC) &_ggumR_updateTheta, 6},
+    {"_ggumR_updateTheta", (DL_FUNC) &_ggumR_updateTheta, 8},
     {"_ggumR_updateAlpha", (DL_FUNC) &_ggumR_updateAlpha, 6},
     {"_ggumR_updateDelta", (DL_FUNC) &_ggumR_updateDelta, 6},
     {"_ggumR_updateTau", (DL_FUNC) &_ggumR_updateTau, 7},

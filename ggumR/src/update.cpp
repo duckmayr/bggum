@@ -4,10 +4,22 @@ using namespace Rcpp;
 
 //[[Rcpp::export]]
 double updateTheta(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp){
+        NumericVector d, List t, double temp, double hi, double lo){
     double pv = r_lst(1, cv, 1);
-    double pvPrior = R::dnorm(pv, 0, 1, 0);
-    double cvPrior = R::dnorm(cv, 0, 1, 0);
+    double cvPrior, pvPrior;
+    double scale = R::pnorm(hi, 0, 1, 1, 0) - R::pnorm(lo, 0, 1, 1, 0);
+    if ( cv < lo || cv > hi ) {
+        return pv;
+    }
+    else {
+        cvPrior = R::dnorm(cv, 0, 1, 0) / scale;
+    }
+    if ( pv < lo || pv > hi ) {
+        pvPrior = 0;
+    }
+    else {
+        pvPrior = R::dnorm(pv, 0, 1, 0) / scale;
+    }
     double cvL = sum(log(probRow(choices, cv, a, d, t)));
     double pvL = sum(log(probRow(choices, pv, a, d, t)));
     double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
