@@ -88,44 +88,74 @@ NumericVector ggumProbability(NumericVector k, double theta, double alpha,
 }
 
 
-double prob(int k, double theta, double alpha, double delta, 
-            NumericVector tau){
-   int K = tau.size();
-   NumericVector cumSum = cumsum(tau);
-   NumericVector numerator(K);
-   for ( int x = 0; x < K; x++ ) {
-      numerator[x] = exp(alpha * (x * (theta - delta) - cumSum[x]))
-      + exp(alpha * ((2*K - 1 - x) * (theta - delta) - cumSum[x]));
-   }
-   double denominator = sum(numerator);
-   return numerator[k-1]/denominator;
+//[[Rcpp::export]]
+double prob(int choice, double th, double a, double d, NumericVector t){
+    int K = t.size();
+    double result = 0, numerator = 0, denominator = 0, tSum = 0;
+    for ( int k = 0; k < K; ++k ) {
+        tSum += t[k];
+        numerator = exp(a * (k * (th - d) - tSum));
+        numerator += exp(a * ((2*K - 1 - k) * (th - d) - tSum));
+        denominator += numerator;
+        if ( k == choice ) {
+            result = numerator;
+        }
+    }
+    return result / denominator;
 }
 
-NumericVector probRow(IntegerVector responseVec, double theta,
-                      NumericVector alphas, NumericVector deltas, List taus){
-   int m = responseVec.size();
-   NumericVector result(m);
-   for ( int j = 0; j < m; j++ ) {
-      if ( ISNA(responseVec[j]) ) {
-         result[j] = NA_REAL;
-         continue;
-      }
-      NumericVector tau = as<NumericVector>(taus[j]);
-      result[j] = prob(responseVec[j], theta, alphas[j], deltas[j], tau);
-   }
-   return result;
+//[[Rcpp::export]]
+NumericVector probCol(IntegerVector choices, NumericVector thetas,
+        double a, double d, NumericVector t){
+    int n = choices.size();
+    int K = t.size();
+    NumericVector result(n);
+    for ( int i = 0; i < n; ++i ){
+        if ( IntegerVector::is_na(choices[i]) ) {
+            result[i] = 1.0;
+            continue;
+        }
+        double numerator = 0, denominator = 0, tSum = 0;
+        for ( int k = 0; k < K; ++k ) {
+            tSum += t[k];
+            numerator = exp(a * (k * (thetas[i] - d) - tSum));
+            numerator += exp(a * ((2*K - 1 - k) * (thetas[i] - d) - tSum));
+            denominator += numerator;
+            if ( k == choices[i] ) {
+                result[i] = numerator;
+            }
+        }
+        result[i] /= denominator;
+        denominator = 0;
+    }
+    return result;
 }
 
-NumericVector probCol(IntegerVector responseVec, NumericVector thetas,
-                      double alpha, double delta, NumericVector taus){
-   int n = responseVec.size();
-   NumericVector result(n);
-   for ( int i = 0; i < n; i++ ) {
-      if ( ISNA(responseVec[i]) ) {
-         result[i] = NA_REAL;
-         continue;
-      }
-      result[i] = prob(responseVec[i], thetas[i], alpha, delta, taus);
-   }
-   return result;
+//[[Rcpp::export]]
+NumericVector probRow(IntegerVector choices, double th,
+        NumericVector a, NumericVector d, List t){
+    int m = choices.size();
+    NumericVector result(m);
+    for ( int j = 0; j < m; ++j ){
+        if ( IntegerVector::is_na(choices[j]) ) {
+            result[j] = 1.0;
+            continue;
+        }
+        double numerator = 0, denominator = 0, tSum = 0;
+        double a_j = a[j], d_j = d[j];
+        NumericVector t_j = as<NumericVector>(t[j]);
+        int K = t_j.size();
+        for ( int k = 0; k < K; ++k ) {
+            tSum += t_j[k];
+            numerator = exp(a_j * (k * (th - d_j) - tSum));
+            numerator += exp(a_j * ((2*K - 1 - k) * (th - d_j) - tSum));
+            denominator += numerator;
+            if ( k == choices[j] ) {
+                result[j] = numerator;
+            }
+        }
+        result[j] /= denominator;
+        denominator = 0;
+    }
+    return result;
 }

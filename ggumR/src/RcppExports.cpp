@@ -314,6 +314,51 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// prob
+double prob(int choice, double th, double a, double d, NumericVector t);
+RcppExport SEXP _ggumR_prob(SEXP choiceSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type choice(choiceSEXP);
+    Rcpp::traits::input_parameter< double >::type th(thSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    rcpp_result_gen = Rcpp::wrap(prob(choice, th, a, d, t));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probCol
+NumericVector probCol(IntegerVector choices, NumericVector thetas, double a, double d, NumericVector t);
+RcppExport SEXP _ggumR_probCol(SEXP choicesSEXP, SEXP thetasSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    rcpp_result_gen = Rcpp::wrap(probCol(choices, thetas, a, d, t));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probRow
+NumericVector probRow(IntegerVector choices, double th, NumericVector a, NumericVector d, List t);
+RcppExport SEXP _ggumR_probRow(SEXP choicesSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< double >::type th(thSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
+    Rcpp::traits::input_parameter< List >::type t(tSEXP);
+    rcpp_result_gen = Rcpp::wrap(probRow(choices, th, a, d, t));
+    return rcpp_result_gen;
+END_RCPP
+}
 // dlst
 NumericVector dlst(NumericVector x, double df, double mu, double sigma);
 RcppExport SEXP _ggumR_dlst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
@@ -499,6 +544,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 8},
     {"_ggumR_ggumMCMC", (DL_FUNC) &_ggumR_ggumMCMC, 5},
     {"_ggumR_ggumProbability", (DL_FUNC) &_ggumR_ggumProbability, 5},
+    {"_ggumR_prob", (DL_FUNC) &_ggumR_prob, 5},
+    {"_ggumR_probCol", (DL_FUNC) &_ggumR_probCol, 5},
+    {"_ggumR_probRow", (DL_FUNC) &_ggumR_probRow, 5},
     {"_ggumR_dlst", (DL_FUNC) &_ggumR_dlst, 4},
     {"_ggumR_plst", (DL_FUNC) &_ggumR_plst, 4},
     {"_ggumR_qlst", (DL_FUNC) &_ggumR_qlst, 4},

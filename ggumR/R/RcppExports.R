@@ -402,6 +402,18 @@ ggumProbability <- function(k, theta, alpha, delta, tau) {
     .Call('_ggumR_ggumProbability', PACKAGE = 'ggumR', k, theta, alpha, delta, tau)
 }
 
+prob <- function(choice, th, a, d, t) {
+    .Call('_ggumR_prob', PACKAGE = 'ggumR', choice, th, a, d, t)
+}
+
+probCol <- function(choices, thetas, a, d, t) {
+    .Call('_ggumR_probCol', PACKAGE = 'ggumR', choices, thetas, a, d, t)
+}
+
+probRow <- function(choices, th, a, d, t) {
+    .Call('_ggumR_probRow', PACKAGE = 'ggumR', choices, th, a, d, t)
+}
+
 #' The location-scale T distribution.
 #'
 #' Density, distribution function, quantile function, and random number
