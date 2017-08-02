@@ -249,6 +249,28 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
     .Call('_ggumR_loglikelihoodCol', PACKAGE = 'ggumR', responses, thetas, alpha, delta, taus)
 }
 
+#' GGUM MC3
+#'
+#' Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
+#'
+#' @param data A numeric matrix giving the individuals' responses
+#' @param iters A vector of length one giving the number of iterations
+#' @param r_one The index of the first respondent whose theta is restricted
+#' @param r_two The index of the second respondent whose theta is restricted
+#' @param r_one_val The value of the first theta restriction
+#' @param r_two_val The value of the second theta restriction
+#' @param N The number of chains
+#' @param W The period by which to attempt chain swaps; e.g. if W = 100,
+#'   a state swap will be proposed between two randomly selected chains
+#'   every 100 iterations
+#'
+#' @return A numeric matrix giving the parameter values at each iteration
+#'   for the cold chain
+#' @export
+ggumMC3 <- function(data, iters, r_one, r_one_val, r_two, r_two_val, N, W) {
+    .Call('_ggumR_ggumMC3', PACKAGE = 'ggumR', data, iters, r_one, r_one_val, r_two, r_two_val, N, W)
+}
+
 #' GGUM MCMC Sampler
 #'
 #' MCMC sampler for the generalized graded unfolding model (GGUM), utilizing
@@ -439,5 +461,21 @@ p_lst <- function(q, df, mu, sigma) {
 
 r_lst <- function(df, mu, sigma) {
     .Call('_ggumR_r_lst', PACKAGE = 'ggumR', df, mu, sigma)
+}
+
+updateTheta <- function(cv, choices, a, d, t, temp) {
+    .Call('_ggumR_updateTheta', PACKAGE = 'ggumR', cv, choices, a, d, t, temp)
+}
+
+updateAlpha <- function(cv, choices, th, d, t, temp) {
+    .Call('_ggumR_updateAlpha', PACKAGE = 'ggumR', cv, choices, th, d, t, temp)
+}
+
+updateDelta <- function(cv, choices, th, a, t, temp) {
+    .Call('_ggumR_updateDelta', PACKAGE = 'ggumR', cv, choices, th, a, t, temp)
+}
+
+updateTau <- function(k, choices, th, a, d, t, temp) {
+    .Call('_ggumR_updateTau', PACKAGE = 'ggumR', k, choices, th, a, d, t, temp)
 }
 

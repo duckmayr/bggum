@@ -38,6 +38,14 @@ double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD);
 NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
                        int iterations, int low, int high);
+double updateTheta(double cv, IntegerVector choices, NumericVector a,
+        NumericVector d, List t, double temp);
+double updateAlpha(double cv, IntegerVector choices, NumericVector th,
+        double d, NumericVector t, double temp);
+double updateDelta(double cv, IntegerVector choices, NumericVector th,
+        double a, NumericVector t, double temp);
+double updateTau(int k, IntegerVector choices, NumericVector th,
+        double a, double d, NumericVector t, double temp);
 
 
 // The Four Parameter Beta Distribution

@@ -266,6 +266,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ggumMC3
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, double r_one_val, int r_two, double r_two_val, int N, int W);
+RcppExport SEXP _ggumR_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_one_valSEXP, SEXP r_twoSEXP, SEXP r_two_valSEXP, SEXP NSEXP, SEXP WSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
+    Rcpp::traits::input_parameter< int >::type r_one(r_oneSEXP);
+    Rcpp::traits::input_parameter< double >::type r_one_val(r_one_valSEXP);
+    Rcpp::traits::input_parameter< int >::type r_two(r_twoSEXP);
+    Rcpp::traits::input_parameter< double >::type r_two_val(r_two_valSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_one_val, r_two, r_two_val, N, W));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ggumMCMC
 NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
 RcppExport SEXP _ggumR_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
@@ -393,6 +411,71 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// updateTheta
+double updateTheta(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp);
+RcppExport SEXP _ggumR_updateTheta(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
+    Rcpp::traits::input_parameter< List >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateTheta(cv, choices, a, d, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateAlpha
+double updateAlpha(double cv, IntegerVector choices, NumericVector th, double d, NumericVector t, double temp);
+RcppExport SEXP _ggumR_updateAlpha(SEXP cvSEXP, SEXP choicesSEXP, SEXP thSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type th(thSEXP);
+    Rcpp::traits::input_parameter< double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateAlpha(cv, choices, th, d, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateDelta
+double updateDelta(double cv, IntegerVector choices, NumericVector th, double a, NumericVector t, double temp);
+RcppExport SEXP _ggumR_updateDelta(SEXP cvSEXP, SEXP choicesSEXP, SEXP thSEXP, SEXP aSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type th(thSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateDelta(cv, choices, th, a, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateTau
+double updateTau(int k, IntegerVector choices, NumericVector th, double a, double d, NumericVector t, double temp);
+RcppExport SEXP _ggumR_updateTau(SEXP kSEXP, SEXP choicesSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type th(thSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateTau(k, choices, th, a, d, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_d4beta", (DL_FUNC) &_ggumR_d4beta, 5},
@@ -413,6 +496,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_getPriorTaus", (DL_FUNC) &_ggumR_getPriorTaus, 1},
     {"_ggumR_loglikelihoodRow", (DL_FUNC) &_ggumR_loglikelihoodRow, 5},
     {"_ggumR_loglikelihoodCol", (DL_FUNC) &_ggumR_loglikelihoodCol, 5},
+    {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 8},
     {"_ggumR_ggumMCMC", (DL_FUNC) &_ggumR_ggumMCMC, 5},
     {"_ggumR_ggumProbability", (DL_FUNC) &_ggumR_ggumProbability, 5},
     {"_ggumR_dlst", (DL_FUNC) &_ggumR_dlst, 4},
@@ -422,6 +506,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_d_lst", (DL_FUNC) &_ggumR_d_lst, 4},
     {"_ggumR_p_lst", (DL_FUNC) &_ggumR_p_lst, 4},
     {"_ggumR_r_lst", (DL_FUNC) &_ggumR_r_lst, 3},
+    {"_ggumR_updateTheta", (DL_FUNC) &_ggumR_updateTheta, 6},
+    {"_ggumR_updateAlpha", (DL_FUNC) &_ggumR_updateAlpha, 6},
+    {"_ggumR_updateDelta", (DL_FUNC) &_ggumR_updateDelta, 6},
+    {"_ggumR_updateTau", (DL_FUNC) &_ggumR_updateTau, 7},
     {NULL, NULL, 0}
 };
 
