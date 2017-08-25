@@ -38,8 +38,14 @@ double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
         double alpha, double delta, NumericVector taus, double SD);
 NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
                        int iterations, int low, int high);
+double dhnormpos(double x);
+double dhnormneg(double x);
 double updateTheta(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp, double lo, double hi);
+        NumericVector d, List t, double temp);
+double updateThetaPos(double cv, IntegerVector choices, NumericVector a,
+        NumericVector d, List t, double temp);
+double updateThetaNeg(double cv, IntegerVector choices, NumericVector a,
+        NumericVector d, List t, double temp);
 double updateAlpha(double cv, IntegerVector choices, NumericVector th,
         double d, NumericVector t, double temp);
 double updateDelta(double cv, IntegerVector choices, NumericVector th,

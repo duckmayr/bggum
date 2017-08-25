@@ -14,8 +14,6 @@ inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 //' @param iters A vector of length one giving the number of iterations
 //' @param r_one The index of the first respondent whose theta is restricted
 //' @param r_two The index of the second respondent whose theta is restricted
-//' @param r_one_val The value of the first theta restriction
-//' @param r_two_val The value of the second theta restriction
 //' @param N The number of chains
 //' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 //'   a state swap will be proposed between two randomly selected chains
@@ -25,8 +23,8 @@ inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 //'   for the cold chain
 //' @export
 //[[Rcpp::export]]
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one,
-        double r_one_val, int r_two, double r_two_val, int N, int W){
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
+        int N, int W){
     // set up temperatures
     int howmanyswaps = 0;
     int coldswaps = 0;
@@ -49,8 +47,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one,
     List taus(N);
     for ( int t = 0; t < N; ++t ) {
         thetas(t, _) = rnorm(n, 0.0, 1.0);
-        thetas(t, r_one) = r_one_val;
-        thetas(t, r_two) = r_two_val;
+        thetas(t, r_one) = -1.0 * abs(thetas(t, r_one));
+        thetas(t, r_two) = abs(thetas(t, r_two));
         alphas(t, _) = rep(1.0, m);
         deltas(t, _) = r4beta(m, 2, 2, -5, 5);
         List t_t(m);
@@ -74,13 +72,17 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one,
             List t_t = as<List>(taus[t]);
             double temp = temps[t];
             for ( int i = 0; i < n; ++i ) { // for each respondent
-                if ( i == r_one || i == r_two ) {
-                    continue;
+                double th = th_t[i];
+                if ( i == r_one ) {
+                    th = updateThetaNeg(th, data(i, _), a_t, d_t, t_t, temp);
                 }
-                double theta = th_t[i];
-                theta = updateTheta(theta, data(i, _), a_t, d_t, t_t, temp,
-                        r_one_val, r_two_val);
-                thetas(t, i) = theta;
+                else if ( i == r_two ) {
+                    th = updateThetaPos(th, data(i, _), a_t, d_t, t_t, temp);
+                }
+                else {
+                    th = updateTheta(th, data(i, _), a_t, d_t, t_t, temp);
+                }
+                thetas(t, i) = th;
             }
             for ( int j = 0; j < m; ++j) { // for each item
                 double a_j = a_t[j];

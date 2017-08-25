@@ -257,8 +257,6 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #' @param iters A vector of length one giving the number of iterations
 #' @param r_one The index of the first respondent whose theta is restricted
 #' @param r_two The index of the second respondent whose theta is restricted
-#' @param r_one_val The value of the first theta restriction
-#' @param r_two_val The value of the second theta restriction
 #' @param N The number of chains
 #' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 #'   a state swap will be proposed between two randomly selected chains
@@ -267,8 +265,8 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #' @return A numeric matrix giving the parameter values at each iteration
 #'   for the cold chain
 #' @export
-ggumMC3 <- function(data, iters, r_one, r_one_val, r_two, r_two_val, N, W) {
-    .Call('_ggumR_ggumMC3', PACKAGE = 'ggumR', data, iters, r_one, r_one_val, r_two, r_two_val, N, W)
+ggumMC3 <- function(data, iters, r_one, r_two, N, W) {
+    .Call('_ggumR_ggumMC3', PACKAGE = 'ggumR', data, iters, r_one, r_two, N, W)
 }
 
 #' GGUM MCMC Sampler
@@ -475,8 +473,24 @@ r_lst <- function(df, mu, sigma) {
     .Call('_ggumR_r_lst', PACKAGE = 'ggumR', df, mu, sigma)
 }
 
-updateTheta <- function(cv, choices, a, d, t, temp, hi, lo) {
-    .Call('_ggumR_updateTheta', PACKAGE = 'ggumR', cv, choices, a, d, t, temp, hi, lo)
+dhnormpos <- function(x) {
+    .Call('_ggumR_dhnormpos', PACKAGE = 'ggumR', x)
+}
+
+dhnormneg <- function(x) {
+    .Call('_ggumR_dhnormneg', PACKAGE = 'ggumR', x)
+}
+
+updateTheta <- function(cv, choices, a, d, t, temp) {
+    .Call('_ggumR_updateTheta', PACKAGE = 'ggumR', cv, choices, a, d, t, temp)
+}
+
+updateThetaPos <- function(cv, choices, a, d, t, temp) {
+    .Call('_ggumR_updateThetaPos', PACKAGE = 'ggumR', cv, choices, a, d, t, temp)
+}
+
+updateThetaNeg <- function(cv, choices, a, d, t, temp) {
+    .Call('_ggumR_updateThetaNeg', PACKAGE = 'ggumR', cv, choices, a, d, t, temp)
 }
 
 updateAlpha <- function(cv, choices, th, d, t, temp) {

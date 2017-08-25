@@ -3,23 +3,61 @@
 using namespace Rcpp;
 
 //[[Rcpp::export]]
+double dhnormpos(double x){
+    if ( x < 0 ) {
+        return 0.0;
+    }
+    return 2.0 * R::dnorm(x, 0.0, 1.0, 0);
+}
+
+
+//[[Rcpp::export]]
+double dhnormneg(double x){
+    if ( x > 0 ) {
+        return 0.0;
+    }
+    return 2.0 * R::dnorm(x, 0.0, 1.0, 0);
+}
+
+
+//[[Rcpp::export]]
 double updateTheta(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp, double hi, double lo){
+        NumericVector d, List t, double temp){
     double pv = r_lst(1, cv, 1);
-    double cvPrior, pvPrior;
-    double scale = R::pnorm(hi, 0, 1, 1, 0) - R::pnorm(lo, 0, 1, 1, 0);
-    if ( cv < lo || cv > hi ) {
+    double cvPrior = R::dnorm(cv, 0.0, 1.0, 0);
+    double pvPrior = R::dnorm(pv, 0.0, 1.0, 0);
+    double cvL = sum(log(probRow(choices, cv, a, d, t)));
+    double pvL = sum(log(probRow(choices, pv, a, d, t)));
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
-    else {
-        cvPrior = R::dnorm(cv, 0, 1, 0) / scale;
+    return cv;
+}
+
+
+//[[Rcpp::export]]
+double updateThetaPos(double cv, IntegerVector choices, NumericVector a,
+        NumericVector d, List t, double temp){
+    double pv = r_lst(1, cv, 1);
+    double cvPrior = dhnormpos(cv);
+    double pvPrior = dhnormpos(pv);
+    double cvL = sum(log(probRow(choices, cv, a, d, t)));
+    double pvL = sum(log(probRow(choices, pv, a, d, t)));
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    if ( r > 1 || R::runif(0, 1) < r) {
+        return pv;
     }
-    if ( pv < lo || pv > hi ) {
-        pvPrior = 0;
-    }
-    else {
-        pvPrior = R::dnorm(pv, 0, 1, 0) / scale;
-    }
+    return cv;
+}
+
+
+//[[Rcpp::export]]
+double updateThetaNeg(double cv, IntegerVector choices, NumericVector a,
+        NumericVector d, List t, double temp){
+    double pv = r_lst(1, cv, 1);
+    double cvPrior = dhnormneg(cv);
+    double pvPrior = dhnormneg(pv);
     double cvL = sum(log(probRow(choices, cv, a, d, t)));
     double pvL = sum(log(probRow(choices, pv, a, d, t)));
     double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);

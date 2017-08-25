@@ -267,20 +267,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, double r_one_val, int r_two, double r_two_val, int N, int W);
-RcppExport SEXP _ggumR_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_one_valSEXP, SEXP r_twoSEXP, SEXP r_two_valSEXP, SEXP NSEXP, SEXP WSEXP) {
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two, int N, int W);
+RcppExport SEXP _ggumR_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_twoSEXP, SEXP NSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
     Rcpp::traits::input_parameter< int >::type r_one(r_oneSEXP);
-    Rcpp::traits::input_parameter< double >::type r_one_val(r_one_valSEXP);
     Rcpp::traits::input_parameter< int >::type r_two(r_twoSEXP);
-    Rcpp::traits::input_parameter< double >::type r_two_val(r_two_valSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_one_val, r_two, r_two_val, N, W));
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_two, N, W));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -456,9 +454,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// dhnormpos
+double dhnormpos(double x);
+RcppExport SEXP _ggumR_dhnormpos(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(dhnormpos(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dhnormneg
+double dhnormneg(double x);
+RcppExport SEXP _ggumR_dhnormneg(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(dhnormneg(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // updateTheta
-double updateTheta(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp, double hi, double lo);
-RcppExport SEXP _ggumR_updateTheta(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP, SEXP hiSEXP, SEXP loSEXP) {
+double updateTheta(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp);
+RcppExport SEXP _ggumR_updateTheta(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -468,9 +488,39 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
     Rcpp::traits::input_parameter< List >::type t(tSEXP);
     Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
-    Rcpp::traits::input_parameter< double >::type hi(hiSEXP);
-    Rcpp::traits::input_parameter< double >::type lo(loSEXP);
-    rcpp_result_gen = Rcpp::wrap(updateTheta(cv, choices, a, d, t, temp, hi, lo));
+    rcpp_result_gen = Rcpp::wrap(updateTheta(cv, choices, a, d, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateThetaPos
+double updateThetaPos(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp);
+RcppExport SEXP _ggumR_updateThetaPos(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
+    Rcpp::traits::input_parameter< List >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateThetaPos(cv, choices, a, d, t, temp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateThetaNeg
+double updateThetaNeg(double cv, IntegerVector choices, NumericVector a, NumericVector d, List t, double temp);
+RcppExport SEXP _ggumR_updateThetaNeg(SEXP cvSEXP, SEXP choicesSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP, SEXP tempSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
+    Rcpp::traits::input_parameter< List >::type t(tSEXP);
+    Rcpp::traits::input_parameter< double >::type temp(tempSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateThetaNeg(cv, choices, a, d, t, temp));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -543,7 +593,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_getPriorTaus", (DL_FUNC) &_ggumR_getPriorTaus, 1},
     {"_ggumR_loglikelihoodRow", (DL_FUNC) &_ggumR_loglikelihoodRow, 5},
     {"_ggumR_loglikelihoodCol", (DL_FUNC) &_ggumR_loglikelihoodCol, 5},
-    {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 8},
+    {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 6},
     {"_ggumR_ggumMCMC", (DL_FUNC) &_ggumR_ggumMCMC, 5},
     {"_ggumR_ggumProbability", (DL_FUNC) &_ggumR_ggumProbability, 5},
     {"_ggumR_prob", (DL_FUNC) &_ggumR_prob, 5},
@@ -556,7 +606,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_d_lst", (DL_FUNC) &_ggumR_d_lst, 4},
     {"_ggumR_p_lst", (DL_FUNC) &_ggumR_p_lst, 4},
     {"_ggumR_r_lst", (DL_FUNC) &_ggumR_r_lst, 3},
-    {"_ggumR_updateTheta", (DL_FUNC) &_ggumR_updateTheta, 8},
+    {"_ggumR_dhnormpos", (DL_FUNC) &_ggumR_dhnormpos, 1},
+    {"_ggumR_dhnormneg", (DL_FUNC) &_ggumR_dhnormneg, 1},
+    {"_ggumR_updateTheta", (DL_FUNC) &_ggumR_updateTheta, 6},
+    {"_ggumR_updateThetaPos", (DL_FUNC) &_ggumR_updateThetaPos, 6},
+    {"_ggumR_updateThetaNeg", (DL_FUNC) &_ggumR_updateThetaNeg, 6},
     {"_ggumR_updateAlpha", (DL_FUNC) &_ggumR_updateAlpha, 6},
     {"_ggumR_updateDelta", (DL_FUNC) &_ggumR_updateDelta, 6},
     {"_ggumR_updateTau", (DL_FUNC) &_ggumR_updateTau, 7},

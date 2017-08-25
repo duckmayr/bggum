@@ -4,7 +4,7 @@
 \alias{ggumMC3}
 \title{GGUM MC3}
 \usage{
-ggumMC3(data, iters, r_one, r_one_val, r_two, r_two_val, N, W)
+ggumMC3(data, iters, r_one, r_two, N, W)
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -13,11 +13,7 @@ ggumMC3(data, iters, r_one, r_one_val, r_two, r_two_val, N, W)
 
 \item{r_one}{The index of the first respondent whose theta is restricted}
 
-\item{r_one_val}{The value of the first theta restriction}
-
 \item{r_two}{The index of the second respondent whose theta is restricted}
-
-\item{r_two_val}{The value of the second theta restriction}
 
 \item{N}{The number of chains}
 
