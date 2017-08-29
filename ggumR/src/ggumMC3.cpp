@@ -109,6 +109,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
             taus[t] = t_t;
         }
         if ( iter % W == 0 ) {
+            checkUserInterrupt();
             std::random_shuffle(chains.begin(), chains.end(), randWrapper);
             int one = chains[0];
             int two = chains[1];

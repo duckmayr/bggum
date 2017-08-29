@@ -173,6 +173,9 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
     // For the remaining iterations we use the standard deviation of the past
     // 5000 draws for the sigma parameter for every parameter
     for ( int iter = 5000; iter < iterations; iter ++ ) {
+        if ( iter % 1000 == 0 ) {
+            checkUserInterrupt();
+        }
         double theta = thetas[low];
         NumericVector pastDraws = chainMatrix(_, low);
         double SD = sd(pastDraws[Range(iter-5000, iter)]);
