@@ -267,8 +267,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two, int N, int W);
-RcppExport SEXP _ggumR_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_twoSEXP, SEXP NSEXP, SEXP WSEXP) {
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two, int N, int W, Nullable<NumericVector> Temps);
+RcppExport SEXP _ggumR_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_twoSEXP, SEXP NSEXP, SEXP WSEXP, SEXP TempsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -278,7 +278,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type r_two(r_twoSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_two, N, W));
+    Rcpp::traits::input_parameter< Nullable<NumericVector> >::type Temps(TempsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_two, N, W, Temps));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -593,7 +594,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggumR_getPriorTaus", (DL_FUNC) &_ggumR_getPriorTaus, 1},
     {"_ggumR_loglikelihoodRow", (DL_FUNC) &_ggumR_loglikelihoodRow, 5},
     {"_ggumR_loglikelihoodCol", (DL_FUNC) &_ggumR_loglikelihoodCol, 5},
-    {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 6},
+    {"_ggumR_ggumMC3", (DL_FUNC) &_ggumR_ggumMC3, 7},
     {"_ggumR_ggumMCMC", (DL_FUNC) &_ggumR_ggumMCMC, 5},
     {"_ggumR_ggumProbability", (DL_FUNC) &_ggumR_ggumProbability, 5},
     {"_ggumR_prob", (DL_FUNC) &_ggumR_prob, 5},

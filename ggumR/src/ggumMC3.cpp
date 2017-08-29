@@ -18,21 +18,29 @@ inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 //' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 //'   a state swap will be proposed between two randomly selected chains
 //'   every 100 iterations
+//' @param Temps An optional provision of the temperatures for the chains;
+//'   if not provided, each temperature T_t for t < N is given by
+//'   T_{t+1} * (t + 1), and T_N = 1.
 //'
 //' @return A numeric matrix giving the parameter values at each iteration
 //'   for the cold chain
 //' @export
 //[[Rcpp::export]]
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
-        int N, int W){
+        int N, int W, Nullable<NumericVector> Temps = R_NilValue){
     // set up temperatures
     int howmanyswaps = 0;
     int coldswaps = 0;
     int coldattempts = 0;
     IntegerVector chains = seq_len(N) - 1;
     NumericVector temps(N, 1.0);
-    for ( int t = 1; t < N; ++t ) {
-        temps[t] = temps[t-1] * (t + 1);
+    if ( Temps.isNull() ) {
+        for ( int t = 1; t < N; ++t ) {
+            temps[t] = temps[t-1] * (t + 1);
+        }
+    }
+    else {
+        temps = as<NumericVector>(Temps);
     }
     // set up initial values
     int n = data.nrow();

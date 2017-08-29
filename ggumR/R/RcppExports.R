@@ -261,12 +261,15 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 #'   a state swap will be proposed between two randomly selected chains
 #'   every 100 iterations
+#' @param Temps An optional provision of the temperatures for the chains;
+#'   if not provided, each temperature T_t for t < N is given by
+#'   T_{t+1} * (t + 1), and T_N = 1.
 #'
 #' @return A numeric matrix giving the parameter values at each iteration
 #'   for the cold chain
 #' @export
-ggumMC3 <- function(data, iters, r_one, r_two, N, W) {
-    .Call('_ggumR_ggumMC3', PACKAGE = 'ggumR', data, iters, r_one, r_two, N, W)
+ggumMC3 <- function(data, iters, r_one, r_two, N, W, Temps = NULL) {
+    .Call('_ggumR_ggumMC3', PACKAGE = 'ggumR', data, iters, r_one, r_two, N, W, Temps)
 }
 
 #' GGUM MCMC Sampler

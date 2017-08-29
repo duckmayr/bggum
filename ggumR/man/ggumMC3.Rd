@@ -4,7 +4,7 @@
 \alias{ggumMC3}
 \title{GGUM MC3}
 \usage{
-ggumMC3(data, iters, r_one, r_two, N, W)
+ggumMC3(data, iters, r_one, r_two, N, W, Temps = NULL)
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -20,6 +20,10 @@ ggumMC3(data, iters, r_one, r_two, N, W)
 \item{W}{The period by which to attempt chain swaps; e.g. if W = 100,
 a state swap will be proposed between two randomly selected chains
 every 100 iterations}
+
+\item{Temps}{An optional provision of the temperatures for the chains;
+if not provided, each temperature T_t for t < N is given by
+T_{t+1} * (t + 1), and T_N = 1.}
 }
 \value{
 A numeric matrix giving the parameter values at each iteration
