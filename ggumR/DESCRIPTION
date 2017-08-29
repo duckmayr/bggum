@@ -19,4 +19,6 @@ Suggests:
 Collate:
     'ggumR-package.R'
     'RcppExports.R'
+    'irf.R'
+    'estModes.R'
 RoxygenNote: 6.0.1
