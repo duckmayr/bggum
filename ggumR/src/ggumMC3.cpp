@@ -27,9 +27,8 @@ inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
         int N, int W, Nullable<NumericVector> Temps = R_NilValue){
     // set up temperatures
-    int howmanyswaps = 0;
-    int coldswaps = 0;
-    int coldattempts = 0;
+    int howmanyswaps = 0, coldswaps = 0, coldattempts = 0;
+    int one = 0, two = 1;
     IntegerVector chains = seq_len(N) - 1;
     NumericVector temps(N, 1.0);
     if ( Temps.isNull() ) {
@@ -98,9 +97,6 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
         }
         if ( iter % W == 0 ) {
             checkUserInterrupt();
-            std::random_shuffle(chains.begin(), chains.end(), randWrapper);
-            int one = chains[0];
-            int two = chains[1];
             if ( one == 0 || two == 0 ) {
                 coldattempts += 1;
             }
@@ -153,6 +149,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
                 deltas(two, _) = tmpDeltas;
                 taus[two] = tmpTaus;
             }
+            one = (one + 1) % (N - 1);
+            two = (two % (N - 1)) + 1;
         }
         for ( int i = 0; i < n; ++i ) {
             result(iter, i) = thetas(0, i);
