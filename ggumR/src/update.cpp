@@ -28,7 +28,7 @@ double updateTheta(double cv, IntegerVector choices, NumericVector a,
     double pvPrior = R::dnorm(pv, 0.0, 1.0, 0);
     double cvL = sum(log(probRow(choices, cv, a, d, t)));
     double pvL = sum(log(probRow(choices, pv, a, d, t)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
@@ -44,7 +44,7 @@ double updateThetaPos(double cv, IntegerVector choices, NumericVector a,
     double pvPrior = dhnormpos(pv);
     double cvL = sum(log(probRow(choices, cv, a, d, t)));
     double pvL = sum(log(probRow(choices, pv, a, d, t)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
@@ -60,7 +60,7 @@ double updateThetaNeg(double cv, IntegerVector choices, NumericVector a,
     double pvPrior = dhnormneg(pv);
     double cvL = sum(log(probRow(choices, cv, a, d, t)));
     double pvL = sum(log(probRow(choices, pv, a, d, t)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
@@ -75,7 +75,7 @@ double updateAlpha(double cv, IntegerVector choices, NumericVector th,
     double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4);
     double cvL = sum(log(probCol(choices, th, cv, d, t)));
     double pvL = sum(log(probCol(choices, th, pv, d, t)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
@@ -90,7 +90,7 @@ double updateDelta(double cv, IntegerVector choices, NumericVector th,
     double cvPrior = d_4beta(cv, 2, 2, -5, 5);
     double cvL = sum(log(probCol(choices, th, a, cv, t)));
     double pvL = sum(log(probCol(choices, th, a, pv, t)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv;
     }
@@ -106,7 +106,7 @@ double updateTau(int k, IntegerVector choices, NumericVector th,
     double cvPrior = d_4beta(t[k], 2, 2, -6, 6);
     double cvL = sum(log(probCol(choices, th, a, d, t)));
     double pvL = sum(log(probCol(choices, th, a, d, pv)));
-    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), 1/temp);
+    double r = pow((exp(pvL - cvL)) * (pvPrior/cvPrior), temp);
     if ( r > 1 || R::runif(0, 1) < r) {
         return pv[k];
     }

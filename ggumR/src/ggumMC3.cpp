@@ -34,7 +34,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
     NumericVector temps(N, 1.0);
     if ( Temps.isNull() ) {
         for ( int t = 1; t < N; ++t ) {
-            temps[t] = temps[t-1] * (t + 1);
+            temps[t] = 1.0 / (temps[t-1] * (t + 1));
         }
     }
     else {
@@ -104,7 +104,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
             if ( one == 0 || two == 0 ) {
                 coldattempts += 1;
             }
-            double r, P1, P2, L1, L2;
+            double r = 0.0, P1 = 0.0, P2 = 0.0, L1 = 0.0, L2 = 0.0;
             NumericVector th1 = thetas(one, _);
             NumericVector th2 = thetas(two, _);
             NumericVector a1 = alphas(one, _);
@@ -132,10 +132,10 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
                 L1 += sum(log(probCol(answers, th1, a1[j], d1[j], t_1j)));
                 L2 += sum(log(probCol(answers, th2, a2[j], d2[j], t_2j)));
             }
-            double T = (1.0 / temps[one]) - (1.0/temps[two]);
+            double T = temps[one] - temps[two];
             double Y = L2 + P2 - L1 - P1;
-            r = exp(T * Y);
-            if ( r > 1 || R::runif(0, 1) < r ) {
+            r = T * Y;
+            if ( log(R::runif(0, 1)) < r ) {
                 howmanyswaps += 1;
                 if ( one == 0 || two == 0 ) {
                     coldswaps += 1;
