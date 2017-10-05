@@ -255,8 +255,6 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #'
 #' @param data A numeric matrix giving the individuals' responses
 #' @param iters A vector of length one giving the number of iterations
-#' @param r_one The index of the first respondent whose theta is restricted
-#' @param r_two The index of the second respondent whose theta is restricted
 #' @param N The number of chains
 #' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 #'   a state swap will be proposed between two randomly selected chains

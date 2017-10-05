@@ -12,8 +12,6 @@ inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 //'
 //' @param data A numeric matrix giving the individuals' responses
 //' @param iters A vector of length one giving the number of iterations
-//' @param r_one The index of the first respondent whose theta is restricted
-//' @param r_two The index of the second respondent whose theta is restricted
 //' @param N The number of chains
 //' @param W The period by which to attempt chain swaps; e.g. if W = 100,
 //'   a state swap will be proposed between two randomly selected chains
@@ -55,8 +53,6 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
     List taus(N);
     for ( int t = 0; t < N; ++t ) {
         thetas(t, _) = rnorm(n, 0.0, 1.0);
-        thetas(t, r_one) = -1.0 * abs(thetas(t, r_one));
-        thetas(t, r_two) = abs(thetas(t, r_two));
         alphas(t, _) = rep(1.0, m);
         deltas(t, _) = r4beta(m, 2, 2, -5, 5);
         List t_t(m);
@@ -81,15 +77,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
             double temp = temps[t];
             for ( int i = 0; i < n; ++i ) { // for each respondent
                 double th = th_t[i];
-                if ( i == r_one ) {
-                    th = updateThetaNeg(th, data(i, _), a_t, d_t, t_t, temp);
-                }
-                else if ( i == r_two ) {
-                    th = updateThetaPos(th, data(i, _), a_t, d_t, t_t, temp);
-                }
-                else {
-                    th = updateTheta(th, data(i, _), a_t, d_t, t_t, temp);
-                }
+                th = updateTheta(th, data(i, _), a_t, d_t, t_t, temp);
                 thetas(t, i) = th;
             }
             for ( int j = 0; j < m; ++j) { // for each item

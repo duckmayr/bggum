@@ -11,10 +11,6 @@ ggumMC3(data, iters, r_one, r_two, N, W, Temps = NULL)
 
 \item{iters}{A vector of length one giving the number of iterations}
 
-\item{r_one}{The index of the first respondent whose theta is restricted}
-
-\item{r_two}{The index of the second respondent whose theta is restricted}
-
 \item{N}{The number of chains}
 
 \item{W}{The period by which to attempt chain swaps; e.g. if W = 100,
