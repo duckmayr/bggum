@@ -1,11 +1,11 @@
 ## Package Development File Template ##
+rm(list=ls())
+setwd('~/ggum')
 library(devtools)
 library(roxygen2)
 current.code <- as.package('ggumR')
 load_all(current.code)
 document(current.code)
 # check(current.code)
-# install(pkg=current.code, local=TRUE)
+install(pkg=current.code, local=TRUE)
 # build(current.code, path=getwd())
-
-load("exampleData.RData", .GlobalEnv)
