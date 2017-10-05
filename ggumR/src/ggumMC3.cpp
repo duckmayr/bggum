@@ -66,6 +66,11 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
     }
     // set up a matrix to store the cold chain values
     NumericMatrix result(iters, n+ 2*m + sum(K));
+    // set up progress display
+    int progress = 0;
+    int leftover = iters % 100;
+    int adv_prog = (iters - leftover) / 100;
+    Rcout << "\rRunning sampler: 0%";
     // now run the sampler
     for ( int iter = 0; iter < iters; ++iter ) { // for each iteration
         for ( int t = 0; t < N; ++t ) { // for each temperature
@@ -94,6 +99,12 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
                 alphas(t, j) = a_j;
             }
             taus[t] = t_t;
+        }
+        if ( (iter+1) % adv_prog == 0 ) {
+            if ( (iter+1) >= leftover ) {
+                progress += 1;
+                Rcout << "\rRunning sampler: " << progress << "%";
+            }
         }
         if ( iter % W == 0 ) {
             checkUserInterrupt();
