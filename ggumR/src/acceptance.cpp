@@ -80,7 +80,7 @@ double acceptanceTheta(IntegerVector responses, double cv,
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
     // If the acceptance rate is greater than one, not a number,
     // or larger than a uniform deviate, we accept the proposal:
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv;
     }
     // Otherwise we reject the proposal
@@ -96,7 +96,7 @@ double acceptanceThetaNeg(IntegerVector responses, double cv,
     double cvL = sum(log(probRow(responses, cv, alphas, deltas, taus)));
     double pvL = sum(log(probRow(responses, pv, alphas, deltas, taus)));
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv;
     }
     return cv;
@@ -111,7 +111,7 @@ double acceptanceThetaPos(IntegerVector responses, double cv,
     double cvL = sum(log(probRow(responses, cv, alphas, deltas, taus)));
     double pvL = sum(log(probRow(responses, pv, alphas, deltas, taus)));
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv;
     }
     return cv;
@@ -128,7 +128,7 @@ double acceptanceAlpha(IntegerVector responses, NumericVector thetas,
     double cvL = sum(log(probCol(responses, thetas, cv, delta, taus)));
     double pvL = sum(log(probCol(responses, thetas, pv, delta, taus)));
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv;
     }
     return cv;
@@ -139,19 +139,13 @@ double acceptanceAlpha(IntegerVector responses, NumericVector thetas,
 //[[Rcpp::export]]
 double acceptanceDelta(IntegerVector responses, NumericVector thetas,
         double alpha, double cv, NumericVector taus, double SD){
-    double pv;
-    if ( R::runif(0, 1) < 0.1 ) {
-        pv = -1 * cv;
-    }
-    else {
-        pv = r_lst(1, cv, SD);
-    }
+    double pv = r_lst(1, cv, SD);
     double pvPrior = d_4beta(pv, 2, 2, -5, 5);
     double cvPrior = d_4beta(cv, 2, 2, -5, 5);
     double cvL = sum(log(probCol(responses, thetas, alpha, cv, taus)));
     double pvL = sum(log(probCol(responses, thetas, alpha, pv, taus)));
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv;
     }
     return cv;
@@ -173,7 +167,7 @@ double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
     double cvL = sum(log(probCol(responses, thetas, alpha, delta, taus)));
     double pvL = sum(log(probCol(responses, thetas, alpha, delta, pv)));
     double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1 || isnan(acceptRate) || R::runif(0, 1) < acceptRate) {
+    if ( acceptRate > 1 || R::runif(0, 1) < acceptRate) {
         return pv[k];
     }
     return taus[k];
