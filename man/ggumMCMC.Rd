@@ -40,15 +40,15 @@ though the package allows parameter estimation from \code{R},
 the functions are actually written in \code{C++} to allow for reasonable
 execution time.
 Our sampler creates random ititial values for the parameters of the model,
-according to their prior distributions (see \code{\link{getPrior}}).
+according to their prior distributions.
 Then, for the first 5000 iterations, the sampler, one parameter at a time,
-will make a proposal from the truncated location-scale T distribution
-specified in \code{\link{proposer}} where \eqn{SD = 1}, and accept the
-proposal probabilistically according to the ratio in
-\code{\link{acceptance}}. For the remainder of the iterations, the same
-process is followed, but the \eqn{\sigma} parameter for the proposal
-density is the standard deviation of the previous 5000 values of the
-parameter. A matrix is returned giving the value of every parameter at
+will make a proposal from a normal distribution with a mean of the current
+parameter value and a standard deviation of one, and accept the proposal
+probabilistically using a standard Metropolis-Hastings acceptance ratio.
+For the remainder of the iterations, the same process is followed
+but the \eqn{\sigma} parameter for the proposal density is the standard
+deviation of the previous 5000 values of the parameter.
+A matrix is returned giving the value of every parameter at
 every iteration.
 }
 \section{Warning}{
@@ -78,6 +78,5 @@ de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
   algorithm
 }
 \seealso{
-\code{\link{ggumProbability}}, \code{\link{acceptance}},
-  \code{\link{getPrior}}, \code{\link{proposer}}
+\code{\link{ggumProbability}}, \code{\link{ggumMC3}}
 }

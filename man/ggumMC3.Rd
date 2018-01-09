@@ -4,7 +4,7 @@
 \alias{ggumMC3}
 \title{GGUM MC3}
 \usage{
-ggumMC3(data, iters, r_one, r_two, N, W, Temps = NULL)
+ggumMC3(data, iters, N, W, Temps = NULL)
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -27,4 +27,7 @@ A numeric matrix giving the parameter values at each iteration
 }
 \description{
 Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
+}
+\seealso{
+\code{\link{ggumProbability}}, \code{\link{ggumMC3}}
 }

@@ -18,10 +18,13 @@ using namespace Rcpp;
 //'
 //' @return A numeric matrix giving the parameter values at each iteration
 //'   for the cold chain
+//'
+//' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMC3}}
+//'
 //' @export
 //[[Rcpp::export]]
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
-        int N, int W, Nullable<NumericVector> Temps = R_NilValue){
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
+        Nullable<NumericVector> Temps = R_NilValue){
     // set up temperatures
     int howmanyswaps = 0, coldswaps = 0, coldattempts = 0;
     int one = 0, two = 1;

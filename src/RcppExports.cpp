@@ -95,94 +95,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getPriorTheta
-double getPriorTheta(double cv);
-RcppExport SEXP _ggum_getPriorTheta(SEXP cvSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    rcpp_result_gen = Rcpp::wrap(getPriorTheta(cv));
-    return rcpp_result_gen;
-END_RCPP
-}
-// getPriorAlpha
-double getPriorAlpha(double cv);
-RcppExport SEXP _ggum_getPriorAlpha(SEXP cvSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    rcpp_result_gen = Rcpp::wrap(getPriorAlpha(cv));
-    return rcpp_result_gen;
-END_RCPP
-}
-// getPriorDelta
-double getPriorDelta(double cv);
-RcppExport SEXP _ggum_getPriorDelta(SEXP cvSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    rcpp_result_gen = Rcpp::wrap(getPriorDelta(cv));
-    return rcpp_result_gen;
-END_RCPP
-}
-// getPriorTaus
-double getPriorTaus(double cv);
-RcppExport SEXP _ggum_getPriorTaus(SEXP cvSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    rcpp_result_gen = Rcpp::wrap(getPriorTaus(cv));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodRow
-double loglikelihoodRow(IntegerVector responses, double theta, NumericVector alphas, NumericVector deltas, List taus);
-RcppExport SEXP _ggum_loglikelihoodRow(SEXP responsesSEXP, SEXP thetaSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodRow(responses, theta, alphas, deltas, taus));
-    return rcpp_result_gen;
-END_RCPP
-}
-// loglikelihoodCol
-double loglikelihoodCol(IntegerVector responses, NumericVector thetas, double alpha, double delta, NumericVector taus);
-RcppExport SEXP _ggum_loglikelihoodCol(SEXP responsesSEXP, SEXP thetasSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tausSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type taus(tausSEXP);
-    rcpp_result_gen = Rcpp::wrap(loglikelihoodCol(responses, thetas, alpha, delta, taus));
-    return rcpp_result_gen;
-END_RCPP
-}
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two, int N, int W, Nullable<NumericVector> Temps);
-RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP r_oneSEXP, SEXP r_twoSEXP, SEXP NSEXP, SEXP WSEXP, SEXP TempsSEXP) {
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, Nullable<NumericVector> Temps);
+RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP TempsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type r_one(r_oneSEXP);
-    Rcpp::traits::input_parameter< int >::type r_two(r_twoSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
     Rcpp::traits::input_parameter< Nullable<NumericVector> >::type Temps(TempsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, r_one, r_two, N, W, Temps));
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, N, W, Temps));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -258,103 +182,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const List& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(probRow(choices, th, a, d, t));
-    return rcpp_result_gen;
-END_RCPP
-}
-// dlst
-NumericVector dlst(NumericVector x, double df, double mu, double sigma);
-RcppExport SEXP _ggum_dlst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(dlst(x, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// plst
-NumericVector plst(NumericVector q, double df, double mu, double sigma);
-RcppExport SEXP _ggum_plst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(plst(q, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qlst
-NumericVector qlst(NumericVector p, double df, double mu, double sigma);
-RcppExport SEXP _ggum_qlst(SEXP pSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(qlst(p, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rlst
-NumericVector rlst(int n, double df, double mu, double sigma);
-RcppExport SEXP _ggum_rlst(SEXP nSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(rlst(n, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// d_lst
-double d_lst(double x, double df, double mu, double sigma);
-RcppExport SEXP _ggum_d_lst(SEXP xSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(d_lst(x, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_lst
-double p_lst(double q, double df, double mu, double sigma);
-RcppExport SEXP _ggum_p_lst(SEXP qSEXP, SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_lst(q, df, mu, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_lst
-double r_lst(double df, double mu, double sigma);
-RcppExport SEXP _ggum_r_lst(SEXP dfSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_lst(df, mu, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -516,25 +343,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggum_r4beta", (DL_FUNC) &_ggum_r4beta, 5},
     {"_ggum_d_4beta", (DL_FUNC) &_ggum_d_4beta, 5},
     {"_ggum_r_4beta", (DL_FUNC) &_ggum_r_4beta, 4},
-    {"_ggum_getPriorTheta", (DL_FUNC) &_ggum_getPriorTheta, 1},
-    {"_ggum_getPriorAlpha", (DL_FUNC) &_ggum_getPriorAlpha, 1},
-    {"_ggum_getPriorDelta", (DL_FUNC) &_ggum_getPriorDelta, 1},
-    {"_ggum_getPriorTaus", (DL_FUNC) &_ggum_getPriorTaus, 1},
-    {"_ggum_loglikelihoodRow", (DL_FUNC) &_ggum_loglikelihoodRow, 5},
-    {"_ggum_loglikelihoodCol", (DL_FUNC) &_ggum_loglikelihoodCol, 5},
-    {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 7},
+    {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 5},
     {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 5},
     {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},
     {"_ggum_prob", (DL_FUNC) &_ggum_prob, 5},
     {"_ggum_probCol", (DL_FUNC) &_ggum_probCol, 5},
     {"_ggum_probRow", (DL_FUNC) &_ggum_probRow, 5},
-    {"_ggum_dlst", (DL_FUNC) &_ggum_dlst, 4},
-    {"_ggum_plst", (DL_FUNC) &_ggum_plst, 4},
-    {"_ggum_qlst", (DL_FUNC) &_ggum_qlst, 4},
-    {"_ggum_rlst", (DL_FUNC) &_ggum_rlst, 4},
-    {"_ggum_d_lst", (DL_FUNC) &_ggum_d_lst, 4},
-    {"_ggum_p_lst", (DL_FUNC) &_ggum_p_lst, 4},
-    {"_ggum_r_lst", (DL_FUNC) &_ggum_r_lst, 3},
     {"_ggum_update_theta_neg_MCMC", (DL_FUNC) &_ggum_update_theta_neg_MCMC, 6},
     {"_ggum_update_theta_pos_MCMC", (DL_FUNC) &_ggum_update_theta_pos_MCMC, 6},
     {"_ggum_update_alpha_MCMC", (DL_FUNC) &_ggum_update_alpha_MCMC, 6},

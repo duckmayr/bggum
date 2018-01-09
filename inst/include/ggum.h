@@ -72,16 +72,4 @@ double d_4beta(double x, double shape1, double shape2, double a, double b);
 double r_4beta(double shape1, double shape2, double a, double b);
 
 
-// The Location-Scale T Distribution
-NumericVector dlst(NumericVector x, double df, double mu, double sigma);
-NumericVector plst(NumericVector q, double df, double mu, double sigma);
-NumericVector qlst(NumericVector p, double df, double mu, double sigma);
-NumericVector rlst(int n, double df, double mu, double sigma);
-// The following scalar versions won't be available to the user
-// They're just for use by other c++ functions
-double d_lst(double x, double df, double mu, double sigma);
-double p_lst(double q, double df, double mu, double sigma);
-double r_lst(double df, double mu, double sigma);
-
-
 # endif

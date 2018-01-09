@@ -54,111 +54,6 @@ r_4beta <- function(shape1, shape2, a, b) {
     .Call('_ggum_r_4beta', PACKAGE = 'ggum', shape1, shape2, a, b)
 }
 
-#' GGUM getPrior
-#' 
-#' Get the prior probability of values for the GGUM parameters theta, alpha,
-#' delta, and tau.
-#'
-#' Following de la Torre et al (2006), we use the following prior
-#' distributions for MCMC estimation of GGUM parameters:
-#' \itemize{
-#'   \item Theta -- The standard normal
-#'   \item Alpha -- A four parameter beta distribution, with shape parameters
-#'     1.5, 1.5, minimum value 0.25, and maximum value 4
-#'   \item Delta -- A four parameter beta distribution, with shape parameters
-#'     2, 2, minimum value -5, and maximum value 5
-#'   \item Tau -- A four parameter beta distribution, with shape parameters
-#'     2, 2, minimum value -6, and maximum value 6
-#' }
-#' 
-#' @param cv A numeric vector of length one; the current value of the
-#'   parameter of interest
-#' 
-#' @return A numeric vector of length one. The prior probability of observing
-#'   \code{cv} for the paramenter of interest.
-#'
-#' @references de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
-#'   Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
-#'   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
-#'   Psychological Measurement} 30(3): 216--232.
-#'
-#' @name GGUM Priors
-#' @aliases getPriorTheta, getPriorAlpha, getPriorDelta, getPriorTau, getPrior
-#' @rdname getPrior
-#' @export
-getPriorTheta <- function(cv) {
-    .Call('_ggum_getPriorTheta', PACKAGE = 'ggum', cv)
-}
-
-#' @rdname getPrior
-#' @export
-getPriorAlpha <- function(cv) {
-    .Call('_ggum_getPriorAlpha', PACKAGE = 'ggum', cv)
-}
-
-#' @rdname getPrior
-#' @export
-getPriorDelta <- function(cv) {
-    .Call('_ggum_getPriorDelta', PACKAGE = 'ggum', cv)
-}
-
-#' @rdname getPrior
-#' @export
-getPriorTaus <- function(cv) {
-    .Call('_ggum_getPriorTaus', PACKAGE = 'ggum', cv)
-}
-
-#' GGUM Log Likelihood
-#' 
-#' Calculate the log likelihood of data for the GGUM given parameter values.
-#'
-#' This function calculates the log likelihood of a \bold{vector} of
-#' responses given values for the parameters relevant to the responses.
-#' This could be all of a respondent \eqn{i}'s responses to every item \eqn{j},
-#' or all respondents' responses to an item \eqn{j}. We calculate likelihood
-#' of vectors rather than the likelihood of the entire response matrix since
-#' when computing acceptance ratios for the MCMC algorithm, we divide products
-#' of probabilities, most of which will cancel out -- thus, we only ever need
-#' the likelihood of one vector at any given time.
-#' 
-#' @param theta For \code{loglikelihoodRow}, a numeric vector of length one
-#'   giving the individual's latent trait parameter
-#' @param responses For \code{loglikelihoodRow}, a numeric vector of length
-#'   length n (the number of items) giving the option chosen by the individual
-#'   for each item j; for \code{loglikelihoodCol}, a numeric vector of length
-#'   N (the number of respondents), giving the option chosen by each individual
-#'   i to the item
-#' @param alphas A numeric vector of length n; each element of the vector is an
-#'   item's discrimination parameter
-#' @param deltas A numeric vector of length n; each element of the vector is an
-#'   item's location parameter
-#' @param taus For \code{loglikelihoodRow}, a list of numeric vectors where
-#'   each list element j is a numeric vector of threshold parameters for item
-#'   j's options (where the first element of the vector should be zero);
-#'   for \code{loglikelihoodCol}, this is only the numeric vector of threshold
-#'   parameters for the item of interest
-#' @param thetas A numeric vector of length N, each each element of which is
-#'   an individual's latent trait parameter
-#' @param alpha A numeric vector of length one giving the item's
-#'   discrimination parameter
-#' @param delta A numeric vector of length one giving the item's
-#'   location parameter
-#'
-#' @return The (log) likelihood of the vector of interest.
-#' @name ggumLogLikelihood
-#' @aliases loglikelihoodRow, loglikelihoodCol, ggumLogLikelihood
-#' @rdname ggumLogLikelihood
-#' @export
-loglikelihoodRow <- function(responses, theta, alphas, deltas, taus) {
-    .Call('_ggum_loglikelihoodRow', PACKAGE = 'ggum', responses, theta, alphas, deltas, taus)
-}
-
-#' @rdname ggumLogLikelihood
-#' @export
-loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
-    .Call('_ggum_loglikelihoodCol', PACKAGE = 'ggum', responses, thetas, alpha, delta, taus)
-}
-
 #' GGUM MC3
 #'
 #' Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
@@ -175,9 +70,12 @@ loglikelihoodCol <- function(responses, thetas, alpha, delta, taus) {
 #'
 #' @return A numeric matrix giving the parameter values at each iteration
 #'   for the cold chain
+#'
+#' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMC3}}
+#'
 #' @export
-ggumMC3 <- function(data, iters, r_one, r_two, N, W, Temps = NULL) {
-    .Call('_ggum_ggumMC3', PACKAGE = 'ggum', data, iters, r_one, r_two, N, W, Temps)
+ggumMC3 <- function(data, iters, N, W, Temps = NULL) {
+    .Call('_ggum_ggumMC3', PACKAGE = 'ggum', data, iters, N, W, Temps)
 }
 
 #' GGUM MCMC Sampler
@@ -191,15 +89,15 @@ ggumMC3 <- function(data, iters, r_one, r_two, N, W, Temps = NULL) {
 #' the functions are actually written in \code{C++} to allow for reasonable
 #' execution time.
 #' Our sampler creates random ititial values for the parameters of the model,
-#' according to their prior distributions (see \code{\link{getPrior}}).
+#' according to their prior distributions.
 #' Then, for the first 5000 iterations, the sampler, one parameter at a time,
-#' will make a proposal from the truncated location-scale T distribution
-#' specified in \code{\link{proposer}} where \eqn{SD = 1}, and accept the
-#' proposal probabilistically according to the ratio in
-#' \code{\link{acceptance}}. For the remainder of the iterations, the same
-#' process is followed, but the \eqn{\sigma} parameter for the proposal
-#' density is the standard deviation of the previous 5000 values of the
-#' parameter. A matrix is returned giving the value of every parameter at
+#' will make a proposal from a normal distribution with a mean of the current
+#' parameter value and a standard deviation of one, and accept the proposal
+#' probabilistically using a standard Metropolis-Hastings acceptance ratio.
+#' For the remainder of the iterations, the same process is followed
+#' but the \eqn{\sigma} parameter for the proposal density is the standard
+#' deviation of the previous 5000 values of the parameter.
+#' A matrix is returned giving the value of every parameter at
 #' every iteration.
 #'
 #' @section Warning:
@@ -231,8 +129,7 @@ ggumMC3 <- function(data, iters, r_one, r_two, N, W, Temps = NULL) {
 #'   matrix gives the value of a parameter for a particular iteration of the
 #'   MCMC algorithm.
 #'
-#' @seealso \code{\link{ggumProbability}}, \code{\link{acceptance}},
-#'   \code{\link{getPrior}}, \code{\link{proposer}}
+#' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMC3}}
 #'
 #' @references Roberts, James S., John R. Donoghue, and James E. Laughlin.
 #'   2000. ``A General Item Response Theory Model for Unfolding
@@ -321,67 +218,6 @@ probCol <- function(choices, thetas, a, d, t) {
 
 probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
-}
-
-#' The location-scale T distribution.
-#'
-#' Density, distribution function, quantile function, and random number
-#' generation for the T distribution shifted by location parameter 'mu' and
-#' scaled by 'sigma'.
-#'
-#' @param n A numeric vector of length one; the number of numbers to generate
-#' @param x,q A numeric vector of the quantiles of interest
-#' @param p A numeric vector of the probabilities of interest
-#' @param df A numeric vector of length one; the degrees of freedom of the
-#'   distribution
-#' @param sigma A numeric vector of length one; the scale parameter
-#' @param mu A numeric vector of length one; the shifting parameter
-#'
-#' @return 'dlst' gives the density, 'plst' gives the distribution function,
-#'     'qlst' gives the quantile function, and 'rlst' generates random numbers
-#'     from the distribution
-#'     
-#' @references Jackman, Simon. 2009. \emph{Bayesian Analysis for the Social
-#'     Sciences}. Wiley. p. 507.
-#'
-#' @name Location-Scale T
-#' @rdname scaledT-dist
-NULL
-
-#' @rdname scaledT-dist
-#' @export
-dlst <- function(x, df, mu, sigma) {
-    .Call('_ggum_dlst', PACKAGE = 'ggum', x, df, mu, sigma)
-}
-
-#' @rdname scaledT-dist
-#' @export
-plst <- function(q, df, mu, sigma) {
-    .Call('_ggum_plst', PACKAGE = 'ggum', q, df, mu, sigma)
-}
-
-#' @rdname scaledT-dist
-#' @export
-qlst <- function(p, df, mu, sigma) {
-    .Call('_ggum_qlst', PACKAGE = 'ggum', p, df, mu, sigma)
-}
-
-#' @rdname scaledT-dist
-#' @export
-rlst <- function(n, df, mu, sigma) {
-    .Call('_ggum_rlst', PACKAGE = 'ggum', n, df, mu, sigma)
-}
-
-d_lst <- function(x, df, mu, sigma) {
-    .Call('_ggum_d_lst', PACKAGE = 'ggum', x, df, mu, sigma)
-}
-
-p_lst <- function(q, df, mu, sigma) {
-    .Call('_ggum_p_lst', PACKAGE = 'ggum', q, df, mu, sigma)
-}
-
-r_lst <- function(df, mu, sigma) {
-    .Call('_ggum_r_lst', PACKAGE = 'ggum', df, mu, sigma)
 }
 
 update_theta_neg_MCMC <- function(responses, cv, alphas, deltas, taus, SD) {
