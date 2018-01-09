@@ -9,7 +9,7 @@
 #' @export
 estModes <- function(x, n=1) {
   # Adapted from https://stackoverflow.com/questions/27418461/
-  d <- density(x)
+  d <- stats::density(x)
   modeInds <- NULL
   for ( i in 2:(length(d$y)-1) ){
     if ( (d$y[i] > d$y[i-1]) & (d$y[i] > d$y[i+1]) ) {

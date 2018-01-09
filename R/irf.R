@@ -19,11 +19,11 @@
 irf <- function(a, d, t, from=-3, to=3, by=0.01, sub=''){
   th <- seq(from=from, to=to, by=by)
   K <- length(t)
-  plot(th, sapply(th, function(x) ggumProbability(1, x, a, d, t)),
+  graphics::plot(th, sapply(th, function(x) ggumProbability(1, x, a, d, t)),
        type='l', xlab=expression(theta), ylab=expression(P[ij](k)),
        main=paste('Item Response Function', sub),
        xlim=c(from, to), ylim=c(0, 1))
   for ( i in 2:K ) {
-    lines(th, sapply(th, function(x) ggumProbability(i, x, a, d, t)), lty=i)
+    graphics::lines(th, sapply(th, function(x) ggumProbability(i, x, a, d, t)), lty=i)
   }
 }

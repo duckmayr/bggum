@@ -8,7 +8,8 @@ Description: ggum provides R tools for the generalized graded unfolding model.
 Depends:
     R (>= 3.0.0)
 Imports:
-    methods,
+    stats,
+    graphics,
     Rcpp (>= 0.12.14)
 LinkingTo: Rcpp
 License: GPL (>= 2)
