@@ -16,11 +16,12 @@ using namespace Rcpp;
 
 
 // The Generalized Graded Unfolding Model (GGUM)
-double prob(int choice, double th, double a, double d, NumericVector t);
-NumericVector probCol(IntegerVector choices, NumericVector thetas,
-        double a, double d, NumericVector t);
-NumericVector probRow(IntegerVector choices, double th,
-        NumericVector a, NumericVector d, List t);
+double prob(const int choice, const double th, const double a,
+        const double d, const NumericVector& t);
+NumericVector probCol(const IntegerVector& choices, const NumericVector& thetas,
+        const double a, const double d, const NumericVector& t);
+NumericVector probRow(const IntegerVector& choices, const double th,
+        const NumericVector& a, const NumericVector& d, const List& t);
 NumericVector ggumProbability(NumericVector k, double theta, double alpha,
         double delta, NumericVector tau);
 // pv stands for proposed value, cv for current value

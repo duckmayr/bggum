@@ -314,46 +314,46 @@ BEGIN_RCPP
 END_RCPP
 }
 // prob
-double prob(int choice, double th, double a, double d, NumericVector t);
+double prob(const int choice, const double th, const double a, const double d, const NumericVector& t);
 RcppExport SEXP _ggum_prob(SEXP choiceSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type choice(choiceSEXP);
-    Rcpp::traits::input_parameter< double >::type th(thSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type d(dSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    Rcpp::traits::input_parameter< const int >::type choice(choiceSEXP);
+    Rcpp::traits::input_parameter< const double >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(prob(choice, th, a, d, t));
     return rcpp_result_gen;
 END_RCPP
 }
 // probCol
-NumericVector probCol(IntegerVector choices, NumericVector thetas, double a, double d, NumericVector t);
+NumericVector probCol(const IntegerVector& choices, const NumericVector& thetas, const double a, const double d, const NumericVector& t);
 RcppExport SEXP _ggum_probCol(SEXP choicesSEXP, SEXP thetasSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type d(dSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< const double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(probCol(choices, thetas, a, d, t));
     return rcpp_result_gen;
 END_RCPP
 }
 // probRow
-NumericVector probRow(IntegerVector choices, double th, NumericVector a, NumericVector d, List t);
+NumericVector probRow(const IntegerVector& choices, const double th, const NumericVector& a, const NumericVector& d, const List& t);
 RcppExport SEXP _ggum_probRow(SEXP choicesSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type choices(choicesSEXP);
-    Rcpp::traits::input_parameter< double >::type th(thSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
-    Rcpp::traits::input_parameter< List >::type t(tSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type choices(choicesSEXP);
+    Rcpp::traits::input_parameter< const double >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const List& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(probRow(choices, th, a, d, t));
     return rcpp_result_gen;
 END_RCPP

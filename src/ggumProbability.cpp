@@ -89,7 +89,8 @@ NumericVector ggumProbability(NumericVector k, double theta, double alpha,
 
 
 //[[Rcpp::export]]
-double prob(int choice, double th, double a, double d, NumericVector t){
+double prob(const int choice, const double th, const double a,
+        const double d, const NumericVector& t){
     int K = t.size();
     double result = 0, numerator = 0, denominator = 0, tSum = 0;
     for ( int k = 0; k < K; ++k ) {
@@ -105,8 +106,8 @@ double prob(int choice, double th, double a, double d, NumericVector t){
 }
 
 //[[Rcpp::export]]
-NumericVector probCol(IntegerVector choices, NumericVector thetas,
-        double a, double d, NumericVector t){
+NumericVector probCol(const IntegerVector& choices, const NumericVector& thetas,
+        const double a, const double d, const NumericVector& t){
     int n = choices.size();
     int K = t.size();
     NumericVector result(n);
@@ -126,14 +127,13 @@ NumericVector probCol(IntegerVector choices, NumericVector thetas,
             }
         }
         result[i] /= denominator;
-        denominator = 0;
     }
     return result;
 }
 
 //[[Rcpp::export]]
-NumericVector probRow(IntegerVector choices, double th,
-        NumericVector a, NumericVector d, List t){
+NumericVector probRow(const IntegerVector& choices, const double th,
+        const NumericVector& a, const NumericVector& d, const List& t){
     int m = choices.size();
     NumericVector result(m);
     for ( int j = 0; j < m; ++j ){
@@ -155,7 +155,6 @@ NumericVector probRow(IntegerVector choices, double th,
             }
         }
         result[j] /= denominator;
-        denominator = 0;
     }
     return result;
 }
