@@ -31,36 +31,6 @@ double update_theta_MCMC(const IntegerVector& responses, const double cv,
 }
 
 //[[Rcpp::export]]
-double update_theta_neg_MCMC(IntegerVector responses, double cv,
-        NumericVector alphas, NumericVector deltas, List taus, double SD){
-    double pv = R::rnorm(cv, SD);
-    double pvPrior = R::dnorm(pv, 0.0, 1.0, 0);
-    double cvPrior = R::dnorm(cv, 0.0, 1.0, 0);
-    double cvL = sum(log(probRow(responses, cv, alphas, deltas, taus)));
-    double pvL = sum(log(probRow(responses, pv, alphas, deltas, taus)));
-    double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1.0 || R::runif(0.0, 1.0) < acceptRate) {
-        return pv;
-    }
-    return cv;
-}
-
-//[[Rcpp::export]]
-double update_theta_pos_MCMC(IntegerVector responses, double cv,
-        NumericVector alphas, NumericVector deltas, List taus, double SD){
-    double pv = R::rnorm(cv, SD);
-    double pvPrior = R::dnorm(pv, 0.0, 1.0, 0);
-    double cvPrior = R::dnorm(cv, 0.0, 1.0, 0);
-    double cvL = sum(log(probRow(responses, cv, alphas, deltas, taus)));
-    double pvL = sum(log(probRow(responses, pv, alphas, deltas, taus)));
-    double acceptRate = exp(pvL - cvL) * (pvPrior/cvPrior);
-    if ( acceptRate > 1.0 || R::runif(0.0, 1.0) < acceptRate) {
-        return pv;
-    }
-    return cv;
-}
-
-//[[Rcpp::export]]
 double update_alpha_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double cv, const double delta,
         const NumericVector& taus, const double SD){

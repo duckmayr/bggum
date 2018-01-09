@@ -111,17 +111,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector, int iterations, int low, int high);
-RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP KvectorSEXP, SEXP iterationsSEXP, SEXP lowSEXP, SEXP highSEXP) {
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations);
+RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP iterationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type responseMatrix(responseMatrixSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type Kvector(KvectorSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< int >::type low(lowSEXP);
-    Rcpp::traits::input_parameter< int >::type high(highSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, Kvector, iterations, low, high));
+    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, iterations));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -182,38 +179,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const List& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(probRow(choices, th, a, d, t));
-    return rcpp_result_gen;
-END_RCPP
-}
-// update_theta_neg_MCMC
-double update_theta_neg_MCMC(IntegerVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
-RcppExport SEXP _ggum_update_theta_neg_MCMC(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_theta_neg_MCMC(responses, cv, alphas, deltas, taus, SD));
-    return rcpp_result_gen;
-END_RCPP
-}
-// update_theta_pos_MCMC
-double update_theta_pos_MCMC(IntegerVector responses, double cv, NumericVector alphas, NumericVector deltas, List taus, double SD);
-RcppExport SEXP _ggum_update_theta_pos_MCMC(SEXP responsesSEXP, SEXP cvSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP SDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type responses(responsesSEXP);
-    Rcpp::traits::input_parameter< double >::type cv(cvSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    Rcpp::traits::input_parameter< double >::type SD(SDSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_theta_pos_MCMC(responses, cv, alphas, deltas, taus, SD));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -344,13 +309,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggum_d_4beta", (DL_FUNC) &_ggum_d_4beta, 5},
     {"_ggum_r_4beta", (DL_FUNC) &_ggum_r_4beta, 4},
     {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 5},
-    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 5},
+    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 2},
     {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},
     {"_ggum_prob", (DL_FUNC) &_ggum_prob, 5},
     {"_ggum_probCol", (DL_FUNC) &_ggum_probCol, 5},
     {"_ggum_probRow", (DL_FUNC) &_ggum_probRow, 5},
-    {"_ggum_update_theta_neg_MCMC", (DL_FUNC) &_ggum_update_theta_neg_MCMC, 6},
-    {"_ggum_update_theta_pos_MCMC", (DL_FUNC) &_ggum_update_theta_pos_MCMC, 6},
     {"_ggum_update_alpha_MCMC", (DL_FUNC) &_ggum_update_alpha_MCMC, 6},
     {"_ggum_update_delta_MCMC", (DL_FUNC) &_ggum_update_delta_MCMC, 6},
     {"_ggum_update_tau_MCMC", (DL_FUNC) &_ggum_update_tau_MCMC, 7},

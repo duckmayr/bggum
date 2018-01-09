@@ -4,24 +4,15 @@
 \alias{ggumMCMC}
 \title{GGUM MCMC Sampler}
 \usage{
-ggumMCMC(responseMatrix, Kvector, iterations, low, high)
+ggumMCMC(responseMatrix, iterations)
 }
 \arguments{
 \item{responseMatrix}{A numeric matrix giving the response by each
 respondent to each item}
 
-\item{Kvector}{A numeric vector of length m (the number of items), each
-element j of which gives the number of options (K) for item j}
-
 \item{iterations}{A numeric vector of length one; the number of iterations
 (NOTE: \code{iterations} should be at least 10000, and preferably around
 25000, though only values of 5000 or less will cause an error)}
-
-\item{low}{A numeric vector of length one giving the row number for a
-respondent whose theta parameter will be restricted to be negative}
-
-\item{high}{A numeric vector of length one giving the row number for a
-respondent whose theta parameter will be restricted to be positive}
 }
 \value{
 A chain matrix; a numeric matrix with \code{iterations} rows and

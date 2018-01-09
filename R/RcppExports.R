@@ -114,15 +114,9 @@ ggumMC3 <- function(data, iters, N, W, Temps = NULL) {
 #'
 #' @param responseMatrix A numeric matrix giving the response by each
 #'   respondent to each item
-#' @param Kvector A numeric vector of length m (the number of items), each
-#'   element j of which gives the number of options (K) for item j
 #' @param iterations A numeric vector of length one; the number of iterations
 #'   (NOTE: \code{iterations} should be at least 10000, and preferably around
 #'   25000, though only values of 5000 or less will cause an error)
-#' @param low A numeric vector of length one giving the row number for a
-#'   respondent whose theta parameter will be restricted to be negative
-#' @param high A numeric vector of length one giving the row number for a
-#'   respondent whose theta parameter will be restricted to be positive
 #'
 #' @return A chain matrix; a numeric matrix with \code{iterations} rows and
 #'   one column for every parameter of the model, so that each element of the
@@ -141,8 +135,8 @@ ggumMC3 <- function(data, iters, N, W, Temps = NULL) {
 #'   Psychological Measurement} 30(3): 216--232.
 #'   algorithm
 #' @export
-ggumMCMC <- function(responseMatrix, Kvector, iterations, low, high) {
-    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', responseMatrix, Kvector, iterations, low, high)
+ggumMCMC <- function(responseMatrix, iterations) {
+    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', responseMatrix, iterations)
 }
 
 #' GGUM Probability Function
@@ -218,14 +212,6 @@ probCol <- function(choices, thetas, a, d, t) {
 
 probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
-}
-
-update_theta_neg_MCMC <- function(responses, cv, alphas, deltas, taus, SD) {
-    .Call('_ggum_update_theta_neg_MCMC', PACKAGE = 'ggum', responses, cv, alphas, deltas, taus, SD)
-}
-
-update_theta_pos_MCMC <- function(responses, cv, alphas, deltas, taus, SD) {
-    .Call('_ggum_update_theta_pos_MCMC', PACKAGE = 'ggum', responses, cv, alphas, deltas, taus, SD)
 }
 
 update_alpha_MCMC <- function(responses, thetas, cv, delta, taus, SD) {
