@@ -77,7 +77,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
             double temp = temps[t];
             for ( int i = 0; i < n; ++i ) { // for each respondent
                 double th = th_t[i];
-                th = updateTheta(th, data(i, _), a_t, d_t, t_t, temp);
+                th = update_theta_MC3(th, data(i, _), a_t, d_t, t_t, temp, 1.0);
                 thetas(t, i) = th;
             }
             for ( int j = 0; j < m; ++j) { // for each item
@@ -85,11 +85,12 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int r_one, int r_two,
                 double d_j = d_t[j];
                 NumericVector t_j = as<NumericVector>(t_t[j]);
                 IntegerVector answers = data(_, j);
-                d_j = updateDelta(d_j, answers, th_t, a_j, t_j, temp);
+                d_j = update_delta_MC3(d_j, answers, th_t, a_j, t_j, temp, 0.2);
                 for ( int k = 1; k < K[j]; ++k ) {
-                    t_j[k] = updateTau(k, answers, th_t, a_j, d_j, t_j, temp);
+                    t_j[k] = update_tau_MC3(k, answers, th_t, a_j, d_j, t_j,
+                                            temp, 0.2);
                 }
-                a_j = updateAlpha(a_j, answers, th_t, d_j, t_j, temp);
+                a_j = update_alpha_MC3(a_j, answers, th_t, d_j, t_j, temp, 0.2);
                 deltas(t, j) = d_j;
                 t_t[j] = t_j;
                 alphas(t, j) = a_j;

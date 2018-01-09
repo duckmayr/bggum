@@ -16,6 +16,7 @@ using namespace Rcpp;
 
 
 // The Generalized Graded Unfolding Model (GGUM)
+// Probability functions:
 double prob(const int choice, const double th, const double a,
         const double d, const NumericVector& t);
 NumericVector probCol(const IntegerVector& choices, const NumericVector& thetas,
@@ -24,35 +25,37 @@ NumericVector probRow(const IntegerVector& choices, const double th,
         const NumericVector& a, const NumericVector& d, const List& t);
 NumericVector ggumProbability(NumericVector k, double theta, double alpha,
         double delta, NumericVector tau);
-// pv stands for proposed value, cv for current value
-double acceptanceTheta(IntegerVector responses, double cv,
+// Updating functions (pv stands for proposed value, cv for current value):
+// For MCMC:
+double update_theta_MCMC(const IntegerVector& responses, const double cv,
+        const NumericVector& alphas, const NumericVector& deltas,
+        const List& taus, const double SD);
+double update_theta_neg_MCMC(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceThetaNeg(IntegerVector responses, double cv,
+double update_theta_pos_MCMC(IntegerVector responses, double cv,
         NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceThetaPos(IntegerVector responses, double cv,
-        NumericVector alphas, NumericVector deltas, List taus, double SD);
-double acceptanceAlpha(IntegerVector responses, NumericVector thetas,
-        double cv, double delta, NumericVector taus, double SD);
-double acceptanceDelta(IntegerVector responses, NumericVector thetas,
-        double alpha, double cv, NumericVector taus, double SD);
-double acceptanceTau(int k, IntegerVector responses, NumericVector thetas,
-        double alpha, double delta, NumericVector taus, double SD);
-NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
-                       int iterations, int low, int high);
-double dhnormpos(double x);
-double dhnormneg(double x);
-double updateTheta(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp);
-double updateThetaPos(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp);
-double updateThetaNeg(double cv, IntegerVector choices, NumericVector a,
-        NumericVector d, List t, double temp);
-double updateAlpha(double cv, IntegerVector choices, NumericVector th,
-        double d, NumericVector t, double temp);
-double updateDelta(double cv, IntegerVector choices, NumericVector th,
-        double a, NumericVector t, double temp);
-double updateTau(int k, IntegerVector choices, NumericVector th,
-        double a, double d, NumericVector t, double temp);
+double update_alpha_MCMC(const IntegerVector& responses,
+        const NumericVector& thetas, const double cv, const double delta,
+        const NumericVector& taus, const double SD);
+double update_delta_MCMC(const IntegerVector& responses,
+        const NumericVector& thetas, const double alpha, const double cv,
+        const NumericVector& taus, const double SD);
+double update_tau_MCMC(const int k, const IntegerVector& responses,
+        const NumericVector& thetas, const double alpha, const double delta,
+        const NumericVector& taus, const double SD);
+// For MC3:
+double update_theta_MC3(const double cv, const IntegerVector& choices,
+        const NumericVector& a, const NumericVector& d, const List& t,
+        const double temp, const double SD);
+double update_alpha_MC3(const double cv, const IntegerVector& choices,
+        const NumericVector& th, const double d, const NumericVector& t,
+        const double temp, const double SD);
+double update_delta_MC3(const double cv, const IntegerVector& choices,
+        const NumericVector& th, const double a, const NumericVector& t,
+        const double temp, const double SD);
+double update_tau_MC3(const int k, const IntegerVector& choices,
+        const NumericVector& th, const double a, const double d,
+        const NumericVector& t, const double temp, const double SD);
 
 
 // The Four Parameter Beta Distribution

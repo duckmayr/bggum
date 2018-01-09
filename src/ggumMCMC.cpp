@@ -120,11 +120,11 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
     // For the first 5000 iterations we use a fixed sigma for proposals:
     for ( int iter = 0; iter < 5000; iter++ ) {
         double theta = thetas[low];
-        thetas[low] = acceptanceThetaNeg(responseMatrix(low, _), theta,
+        thetas[low] = update_theta_neg_MCMC(responseMatrix(low, _), theta,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, low) = thetas[low];
         theta = thetas[high];
-        thetas[high] = acceptanceThetaPos(responseMatrix(high, _), theta,
+        thetas[high] = update_theta_pos_MCMC(responseMatrix(high, _), theta,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, high) = thetas[high];
         for ( int ind = 0; ind < n-2; ind++ ) {
@@ -132,7 +132,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             // Copy the parameter of interest:
             double theta = thetas[i];
             // Replace it (or not):
-            thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
+            thetas[i] = update_theta_MCMC(responseMatrix(i, _), theta, alphas,
                     deltas, taus, 1);
             // And store the parameter value for this iteration in the matrix:
             chainMatrix(iter, i) = thetas[i];
@@ -140,14 +140,14 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
         for ( int j = 0; j < m; j++ ) {
             double alpha = alphas[j];
             double delta = deltas[j];
-            alphas[j] = acceptanceAlpha(responseMatrix(_, j), thetas, alpha,
+            alphas[j] = update_alpha_MCMC(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], 1);
             chainMatrix(iter, j+n) = alphas[j];
         }
         for ( int j = 0; j < m; j++ ) {
             double alpha = alphas[j];
             double delta = deltas[j];
-            deltas[j] = acceptanceDelta(responseMatrix(_, j), thetas, alpha,
+            deltas[j] = update_delta_MCMC(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], 1);
             chainMatrix(iter, j+n+m) = deltas[j];
         }
@@ -162,7 +162,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             int K = Kvector[j];
             NumericVector thisTau = taus[j];
             for ( int k = 1; k < K; k++ ) {
-                thisTau[k] = acceptanceTau(k, responseMatrix(_, j), thetas,
+                thisTau[k] = update_tau_MCMC(k, responseMatrix(_, j), thetas,
                         alpha, delta, thisTau, 1);
                 chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
             }
@@ -179,13 +179,13 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
         double theta = thetas[low];
         NumericVector pastDraws = chainMatrix(_, low);
         double SD = sd(pastDraws[Range(iter-5000, iter)]);
-        thetas[low] = acceptanceThetaNeg(responseMatrix(low, _), theta,
+        thetas[low] = update_theta_neg_MCMC(responseMatrix(low, _), theta,
                 alphas, deltas, taus, SD);
         chainMatrix(iter, low) = thetas[low];
         theta = thetas[high];
         pastDraws = chainMatrix(_, high);
         SD = sd(pastDraws[Range(iter-5000, iter)]);
-        thetas[high] = acceptanceThetaPos(responseMatrix(high, _), theta,
+        thetas[high] = update_theta_pos_MCMC(responseMatrix(high, _), theta,
                 alphas, deltas, taus, 1);
         chainMatrix(iter, high) = thetas[high];
         for ( int ind = 0; ind < n-2; ind++ ) {
@@ -193,7 +193,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             double theta = thetas[i];
             NumericVector pastDraws = chainMatrix(_, i);
             double SD = sd(pastDraws[Range(iter-5000, iter)]);
-            thetas[i] = acceptanceTheta(responseMatrix(i, _), theta, alphas,
+            thetas[i] = update_theta_MCMC(responseMatrix(i, _), theta, alphas,
                     deltas, taus, SD);
             chainMatrix(iter, i) = thetas[i];
         }
@@ -202,7 +202,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             double delta = deltas[j];
             NumericVector pastDraws = chainMatrix(_, j+n);
             double SD = sd(pastDraws[Range(iter-5000, iter)]);
-            alphas[j] = acceptanceAlpha(responseMatrix(_, j), thetas, alpha,
+            alphas[j] = update_alpha_MCMC(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], SD);
             chainMatrix(iter, j+n) = alphas[j];
         }
@@ -211,7 +211,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             double delta = deltas[j];
             NumericVector pastDraws = chainMatrix(_, j+n+m);
             double SD = sd(pastDraws[Range(iter-5000, iter)]);
-            deltas[j] = acceptanceDelta(responseMatrix(_, j), thetas, alpha,
+            deltas[j] = update_delta_MCMC(responseMatrix(_, j), thetas, alpha,
                     delta, taus[j], SD);
             chainMatrix(iter, j+n+m) = deltas[j];
         }
@@ -224,7 +224,7 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, IntegerVector Kvector,
             for ( int k = 1; k < K; k++ ) {
                 NumericVector pastDraws = chainMatrix(_, n+Ksum+k+(2*m));
                 double SD = sd(pastDraws[Range(iter-5000, iter)]);
-                thisTau[k] = acceptanceTau(k, responseMatrix(_, j), thetas,
+                thisTau[k] = update_tau_MCMC(k, responseMatrix(_, j), thetas,
                         alpha, delta, thisTau, SD);
                 chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
             }
