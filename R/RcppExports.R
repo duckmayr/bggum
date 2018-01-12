@@ -117,6 +117,9 @@ ggumMC3 <- function(data, iters, N, W, Temps = NULL) {
 #' @param iterations A numeric vector of length one; the number of iterations
 #'   (NOTE: \code{iterations} should be at least 10000, and preferably around
 #'   25000, though only values of 5000 or less will cause an error)
+#' @param burn_iterations A numeric vector of length one; the number of
+#'   "burn-in" iterations to run, during which parameter draws are not
+#'   stored
 #'
 #' @return A chain matrix; a numeric matrix with \code{iterations} rows and
 #'   one column for every parameter of the model, so that each element of the
@@ -135,8 +138,8 @@ ggumMC3 <- function(data, iters, N, W, Temps = NULL) {
 #'   Psychological Measurement} 30(3): 216--232.
 #'   algorithm
 #' @export
-ggumMCMC <- function(responseMatrix, iterations) {
-    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', responseMatrix, iterations)
+ggumMCMC <- function(responseMatrix, iterations, burn_iterations) {
+    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', responseMatrix, iterations, burn_iterations)
 }
 
 #' GGUM Probability Function
@@ -212,6 +215,10 @@ probCol <- function(choices, thetas, a, d, t) {
 
 probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
+}
+
+tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m) {
+    .Call('_ggum_tune_proposals', PACKAGE = 'ggum', responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m)
 }
 
 update_alpha_MCMC <- function(responses, thetas, cv, delta, taus, SD) {

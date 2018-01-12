@@ -111,14 +111,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations);
-RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP iterationsSEXP) {
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations, int burn_iterations);
+RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP iterationsSEXP, SEXP burn_iterationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type responseMatrix(responseMatrixSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, iterations));
+    Rcpp::traits::input_parameter< int >::type burn_iterations(burn_iterationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, iterations, burn_iterations));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -179,6 +180,25 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const List& >::type t(tSEXP);
     rcpp_result_gen = Rcpp::wrap(probRow(choices, th, a, d, t));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tune_proposals
+List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas, NumericVector& alphas, NumericVector& deltas, List& taus, const IntegerVector& K, const int burn_iters, int n, int m);
+RcppExport SEXP _ggum_tune_proposals(SEXP responseMatrixSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP burn_itersSEXP, SEXP nSEXP, SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type responseMatrix(responseMatrixSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List& >::type taus(tausSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type K(KSEXP);
+    Rcpp::traits::input_parameter< const int >::type burn_iters(burn_itersSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(tune_proposals(responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -309,11 +329,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggum_d_4beta", (DL_FUNC) &_ggum_d_4beta, 5},
     {"_ggum_r_4beta", (DL_FUNC) &_ggum_r_4beta, 4},
     {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 5},
-    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 2},
+    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 3},
     {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},
     {"_ggum_prob", (DL_FUNC) &_ggum_prob, 5},
     {"_ggum_probCol", (DL_FUNC) &_ggum_probCol, 5},
     {"_ggum_probRow", (DL_FUNC) &_ggum_probRow, 5},
+    {"_ggum_tune_proposals", (DL_FUNC) &_ggum_tune_proposals, 9},
     {"_ggum_update_alpha_MCMC", (DL_FUNC) &_ggum_update_alpha_MCMC, 6},
     {"_ggum_update_delta_MCMC", (DL_FUNC) &_ggum_update_delta_MCMC, 6},
     {"_ggum_update_tau_MCMC", (DL_FUNC) &_ggum_update_tau_MCMC, 7},

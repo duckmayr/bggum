@@ -56,7 +56,10 @@ double update_delta_MC3(const double cv, const IntegerVector& choices,
 double update_tau_MC3(const int k, const IntegerVector& choices,
         const NumericVector& th, const double a, const double d,
         const NumericVector& t, const double temp, const double SD);
-
+// Proposal tuning function
+List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
+        NumericVector& alphas, NumericVector& deltas, List& taus,
+        const IntegerVector& K, const int burn_iters, int n, int m);
 
 // The Four Parameter Beta Distribution
 NumericVector d4beta(NumericVector x, double shape1, double shape2,
