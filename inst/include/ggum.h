@@ -25,6 +25,12 @@ NumericVector probRow(const IntegerVector& choices, const double th,
         const NumericVector& a, const NumericVector& d, const List& t);
 NumericVector ggumProbability(NumericVector k, double theta, double alpha,
         double delta, NumericVector tau);
+NumericVector log_probCol(const IntegerVector& choices,
+        const NumericVector& thetas, const double a, const double d,
+        const NumericVector& t);
+NumericVector log_probRow(const IntegerVector& choices, const double th,
+        const NumericVector& a, const NumericVector& d, const List& t);
+
 // Updating functions (pv stands for proposed value, cv for current value):
 // For MCMC:
 double update_theta_MCMC(const IntegerVector& responses, const double cv,

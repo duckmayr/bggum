@@ -217,6 +217,18 @@ probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
 }
 
+log_prob <- function(choice, th, a, d, t) {
+    .Call('_ggum_log_prob', PACKAGE = 'ggum', choice, th, a, d, t)
+}
+
+log_probCol <- function(choices, thetas, a, d, t) {
+    .Call('_ggum_log_probCol', PACKAGE = 'ggum', choices, thetas, a, d, t)
+}
+
+log_probRow <- function(choices, th, a, d, t) {
+    .Call('_ggum_log_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
+}
+
 tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m) {
     .Call('_ggum_tune_proposals', PACKAGE = 'ggum', responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m)
 }

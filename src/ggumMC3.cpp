@@ -118,11 +118,11 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
             NumericVector a2 = alphas(two, _);
             NumericVector d1 = deltas(one, _);
             NumericVector d2 = deltas(two, _);
-            P1 = sum(log(dnorm(th1, 0.0, 1.0)));
+            P1 = sum(dnorm(th1, 0.0, 1.0, true));
             P1 += sum(log(d4beta(a1, 1.5, 1.5, 0.25, 4)));
             P1 += sum(log(d4beta(d1, 2, 2, -5, 5)));
             List t1 = as<List>(taus[one]);
-            P2 = sum(log(dnorm(th2, 0.0, 1.0)));
+            P2 = sum(dnorm(th2, 0.0, 1.0, true));
             P2 += sum(log(d4beta(a2, 1.5, 1.5, 0.25, 4)));
             P2 += sum(log(d4beta(d2, 2, 2, -5, 5)));
             List t2 = as<List>(taus[two]);
@@ -136,8 +136,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
                     P2 += d_4beta(t_2j[k], 2, 2, -6, 6);
                 }
                 answers = data(_, j);
-                L1 += sum(log(probCol(answers, th1, a1[j], d1[j], t_1j)));
-                L2 += sum(log(probCol(answers, th2, a2[j], d2[j], t_2j)));
+                L1 += sum(log_probCol(answers, th1, a1[j], d1[j], t_1j));
+                L2 += sum(log_probCol(answers, th2, a2[j], d2[j], t_2j));
             }
             double T = temps[one] - temps[two];
             double Y = L2 + P2 - L1 - P1;
