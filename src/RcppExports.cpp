@@ -6,95 +6,6 @@
 
 using namespace Rcpp;
 
-// d4beta
-NumericVector d4beta(NumericVector x, double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_d4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d4beta(x, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p4beta
-NumericVector p4beta(NumericVector q, double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_p4beta(SEXP qSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p4beta(q, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// q4beta
-NumericVector q4beta(NumericVector p, double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_q4beta(SEXP pSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(q4beta(p, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r4beta
-NumericVector r4beta(int n, double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_r4beta(SEXP nSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r4beta(n, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// d_4beta
-double d_4beta(double x, double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_d_4beta(SEXP xSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(d_4beta(x, shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_4beta
-double r_4beta(double shape1, double shape2, double a, double b);
-RcppExport SEXP _ggum_r_4beta(SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_4beta(shape1, shape2, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // ggumMC3
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, Nullable<NumericVector> Temps);
 RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP TempsSEXP) {
@@ -367,12 +278,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ggum_d4beta", (DL_FUNC) &_ggum_d4beta, 5},
-    {"_ggum_p4beta", (DL_FUNC) &_ggum_p4beta, 5},
-    {"_ggum_q4beta", (DL_FUNC) &_ggum_q4beta, 5},
-    {"_ggum_r4beta", (DL_FUNC) &_ggum_r4beta, 5},
-    {"_ggum_d_4beta", (DL_FUNC) &_ggum_d_4beta, 5},
-    {"_ggum_r_4beta", (DL_FUNC) &_ggum_r_4beta, 4},
     {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 5},
     {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 3},
     {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},

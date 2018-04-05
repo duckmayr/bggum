@@ -34,14 +34,14 @@ double update_alpha_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double cv, const double delta,
         const NumericVector& taus, const double SD){
     double pv = R::rnorm(cv, SD);
-    double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4.0);
-    if ( pvPrior == 0.0 ) {
+    double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4.0, 1);
+    if ( pvPrior == R_NegInf ) {
         return cv;
     }
-    double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4.0);
+    double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4.0, 1);
     double cvL = sum(log_probCol(responses, thetas, cv, delta, taus));
     double pvL = sum(log_probCol(responses, thetas, pv, delta, taus));
-    double acceptRate = pvL - cvL + log(pvPrior) - log(cvPrior);
+    double acceptRate = pvL - cvL + pvPrior - cvPrior;
     if ( acceptRate > 0.0 || log(R::runif(0.0, 1.0)) < acceptRate) {
         return pv;
     }
@@ -53,14 +53,14 @@ double update_delta_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double alpha, const double cv,
         const NumericVector& taus, const double SD){
     double pv = R::rnorm(cv, SD);
-    double pvPrior = d_4beta(pv, 2.0, 2.0, -5.0, 5.0);
-    if ( pvPrior == 0.0 ) {
+    double pvPrior = d_4beta(pv, 2.0, 2.0, -5.0, 5.0, 1);
+    if ( pvPrior == R_NegInf ) {
         return cv;
     }
-    double cvPrior = d_4beta(cv, 2.0, 2.0, -5.0, 5.0);
+    double cvPrior = d_4beta(cv, 2.0, 2.0, -5.0, 5.0, 1);
     double cvL = sum(log_probCol(responses, thetas, alpha, cv, taus));
     double pvL = sum(log_probCol(responses, thetas, alpha, pv, taus));
-    double acceptRate = pvL - cvL + log(pvPrior) - log(cvPrior);
+    double acceptRate = pvL - cvL + pvPrior - cvPrior;
     if ( acceptRate > 0.0 || log(R::runif(0.0, 1.0)) < acceptRate) {
         return pv;
     }
@@ -77,14 +77,14 @@ double update_tau_MCMC(const int k, const IntegerVector& responses,
     // we can still compute probability of responses according to the GGUM
     // under the original tau vector
     pv[k] = R::rnorm(taus[k], SD);
-    double pvPrior = d_4beta(pv[k], 2.0, 2.0, -6.0, 6.0);
-    if ( pvPrior == 0.0 ) {
+    double pvPrior = d_4beta(pv[k], 2.0, 2.0, -6.0, 6.0, 1);
+    if ( pvPrior == R_NegInf ) {
         return taus[k];
     }
-    double cvPrior = d_4beta(taus[k], 2.0, 2.0, -6.0, 6.0);
+    double cvPrior = d_4beta(taus[k], 2.0, 2.0, -6.0, 6.0, 1);
     double cvL = sum(log_probCol(responses, thetas, alpha, delta, taus));
     double pvL = sum(log_probCol(responses, thetas, alpha, delta, pv));
-    double acceptRate = pvL - cvL + log(pvPrior) - log(cvPrior);
+    double acceptRate = pvL - cvL + pvPrior - cvPrior;
     if ( acceptRate > 0.0 || log(R::runif(0.0, 1.0)) < acceptRate) {
         return pv[k];
     }
@@ -98,11 +98,11 @@ double update_theta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& a, const NumericVector& d, const List& t,
         const double temp, const double SD){
     double pv = R::rnorm(cv, SD);
-    double cvPrior = R::dnorm(cv, 0.0, 1.0, 0);
-    double pvPrior = R::dnorm(pv, 0.0, 1.0, 0);
+    double cvPrior = R::dnorm(cv, 0.0, 1.0, 1);
+    double pvPrior = R::dnorm(pv, 0.0, 1.0, 1);
     double cvL = sum(log_probRow(choices, cv, a, d, t));
     double pvL = sum(log_probRow(choices, pv, a, d, t));
-    double r = temp * (pvL - cvL + log(pvPrior) - log(cvPrior));
+    double r = temp * (pvL - cvL + pvPrior - cvPrior);
     if ( r > 0.0 || log(R::runif(0.0, 1.0)) < r) {
         return pv;
     }
@@ -114,14 +114,14 @@ double update_alpha_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double d, const NumericVector& t,
         const double temp, const double SD){
     double pv = R::rnorm(cv, SD);
-    double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4.0);
+    double pvPrior = d_4beta(pv, 1.5, 1.5, 0.25, 4.0, 1);
     if ( pvPrior == 0.0 ) {
         return cv;
     }
-    double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4.0);
+    double cvPrior = d_4beta(cv, 1.5, 1.5, 0.25, 4.0, 1);
     double cvL = sum(log_probCol(choices, th, cv, d, t));
     double pvL = sum(log_probCol(choices, th, pv, d, t));
-    double r = temp * (pvL - cvL + log(pvPrior) - log(cvPrior));
+    double r = temp * (pvL - cvL + pvPrior - cvPrior);
     if ( r > 0.0 || log(R::runif(0.0, 1.0)) < r) {
         return pv;
     }
@@ -133,14 +133,14 @@ double update_delta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double a, const NumericVector& t,
         const double temp, const double SD){
     double pv = R::rnorm(cv, SD);
-    double pvPrior = d_4beta(pv, 2.0, 2.0, -5.0, 5.0);
+    double pvPrior = d_4beta(pv, 2.0, 2.0, -5.0, 5.0, 1);
     if ( pvPrior == 0.0 ) {
         return cv;
     }
-    double cvPrior = d_4beta(cv, 2.0, 2.0, -5.0, 5.0);
+    double cvPrior = d_4beta(cv, 2.0, 2.0, -5.0, 5.0, 1);
     double cvL = sum(log_probCol(choices, th, a, cv, t));
     double pvL = sum(log_probCol(choices, th, a, pv, t));
-    double r = temp * (pvL - cvL + log(pvPrior) - log(cvPrior));
+    double r = temp * (pvL - cvL + pvPrior - cvPrior);
     if ( r > 0.0 || log(R::runif(0.0, 1.0)) < r) {
         return pv;
     }
@@ -153,14 +153,14 @@ double update_tau_MC3(const int k, const IntegerVector& choices,
         const NumericVector& t, const double temp, const double SD){
     NumericVector pv = clone(t);
     pv[k] = R::rnorm(t[k], SD);
-    double pvPrior = d_4beta(pv[k], 2.0, 2.0, -6.0, 6.0);
+    double pvPrior = d_4beta(pv[k], 2.0, 2.0, -6.0, 6.0, 1);
     if ( pvPrior == 0.0 ) {
         return t[k];
     }
-    double cvPrior = d_4beta(t[k], 2.0, 2.0, -6.0, 6.0);
+    double cvPrior = d_4beta(t[k], 2.0, 2.0, -6.0, 6.0, 1);
     double cvL = sum(log_probCol(choices, th, a, d, t));
     double pvL = sum(log_probCol(choices, th, a, d, pv));
-    double r = temp * (pvL - cvL + log(pvPrior) - log(cvPrior));
+    double r = temp * (pvL - cvL + pvPrior - cvPrior);
     if ( r > 0.0 || log(R::runif(0.0, 1.0)) < r) {
         return pv[k];
     }

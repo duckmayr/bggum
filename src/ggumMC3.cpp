@@ -119,12 +119,12 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
             NumericVector d1 = deltas(one, _);
             NumericVector d2 = deltas(two, _);
             P1 = sum(dnorm(th1, 0.0, 1.0, true));
-            P1 += sum(log(d4beta(a1, 1.5, 1.5, 0.25, 4)));
-            P1 += sum(log(d4beta(d1, 2, 2, -5, 5)));
+            P1 += sum(d4beta(a1, 1.5, 1.5, 0.25, 4, true));
+            P1 += sum(d4beta(d1, 2, 2, -5, 5, true));
             List t1 = as<List>(taus[one]);
             P2 = sum(dnorm(th2, 0.0, 1.0, true));
-            P2 += sum(log(d4beta(a2, 1.5, 1.5, 0.25, 4)));
-            P2 += sum(log(d4beta(d2, 2, 2, -5, 5)));
+            P2 += sum(d4beta(a2, 1.5, 1.5, 0.25, 4, true));
+            P2 += sum(d4beta(d2, 2, 2, -5, 5, true));
             List t2 = as<List>(taus[two]);
             IntegerVector answers(n);
             NumericVector t_1j(m), t_2j(m);
@@ -132,8 +132,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
                 t_1j = as<NumericVector>(t1[j]);
                 t_2j = as<NumericVector>(t2[j]);
                 for ( int k = 1; k < t_1j.size(); ++k ) {
-                    P1 += d_4beta(t_1j[k], 2, 2, -6, 6);
-                    P2 += d_4beta(t_2j[k], 2, 2, -6, 6);
+                    P1 += d_4beta(t_1j[k], 2, 2, -6, 6, 1);
+                    P2 += d_4beta(t_2j[k], 2, 2, -6, 6, 1);
                 }
                 answers = data(_, j);
                 L1 += sum(log_probCol(answers, th1, a1[j], d1[j], t_1j));

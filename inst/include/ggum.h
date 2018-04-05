@@ -1,7 +1,8 @@
 #ifndef GGUM_H
 #define GGUM_H
+#define RCPPDIST_DONT_USE_ARMA
 
-#include <Rcpp.h>
+#include <RcppDist.h>
 
 using namespace Rcpp;
 
@@ -66,19 +67,6 @@ double update_tau_MC3(const int k, const IntegerVector& choices,
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         NumericVector& alphas, NumericVector& deltas, List& taus,
         const IntegerVector& K, const int burn_iters, int n, int m);
-
-// The Four Parameter Beta Distribution
-NumericVector d4beta(NumericVector x, double shape1, double shape2,
-        double a, double b);
-NumericVector p4beta(NumericVector q, double shape1, double shape2,
-        double a, double b);
-NumericVector q4beta(NumericVector p, double shape1, double shape2,
-        double a, double b);
-NumericVector r4beta(int n, double shape1, double shape2, double a, double b);
-// The following scalar versions won't be available to the user
-// They're just for faster calculation in the MCMC sampler
-double d_4beta(double x, double shape1, double shape2, double a, double b);
-double r_4beta(double shape1, double shape2, double a, double b);
 
 
 # endif

@@ -11,7 +11,8 @@ Imports:
     stats,
     graphics,
     Rcpp (>= 0.12.14)
-LinkingTo: Rcpp
+LinkingTo: Rcpp,
+    RcppDist
 License: GPL (>= 2)
 Suggests:
     devtools,
@@ -21,4 +22,5 @@ Collate:
     'RcppExports.R'
     'irf.R'
     'estModes.R'
+Remotes: duckmayr/RcppDist
 RoxygenNote: 6.0.1
