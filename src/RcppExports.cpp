@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, Nullable<NumericVector> Temps);
-RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP TempsSEXP) {
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, NumericVector temps);
+RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP tempsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -16,8 +16,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Nullable<NumericVector> >::type Temps(TempsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, N, W, Temps));
+    Rcpp::traits::input_parameter< NumericVector >::type temps(tempsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, N, W, temps));
     return rcpp_result_gen;
 END_RCPP
 }

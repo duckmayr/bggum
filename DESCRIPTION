@@ -20,6 +20,8 @@ Suggests:
 Collate:
     'ggum-package.R'
     'RcppExports.R'
+    'ggumMCMC.R'
+    'ggumMC3.R'
     'irf.R'
     'estModes.R'
 Remotes: duckmayr/RcppDist

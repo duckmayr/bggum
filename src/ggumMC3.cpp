@@ -2,42 +2,13 @@
 
 using namespace Rcpp;
 
-//' GGUM MC3
-//'
-//' Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
-//'
-//' @param data A numeric matrix giving the individuals' responses
-//' @param iters A vector of length one giving the number of iterations
-//' @param N The number of chains
-//' @param W The period by which to attempt chain swaps; e.g. if W = 100,
-//'   a state swap will be proposed between two randomly selected chains
-//'   every 100 iterations
-//' @param Temps An optional provision of the temperatures for the chains;
-//'   if not provided, each temperature T_t for t < N is given by
-//'   T_{t+1} * (t + 1), and T_N = 1.
-//'
-//' @return A numeric matrix giving the parameter values at each iteration
-//'   for the cold chain
-//'
-//' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMC3}}
-//'
-//' @export
-//[[Rcpp::export]]
+//[[Rcpp::export(.ggumMC3)]]
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
-        Nullable<NumericVector> Temps = R_NilValue){
+        NumericVector temps){
     // set up temperatures
     int howmanyswaps = 0, coldswaps = 0, coldattempts = 0;
     int one = 0, two = 1;
     IntegerVector chains = seq_len(N) - 1;
-    NumericVector temps(N, 1.0);
-    if ( Temps.isNull() ) {
-        for ( int t = 1; t < N; ++t ) {
-            temps[t] = 1.0 / (temps[t-1] * (t + 1));
-        }
-    }
-    else {
-        temps = as<NumericVector>(Temps);
-    }
     // set up initial values
     int n = data.nrow();
     int m = data.ncol();
@@ -179,7 +150,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
         }
     }
     // return the cold chain
-    Rcout << howmanyswaps << " successful swaps occurred.\n";
+    Rcout << "\n" << howmanyswaps << " successful swaps occurred.\n";
     Rcout << coldswaps << " were with the cold chain.\n";
     Rcout << "(Out of " << coldattempts << " attempted cold chain swaps.)\n";
     return result;
