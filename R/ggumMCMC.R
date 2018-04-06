@@ -29,6 +29,14 @@
 #' @param burn_iterations A numeric vector of length one; the number of
 #'   "burn-in" iterations to run, during which parameter draws are not
 #'   stored. Currently, proposal densities are tuned during burn-in.
+#' @param theta_init (Optional) A numeric vector giving an initial value
+#'   for each respondent's theta parameter
+#' @param alpha_init (Optional) A numeric vector giving an initial value
+#'   for each item's alpha parameter
+#' @param delta_init (Optional) A numeric vector giving an initial value
+#'   for each item's delta parameter
+#' @param tau_init (Optional) A list giving an initial value
+#'   for each item's tau vector
 #'
 #' @return A chain matrix; a numeric matrix with \code{sample_iterations} rows
 #'   and one column for every parameter of the model, so that each element
@@ -47,6 +55,27 @@
 #'   Psychological Measurement} 30(3): 216--232.
 #'   algorithm
 #' @export
-ggumMCMC <- function(data, sample_iterations, burn_iterations) {
-    return(.ggumMCMC(data, sample_iterations, burn_iterations))
+ggumMCMC <- function(data, sample_iterations, burn_iterations,
+                     theta_init = NULL, alpha_init = NULL, delta_init = NULL,
+                     tau_init = NULL) {
+    n <- nrow(data)
+    m <- ncol(data)
+    K <- integer(m)
+    for ( j in 1:m ) {
+        K[j] = length(unique(na.omit(data[ , j])))
+    }
+    if ( is.null(theta_init) ) {
+        theta_init <- init_thetas(n, 0.0, 1.5)
+    }
+    if ( is.null(alpha_init) ) {
+        alpha_init <- init_alphas(m, 1.5, 1.5, 0.25, 4.0)
+    }
+    if ( is.null(delta_init) ) {
+        delta_init <- init_deltas(m, 2.0, 2.0, -5.0, 5.0)
+    }
+    if ( is.null(tau_init) ) {
+        tau_init <- init_taus(m, 2.0, 2.0, -6.0, 6.0, K)
+    }
+    return(.ggumMCMC(data, sample_iterations, burn_iterations, theta_init,
+                     alpha_init, delta_init, tau_init, K, n, m))
 }

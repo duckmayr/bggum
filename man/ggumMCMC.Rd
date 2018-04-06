@@ -4,7 +4,8 @@
 \alias{ggumMCMC}
 \title{GGUM MCMC Sampler}
 \usage{
-ggumMCMC(data, sample_iterations, burn_iterations)
+ggumMCMC(data, sample_iterations, burn_iterations, theta_init = NULL,
+  alpha_init = NULL, delta_init = NULL, tau_init = NULL)
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each
@@ -16,6 +17,18 @@ the number of iterations the sampler should store}
 \item{burn_iterations}{A numeric vector of length one; the number of
 "burn-in" iterations to run, during which parameter draws are not
 stored. Currently, proposal densities are tuned during burn-in.}
+
+\item{theta_init}{(Optional) A numeric vector giving an initial value
+for each respondent's theta parameter}
+
+\item{alpha_init}{(Optional) A numeric vector giving an initial value
+for each item's alpha parameter}
+
+\item{delta_init}{(Optional) A numeric vector giving an initial value
+for each item's delta parameter}
+
+\item{tau_init}{(Optional) A list giving an initial value
+for each item's tau vector}
 }
 \value{
 A chain matrix; a numeric matrix with \code{sample_iterations} rows

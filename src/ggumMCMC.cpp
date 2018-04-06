@@ -4,26 +4,9 @@ using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMCMC)]]
 NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations,
-        int burn_iterations){
-    // It will be convenient to store the number of items and respondents:
-    int n = responseMatrix.nrow();
-    int m = responseMatrix.ncol();
-    // And we will need the number of options per item:
-    IntegerVector K(m);
-    for ( int j = 0; j < m; ++j ) {
-        K[j] = unique(na_omit(responseMatrix(_, j))).size();
-    }
-    // Then we draw initial parameter values from their prior distributions:
-    NumericVector thetas = rnorm(n, 0, 1);
-    NumericVector alphas = r4beta(m, 1.5, 1.5, 0.25, 4);
-    NumericVector deltas = r4beta(m,  2, 2, -5, 5);
-    List taus(m);
-    for ( int j = 0; j < m; ++j ){
-        NumericVector thisTau(K[j]);
-        thisTau[Range(1, K[j]-1)] = r4beta(K[j]-1, 2, 2, -2, 0);
-        taus[j] = thisTau;
-    }
-    // And run the burn-in
+        int burn_iterations, NumericVector thetas, NumericVector alphas,
+        NumericVector deltas, List taus, IntegerVector K, int n, int m){
+    // First we run the burn-in
     // (for now, this will automatically tune the proposals)
     List SDs = tune_proposals(responseMatrix, thetas, alphas, deltas, taus, K,
                               burn_iterations, n, m);

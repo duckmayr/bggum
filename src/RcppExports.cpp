@@ -6,9 +6,68 @@
 
 using namespace Rcpp;
 
+// init_thetas
+NumericVector init_thetas(int n, double mean, double sd);
+RcppExport SEXP _ggum_init_thetas(SEXP nSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< double >::type sd(sdSEXP);
+    rcpp_result_gen = Rcpp::wrap(init_thetas(n, mean, sd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// init_alphas
+NumericVector init_alphas(int m, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggum_init_alphas(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(init_alphas(m, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// init_deltas
+NumericVector init_deltas(int m, double shape1, double shape2, double a, double b);
+RcppExport SEXP _ggum_init_deltas(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(init_deltas(m, shape1, shape2, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// init_taus
+List init_taus(int m, double shape1, double shape2, double a, double b, IntegerVector K);
+RcppExport SEXP _ggum_init_taus(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< double >::type shape1(shape1SEXP);
+    Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
+    rcpp_result_gen = Rcpp::wrap(init_taus(m, shape1, shape2, a, b, K));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, NumericVector temps);
-RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP tempsSEXP) {
+NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W, NumericVector temps, NumericMatrix thetas, NumericMatrix alphas, NumericMatrix deltas, List taus, IntegerVector K, int n, int m);
+RcppExport SEXP _ggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP tempsSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP nSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -17,20 +76,34 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type temps(tempsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, N, W, temps));
+    Rcpp::traits::input_parameter< NumericMatrix >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, N, W, temps, thetas, alphas, deltas, taus, K, n, m));
     return rcpp_result_gen;
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations, int burn_iterations);
-RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP iterationsSEXP, SEXP burn_iterationsSEXP) {
+NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations, int burn_iterations, NumericVector thetas, NumericVector alphas, NumericVector deltas, List taus, IntegerVector K, int n, int m);
+RcppExport SEXP _ggum_ggumMCMC(SEXP responseMatrixSEXP, SEXP iterationsSEXP, SEXP burn_iterationsSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP nSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type responseMatrix(responseMatrixSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type burn_iterations(burn_iterationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, iterations, burn_iterations));
+    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
+    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggumMCMC(responseMatrix, iterations, burn_iterations, thetas, alphas, deltas, taus, K, n, m));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -278,8 +351,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 5},
-    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 3},
+    {"_ggum_init_thetas", (DL_FUNC) &_ggum_init_thetas, 3},
+    {"_ggum_init_alphas", (DL_FUNC) &_ggum_init_alphas, 5},
+    {"_ggum_init_deltas", (DL_FUNC) &_ggum_init_deltas, 5},
+    {"_ggum_init_taus", (DL_FUNC) &_ggum_init_taus, 6},
+    {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 12},
+    {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 10},
     {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},
     {"_ggum_prob", (DL_FUNC) &_ggum_prob, 5},
     {"_ggum_probCol", (DL_FUNC) &_ggum_probCol, 5},

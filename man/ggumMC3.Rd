@@ -5,7 +5,8 @@
 \title{GGUM MC3}
 \usage{
 ggumMC3(data, sample_iterations, swap_interval, n_temps = length(temps),
-  temps = NULL)
+  temps = NULL, theta_init = NULL, alpha_init = NULL, delta_init = NULL,
+  tau_init = NULL)
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -19,9 +20,25 @@ every 100 iterations}
 
 \item{n_temps}{The number of chains}
 
-\item{temps}{An optional provision of the temperatures for the chains;
+\item{temps}{(Optional) A numeric vector giving the temperatures;
 if not provided, each temperature T_t for t > 1 is given by
 T_{t-1} * (t + 1), and T_1 = 1.}
+
+\item{theta_init}{(Optional) Either a numeric vector giving an initial value
+for each respondent's theta parameter, or a numeric matrix giving an
+initial value for each respondent's theta parameter for each parallel chain}
+
+\item{alpha_init}{(Optional) Either a numeric vector giving an initial value
+for each item's alpha parameter, or a numeric matrix giving an
+initial value for each item's alpha parameter for each parallel chain}
+
+\item{delta_init}{(Optional) Either a numeric vector giving an initial value
+for each item's delta parameter, or a numeric matrix giving an
+initial value for each item's delta parameter for each parallel chain}
+
+\item{tau_init}{(Optional) Either a list giving an initial value
+for each item's tau vector, or a list of lists giving an
+initial value for each item's tau vector for each parallel chain}
 }
 \value{
 A numeric matrix giving the parameter values at each iteration

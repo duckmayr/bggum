@@ -4,36 +4,12 @@ using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMC3)]]
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
-        NumericVector temps){
-    // set up temperatures
+        NumericVector temps, NumericMatrix thetas, NumericMatrix alphas,
+        NumericMatrix deltas, List taus, IntegerVector K, int n, int m){
+    // set up some record-keeping variables
     int howmanyswaps = 0, coldswaps = 0, coldattempts = 0;
     int one = 0, two = 1;
     IntegerVector chains = seq_len(N) - 1;
-    // set up initial values
-    int n = data.nrow();
-    int m = data.ncol();
-    IntegerVector K(m);
-    for ( int j = 0; j < m; ++j ) {
-        K[j] = unique(na_omit(data(_, j))).size();
-    }
-    NumericMatrix thetas(N, n);
-    NumericMatrix alphas(N, m);
-    NumericMatrix deltas(N, m);
-    List taus(N);
-    for ( int t = 0; t < N; ++t ) {
-        thetas(t, _) = rnorm(n, 0.0, 1.0);
-        alphas(t, _) = rep(1.0, m);
-        deltas(t, _) = r4beta(m, 2, 2, -5, 5);
-        List t_t(m);
-        for ( int j = 0; j < m; ++j) {
-            NumericVector tau_j(K[j]);
-            for ( int k = 1; k < K[j]; ++k ) {
-                tau_j[k] = r_4beta(2, 2, -6, 6);
-            }
-            t_t[j] = tau_j;
-        }
-        taus[t] = t_t;
-    }
     // set up a matrix to store the cold chain values
     NumericMatrix result(iters, n+ 2*m + sum(K));
     // set up progress display
