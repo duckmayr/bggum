@@ -17,12 +17,12 @@ init_taus <- function(m, shape1, shape2, a, b, K) {
     .Call('_ggum_init_taus', PACKAGE = 'ggum', m, shape1, shape2, a, b, K)
 }
 
-.ggumMC3 <- function(data, iters, N, W, temps, thetas, alphas, deltas, taus, K, n, m) {
-    .Call('_ggum_ggumMC3', PACKAGE = 'ggum', data, iters, N, W, temps, thetas, alphas, deltas, taus, K, n, m)
+.ggumMC3 <- function(data, n, m, iters, N, W, temps, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
+    .Call('_ggum_ggumMC3', PACKAGE = 'ggum', data, n, m, iters, N, W, temps, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
 }
 
-.ggumMCMC <- function(responseMatrix, iterations, burn_iterations, thetas, alphas, deltas, taus, K, n, m) {
-    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', responseMatrix, iterations, burn_iterations, thetas, alphas, deltas, taus, K, n, m)
+.ggumMCMC <- function(data, n, m, iterations, burn_iterations, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
+    .Call('_ggum_ggumMCMC', PACKAGE = 'ggum', data, n, m, iterations, burn_iterations, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
 }
 
 #' GGUM Probability Function
@@ -112,35 +112,35 @@ log_probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_log_probRow', PACKAGE = 'ggum', choices, th, a, d, t)
 }
 
-tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m) {
-    .Call('_ggum_tune_proposals', PACKAGE = 'ggum', responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m)
+tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
+    .Call('_ggum_tune_proposals', PACKAGE = 'ggum', responseMatrix, thetas, alphas, deltas, taus, K, burn_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
 }
 
-update_alpha_MCMC <- function(responses, thetas, cv, delta, taus, SD) {
-    .Call('_ggum_update_alpha_MCMC', PACKAGE = 'ggum', responses, thetas, cv, delta, taus, SD)
+update_alpha_MCMC <- function(responses, thetas, cv, delta, taus, proposal_sd, shape1, shape2, a, b) {
+    .Call('_ggum_update_alpha_MCMC', PACKAGE = 'ggum', responses, thetas, cv, delta, taus, proposal_sd, shape1, shape2, a, b)
 }
 
-update_delta_MCMC <- function(responses, thetas, alpha, cv, taus, SD) {
-    .Call('_ggum_update_delta_MCMC', PACKAGE = 'ggum', responses, thetas, alpha, cv, taus, SD)
+update_delta_MCMC <- function(responses, thetas, alpha, cv, taus, proposal_sd, shape1, shape2, a, b) {
+    .Call('_ggum_update_delta_MCMC', PACKAGE = 'ggum', responses, thetas, alpha, cv, taus, proposal_sd, shape1, shape2, a, b)
 }
 
-update_tau_MCMC <- function(k, responses, thetas, alpha, delta, taus, SD) {
-    .Call('_ggum_update_tau_MCMC', PACKAGE = 'ggum', k, responses, thetas, alpha, delta, taus, SD)
+update_tau_MCMC <- function(k, responses, thetas, alpha, delta, taus, proposal_sd, shape1, shape2, a, b) {
+    .Call('_ggum_update_tau_MCMC', PACKAGE = 'ggum', k, responses, thetas, alpha, delta, taus, proposal_sd, shape1, shape2, a, b)
 }
 
-update_theta_MC3 <- function(cv, choices, a, d, t, temp, SD) {
-    .Call('_ggum_update_theta_MC3', PACKAGE = 'ggum', cv, choices, a, d, t, temp, SD)
+update_theta_MC3 <- function(cv, choices, a, d, t, temp, proposal_sd, prior_mean, prior_sd) {
+    .Call('_ggum_update_theta_MC3', PACKAGE = 'ggum', cv, choices, a, d, t, temp, proposal_sd, prior_mean, prior_sd)
 }
 
-update_alpha_MC3 <- function(cv, choices, th, d, t, temp, SD) {
-    .Call('_ggum_update_alpha_MC3', PACKAGE = 'ggum', cv, choices, th, d, t, temp, SD)
+update_alpha_MC3 <- function(cv, choices, th, d, t, temp, proposal_sd, shape1, shape2, a, b) {
+    .Call('_ggum_update_alpha_MC3', PACKAGE = 'ggum', cv, choices, th, d, t, temp, proposal_sd, shape1, shape2, a, b)
 }
 
-update_delta_MC3 <- function(cv, choices, th, a, t, temp, SD) {
-    .Call('_ggum_update_delta_MC3', PACKAGE = 'ggum', cv, choices, th, a, t, temp, SD)
+update_delta_MC3 <- function(cv, choices, th, a, t, temp, proposal_sd, shape1, shape2, low, high) {
+    .Call('_ggum_update_delta_MC3', PACKAGE = 'ggum', cv, choices, th, a, t, temp, proposal_sd, shape1, shape2, low, high)
 }
 
-update_tau_MC3 <- function(k, choices, th, a, d, t, temp, SD) {
-    .Call('_ggum_update_tau_MC3', PACKAGE = 'ggum', k, choices, th, a, d, t, temp, SD)
+update_tau_MC3 <- function(k, choices, th, a, d, t, temp, proposal_sd, shape1, shape2, low, high) {
+    .Call('_ggum_update_tau_MC3', PACKAGE = 'ggum', k, choices, th, a, d, t, temp, proposal_sd, shape1, shape2, low, high)
 }
 

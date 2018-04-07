@@ -30,13 +30,32 @@
 #'   "burn-in" iterations to run, during which parameter draws are not
 #'   stored. Currently, proposal densities are tuned during burn-in.
 #' @param theta_init (Optional) A numeric vector giving an initial value
-#'   for each respondent's theta parameter
+#'   for each respondent's theta parameter;
+#'   if not given, the initial values are drawn from the prior distribution
 #' @param alpha_init (Optional) A numeric vector giving an initial value
-#'   for each item's alpha parameter
+#'   for each item's alpha parameter;
+#'   if not given, the initial values are drawn from the prior distribution
 #' @param delta_init (Optional) A numeric vector giving an initial value
-#'   for each item's delta parameter
+#'   for each item's delta parameter;
+#'   if not given, the initial values are drawn from the prior distribution
 #' @param tau_init (Optional) A list giving an initial value
-#'   for each item's tau vector
+#'   for each item's tau vector;
+#'   if not given, the initial values are drawn from the prior distribution
+#' @param theta_prior_params A numeric vector of length two;
+#'   the mean and standard deviation of theta parameters' prior distribution
+#'   (where the theta parameters have a normal prior; the default is 0 and 1)
+#' @param alpha_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for alpha parameters' prior
+#'   distribution (where the alpha parameters have a four parameter beta prior;
+#'   the default is 1.5, 1.5, 0.25, and 4)
+#' @param delta_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for delta parameters' prior
+#'   distribution (where the delta parameters have a four parameter beta prior;
+#'   the default is 2, 2, -5, and 5)
+#' @param tau_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for tau parameters' prior
+#'   distribution (where the tau parameters have a four parameter beta prior;
+#'   the default is 2, 2, -6, and 6)
 #'
 #' @return A chain matrix; a numeric matrix with \code{sample_iterations} rows
 #'   and one column for every parameter of the model, so that each element
@@ -57,7 +76,10 @@
 #' @export
 ggumMCMC <- function(data, sample_iterations, burn_iterations,
                      theta_init = NULL, alpha_init = NULL, delta_init = NULL,
-                     tau_init = NULL) {
+                     tau_init = NULL, theta_prior_params = c(0.0, 1.0),
+                     alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
+                     delta_prior_params = c(2.0, 2.0, -5.0, 5.0),
+                     tau_prior_params = c(2.0, 2.0, -6.0, 6.0)) {
     n <- nrow(data)
     m <- ncol(data)
     K <- integer(m)
@@ -65,17 +87,32 @@ ggumMCMC <- function(data, sample_iterations, burn_iterations,
         K[j] = length(unique(na.omit(data[ , j])))
     }
     if ( is.null(theta_init) ) {
-        theta_init <- init_thetas(n, 0.0, 1.5)
+        theta_init <- init_thetas(n, theta_prior_params[1],
+                                  theta_prior_params[2])
     }
     if ( is.null(alpha_init) ) {
-        alpha_init <- init_alphas(m, 1.5, 1.5, 0.25, 4.0)
+        alpha_init <- init_alphas(m, alpha_prior_params[1],
+                                  alpha_prior_params[2],
+                                  alpha_prior_params[3],
+                                  alpha_prior_params[4])
     }
     if ( is.null(delta_init) ) {
-        delta_init <- init_deltas(m, 2.0, 2.0, -5.0, 5.0)
+        delta_init <- init_deltas(m, delta_prior_params[1],
+                                  delta_prior_params[2],
+                                  delta_prior_params[3],
+                                  delta_prior_params[4])
     }
     if ( is.null(tau_init) ) {
-        tau_init <- init_taus(m, 2.0, 2.0, -6.0, 6.0, K)
+        tau_init <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
+                              tau_prior_params[3], tau_prior_params[4], K)
     }
-    return(.ggumMCMC(data, sample_iterations, burn_iterations, theta_init,
-                     alpha_init, delta_init, tau_init, K, n, m))
+    return(.ggumMCMC(data, n, m, sample_iterations, burn_iterations,
+                     theta_init, alpha_init, delta_init, tau_init, K,
+                     theta_prior_params[1], theta_prior_params[2],
+                     alpha_prior_params[1], alpha_prior_params[2],
+                     alpha_prior_params[3], alpha_prior_params[4],
+                     delta_prior_params[1], delta_prior_params[2],
+                     delta_prior_params[3], delta_prior_params[4],
+                     tau_prior_params[1], tau_prior_params[2],
+                     tau_prior_params[3], tau_prior_params[4]))
 }

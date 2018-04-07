@@ -36,37 +36,51 @@ NumericVector log_probRow(const IntegerVector& choices, const double th,
 // For MCMC:
 double update_theta_MCMC(const IntegerVector& responses, const double cv,
         const NumericVector& alphas, const NumericVector& deltas,
-        const List& taus, const double SD);
-double update_theta_neg_MCMC(IntegerVector responses, double cv,
-        NumericVector alphas, NumericVector deltas, List taus, double SD);
-double update_theta_pos_MCMC(IntegerVector responses, double cv,
-        NumericVector alphas, NumericVector deltas, List taus, double SD);
+        const List& taus, const double proposal_sd,
+        const double prior_mean, const double prior_sd);
 double update_alpha_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double cv, const double delta,
-        const NumericVector& taus, const double SD);
+        const NumericVector& taus, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double a, const double b);
 double update_delta_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double alpha, const double cv,
-        const NumericVector& taus, const double SD);
+        const NumericVector& taus, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double a, const double b);
 double update_tau_MCMC(const int k, const IntegerVector& responses,
         const NumericVector& thetas, const double alpha, const double delta,
-        const NumericVector& taus, const double SD);
+        const NumericVector& taus, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double a, const double b);
 // For MC3:
 double update_theta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& a, const NumericVector& d, const List& t,
-        const double temp, const double SD);
+        const double temp, const double proposal_sd,
+        const double prior_mean, const double prior_sd);
 double update_alpha_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double d, const NumericVector& t,
-        const double temp, const double SD);
+        const double temp, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double a, const double b);
 double update_delta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double a, const NumericVector& t,
-        const double temp, const double SD);
+        const double temp, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double low, const double high);
 double update_tau_MC3(const int k, const IntegerVector& choices,
         const NumericVector& th, const double a, const double d,
-        const NumericVector& t, const double temp, const double SD);
+        const NumericVector& t, const double temp, const double proposal_sd,
+        const double shape1, const double shape2,
+        const double low, const double high);
 // Proposal tuning function
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         NumericVector& alphas, NumericVector& deltas, List& taus,
-        const IntegerVector& K, const int burn_iters, int n, int m);
+        const IntegerVector& K, const int burn_iters, int n, int m,
+        double th_prior_mean, double th_prior_sd, double a_shape1,
+        double a_shape2, double a_a, double a_b, double d_shape1,
+        double d_shape2, double d_a, double d_b, double t_shape1,
+        double t_shape2, double t_a, double t_b);
 
 
 # endif

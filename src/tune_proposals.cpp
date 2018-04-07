@@ -5,7 +5,11 @@ using namespace Rcpp;
 //[[Rcpp::export]]
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         NumericVector& alphas, NumericVector& deltas, List& taus,
-        const IntegerVector& K, const int burn_iters, int n, int m) {
+        const IntegerVector& K, const int burn_iters, int n, int m,
+        double th_prior_mean, double th_prior_sd, double a_shape1,
+        double a_shape2, double a_a, double a_b, double d_shape1,
+        double d_shape2, double d_a, double d_b, double t_shape1,
+        double t_shape2, double t_a, double t_b) {
     // set up progress display
     Rcout.precision(1);
     double adv_sdtune_progress = 1000.0 / burn_iters;
@@ -31,10 +35,10 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         }
         if ( (iter+1) % 100 == 0 ) {
             for ( int i = 0; i < n; ++i ) {
-                if ( theta_acceptances[i] < 23 ) {
-                    theta_SD[i] -= ((23.0 - theta_acceptances[i]) * 0.01);
+                if ( theta_acceptances[i] < 20 ) {
+                    theta_SD[i] -= ((20.0 - theta_acceptances[i]) * 0.01);
                 }
-                if ( theta_acceptances[i] > 24 ) {
+                if ( theta_acceptances[i] > 25 ) {
                     theta_SD[i] += ((theta_acceptances[i] - 25.0) * 0.01);
                 }
                 if ( theta_SD[i] < 0 ) {
@@ -43,10 +47,10 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
                 theta_acceptances[i] = 0;
             }
             for ( int i = 0; i < m; ++i ) {
-                if ( alpha_acceptances[i] < 23 ) {
-                    alpha_SD[i] -= ((23.0 - alpha_acceptances[i]) * 0.01);
+                if ( alpha_acceptances[i] < 20 ) {
+                    alpha_SD[i] -= ((20.0 - alpha_acceptances[i]) * 0.01);
                 }
-                if ( alpha_acceptances[i] > 24 ) {
+                if ( alpha_acceptances[i] > 25 ) {
                     alpha_SD[i] += ((alpha_acceptances[i] - 25.0) * 0.01);
                 }
                 if ( alpha_SD[i] < 0 ) {
@@ -55,10 +59,10 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
                 alpha_acceptances[i] = 0;
             }
             for ( int i = 0; i < m; ++i ) {
-                if ( delta_acceptances[i] < 23 ) {
-                    delta_SD[i] -= ((23.0 - delta_acceptances[i]) * 0.01);
+                if ( delta_acceptances[i] < 20 ) {
+                    delta_SD[i] -= ((20.0 - delta_acceptances[i]) * 0.01);
                 }
-                if ( delta_acceptances[i] > 24 ) {
+                if ( delta_acceptances[i] > 25 ) {
                     delta_SD[i] += ((delta_acceptances[i] - 25.0) * 0.01);
                 }
                 if ( delta_SD[i] < 0 ) {
@@ -68,11 +72,11 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
             }
             for ( int i = 0; i < m; ++i ) {
                 int multiplier = K[i];
-                if ( tau_acceptances[i] < (23 * multiplier) ) {
-                    tau_SD[i] -= (((23.0 * multiplier) - tau_acceptances[i]) * (0.01 / multiplier));
+                if ( tau_acceptances[i] < (20 * multiplier) ) {
+                    tau_SD[i] -= (((20.0 * multiplier) - tau_acceptances[i]) * (0.01 / multiplier));
                 }
-                if ( tau_acceptances[i] > (24 * multiplier) ) {
-                    tau_SD[i] += ((tau_acceptances[i] - (24.0 * multiplier)) * (0.01 / multiplier));
+                if ( tau_acceptances[i] > (25 * multiplier) ) {
+                    tau_SD[i] += ((tau_acceptances[i] - (25.0 * multiplier)) * (0.01 / multiplier));
                 }
                 if ( tau_SD[i] < 0 ) {
                     tau_SD[i] = 0.01;
@@ -83,7 +87,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         for ( int i = 0; i < n; ++i ) {
             double theta = thetas[i];
             thetas[i] = update_theta_MCMC(responseMatrix(i, _), theta, alphas,
-                    deltas, taus, theta_SD[i]);
+                    deltas, taus, theta_SD[i], th_prior_mean, th_prior_sd);
             if ( theta != thetas[i] ) {
                 theta_acceptances[i] += 1;
             }
@@ -92,7 +96,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
             double alpha = alphas[j];
             double delta = deltas[j];
             alphas[j] = update_alpha_MCMC(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], alpha_SD[j]);
+                    delta, taus[j], alpha_SD[j], a_shape1, a_shape2, a_a, a_b);
             if ( alpha != alphas[j] ) {
                 alpha_acceptances[j] += 1;
             }
@@ -101,7 +105,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
             double alpha = alphas[j];
             double delta = deltas[j];
             deltas[j] = update_delta_MCMC(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], delta_SD[j]);
+                    delta, taus[j], delta_SD[j], d_shape1, d_shape2, d_a, d_b);
             if ( delta != deltas[j] ) {
                 delta_acceptances[j] += 1;
             }
@@ -113,7 +117,8 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
             for ( int k = 1; k < K[j]; k++ ) {
                 double thisTau_k = thisTau[k];
                 thisTau[k] = update_tau_MCMC(k, responseMatrix(_, j), thetas,
-                        alpha, delta, thisTau, tau_SD[j]);
+                        alpha, delta, thisTau, tau_SD[j], t_shape1, t_shape2,
+                        t_a, t_b);
                 if ( thisTau_k != thisTau[k] ) {
                     tau_acceptances[j] += 1;
                 }

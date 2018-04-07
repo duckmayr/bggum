@@ -3,9 +3,13 @@
 using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMC3)]]
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
+NumericMatrix ggumMC3(IntegerMatrix data, int n, int m, int iters, int N, int W,
         NumericVector temps, NumericMatrix thetas, NumericMatrix alphas,
-        NumericMatrix deltas, List taus, IntegerVector K, int n, int m){
+        NumericMatrix deltas, List taus, IntegerVector K,
+        double th_prior_mean, double th_prior_sd, double a_shape1,
+        double a_shape2, double a_a, double a_b, double d_shape1,
+        double d_shape2, double d_a, double d_b, double t_shape1,
+        double t_shape2, double t_a, double t_b){
     // set up some record-keeping variables
     int howmanyswaps = 0, coldswaps = 0, coldattempts = 0;
     int one = 0, two = 1;
@@ -27,7 +31,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
             double temp = temps[t];
             for ( int i = 0; i < n; ++i ) { // for each respondent
                 double th = th_t[i];
-                th = update_theta_MC3(th, data(i, _), a_t, d_t, t_t, temp, 1.0);
+                th = update_theta_MC3(th, data(i, _), a_t, d_t, t_t, temp, 1.0,
+                        th_prior_mean, th_prior_sd);
                 thetas(t, i) = th;
             }
             for ( int j = 0; j < m; ++j) { // for each item
@@ -35,12 +40,15 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
                 double d_j = d_t[j];
                 NumericVector t_j = as<NumericVector>(t_t[j]);
                 IntegerVector answers = data(_, j);
-                d_j = update_delta_MC3(d_j, answers, th_t, a_j, t_j, temp, 0.2);
+                d_j = update_delta_MC3(d_j, answers, th_t, a_j, t_j, temp, 0.2,
+                        d_shape1, d_shape2, d_a, d_b);
                 for ( int k = 1; k < K[j]; ++k ) {
                     t_j[k] = update_tau_MC3(k, answers, th_t, a_j, d_j, t_j,
-                                            temp, 0.2);
+                                            temp, 0.2, t_shape1, t_shape2,
+                                            t_a, t_b);
                 }
-                a_j = update_alpha_MC3(a_j, answers, th_t, d_j, t_j, temp, 0.2);
+                a_j = update_alpha_MC3(a_j, answers, th_t, d_j, t_j, temp, 0.2,
+                        a_shape1, a_shape2, a_a, a_b);
                 deltas(t, j) = d_j;
                 t_t[j] = t_j;
                 alphas(t, j) = a_j;
@@ -65,13 +73,13 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
             NumericVector a2 = alphas(two, _);
             NumericVector d1 = deltas(one, _);
             NumericVector d2 = deltas(two, _);
-            P1 = sum(dnorm(th1, 0.0, 1.0, true));
-            P1 += sum(d4beta(a1, 1.5, 1.5, 0.25, 4, true));
-            P1 += sum(d4beta(d1, 2, 2, -5, 5, true));
+            P1 = sum(dnorm(th1, th_prior_mean, th_prior_sd, true));
+            P1 += sum(d4beta(a1, a_shape1, a_shape2, a_a, a_b, true));
+            P1 += sum(d4beta(d1, d_shape1, d_shape2, d_a, d_b, true));
             List t1 = as<List>(taus[one]);
-            P2 = sum(dnorm(th2, 0.0, 1.0, true));
-            P2 += sum(d4beta(a2, 1.5, 1.5, 0.25, 4, true));
-            P2 += sum(d4beta(d2, 2, 2, -5, 5, true));
+            P2 = sum(dnorm(th2, th_prior_mean, th_prior_sd, true));
+            P2 += sum(d4beta(a2, a_shape1, a_shape2, a_a, a_b, true));
+            P2 += sum(d4beta(d2, d_shape1, d_shape2, d_a, d_b, true));
             List t2 = as<List>(taus[two]);
             IntegerVector answers(n);
             NumericVector t_1j(m), t_2j(m);
@@ -79,8 +87,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int N, int W,
                 t_1j = as<NumericVector>(t1[j]);
                 t_2j = as<NumericVector>(t2[j]);
                 for ( int k = 1; k < t_1j.size(); ++k ) {
-                    P1 += d_4beta(t_1j[k], 2, 2, -6, 6, 1);
-                    P2 += d_4beta(t_2j[k], 2, 2, -6, 6, 1);
+                    P1 += d_4beta(t_1j[k], t_shape1, t_shape2, t_a, t_b, 1);
+                    P2 += d_4beta(t_2j[k], t_shape1, t_shape2, t_a, t_b, 1);
                 }
                 answers = data(_, j);
                 L1 += sum(log_probCol(answers, th1, a1[j], d1[j], t_1j));

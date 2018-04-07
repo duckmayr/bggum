@@ -3,13 +3,20 @@
 using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMCMC)]]
-NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations,
+NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
         int burn_iterations, NumericVector thetas, NumericVector alphas,
-        NumericVector deltas, List taus, IntegerVector K, int n, int m){
+        NumericVector deltas, List taus, IntegerVector K,
+        double th_prior_mean, double th_prior_sd, double a_shape1,
+        double a_shape2, double a_a, double a_b, double d_shape1,
+        double d_shape2, double d_a, double d_b, double t_shape1,
+        double t_shape2, double t_a, double t_b){
     // First we run the burn-in
     // (for now, this will automatically tune the proposals)
-    List SDs = tune_proposals(responseMatrix, thetas, alphas, deltas, taus, K,
-                              burn_iterations, n, m);
+    List SDs = tune_proposals(data, thetas, alphas, deltas, taus, K,
+                              burn_iterations, n, m, th_prior_mean,
+                              th_prior_sd, a_shape1, a_shape2, a_a, a_b,
+                              d_shape1, d_shape2, d_a, d_b, t_shape1,
+                              t_shape2, t_a, t_b);
     NumericVector theta_SDs = as<NumericVector>(SDs[0]);
     NumericVector alpha_SDs = as<NumericVector>(SDs[1]);
     NumericVector delta_SDs = as<NumericVector>(SDs[2]);
@@ -36,23 +43,23 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations,
             // Copy the parameter of interest:
             double theta = thetas[i];
             // Replace it (or not):
-            thetas[i] = update_theta_MCMC(responseMatrix(i, _), theta, alphas,
-                    deltas, taus, theta_SDs[i]);
+            thetas[i] = update_theta_MCMC(data(i, _), theta, alphas,
+                    deltas, taus, theta_SDs[i], th_prior_mean, th_prior_sd);
             // And store the parameter value for this iteration in the matrix:
             chainMatrix(iter, i) = thetas[i];
         }
         for ( int j = 0; j < m; ++j ) {
             double alpha = alphas[j];
             double delta = deltas[j];
-            alphas[j] = update_alpha_MCMC(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], alpha_SDs[j]);
+            alphas[j] = update_alpha_MCMC(data(_, j), thetas, alpha,
+                    delta, taus[j], alpha_SDs[j], a_shape1, a_shape2, a_a, a_b);
             chainMatrix(iter, j+n) = alphas[j];
         }
         for ( int j = 0; j < m; ++j ) {
             double alpha = alphas[j];
             double delta = deltas[j];
-            deltas[j] = update_delta_MCMC(responseMatrix(_, j), thetas, alpha,
-                    delta, taus[j], delta_SDs[j]);
+            deltas[j] = update_delta_MCMC(data(_, j), thetas, alpha,
+                    delta, taus[j], delta_SDs[j], d_shape1, d_shape2, d_a, d_b);
             chainMatrix(iter, j+n+m) = deltas[j];
         }
         // For taus, we need to keep track of where in the chain matrix we
@@ -65,8 +72,9 @@ NumericMatrix ggumMCMC(IntegerMatrix responseMatrix, int iterations,
             double delta = deltas[j];
             NumericVector thisTau = taus[j];
             for ( int k = 1; k < K[j]; ++k ) {
-                thisTau[k] = update_tau_MCMC(k, responseMatrix(_, j), thetas,
-                        alpha, delta, thisTau, tau_SDs[j]);
+                thisTau[k] = update_tau_MCMC(k, data(_, j), thetas,
+                        alpha, delta, thisTau, tau_SDs[j], t_shape1, t_shape2,
+                        t_a, t_b);
                 chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
             }
             taus[j] = thisTau;
