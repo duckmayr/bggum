@@ -26,9 +26,24 @@
 #'   respondent to each item
 #' @param sample_iterations A numeric vector of length one;
 #'   the number of iterations the sampler should store
+#'   (default is 50000)
 #' @param burn_iterations A numeric vector of length one; the number of
 #'   "burn-in" iterations to run, during which parameter draws are not
 #'   stored. Currently, proposal densities are tuned during burn-in.
+#'   (default is 50000)
+#' @param tune_iterations A numeric vector of length one; the number of
+#'   iterations to use to tune the proposals before the burn-in period
+#'   begins (default is 5000). If 0 is given, the proposals are not tuned.
+#' @param proposal_sds (Optional) A list of length four where is element is a
+#'   numeric vector giving standard deviations for the proposals;
+#'   the first element should be a numeric vector with a standard deviation
+#'   for the proposal for each respondent's theta parameter (the latent trait),
+#'   the second a vector with a standard deviation for each item's alpha
+#'   (discrimination) parameter, the third a vector with a standard deviation
+#'   for each item's delta (location) parameter, and the fourth a vector with
+#'   a standard deviation for each item's tau (option threshold) parameters.
+#'   If not given, the standard deviations are all set to 1.0 before any
+#'   tuning begins.
 #' @param theta_init (Optional) A numeric vector giving an initial value
 #'   for each respondent's theta parameter;
 #'   if not given, the initial values are drawn from the prior distribution
@@ -74,7 +89,8 @@
 #'   Psychological Measurement} 30(3): 216--232.
 #'   algorithm
 #' @export
-ggumMCMC <- function(data, sample_iterations, burn_iterations,
+ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
+                     tune_iterations = 5000, proposal_sds = NULL,
                      theta_init = NULL, alpha_init = NULL, delta_init = NULL,
                      tau_init = NULL, theta_prior_params = c(0.0, 1.0),
                      alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
@@ -106,6 +122,15 @@ ggumMCMC <- function(data, sample_iterations, burn_iterations,
         tau_init <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
                               tau_prior_params[3], tau_prior_params[4], K)
     }
+    if ( is.null(proposal_sds) ) {
+        proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+    }
+    if ( tune_iterations > 0 ) {
+        proposal_sds <- tune_proposals(data, tune_iterations, K, theta_init,
+                                       alpha_init, delta_init, tau_init,
+                                       theta_prior_params, alpha_prior_params,
+                                       delta_prior_params, tau_prior_params)
+    }
     return(.ggumMCMC(data, n, m, sample_iterations, burn_iterations,
                      theta_init, alpha_init, delta_init, tau_init, K,
                      theta_prior_params[1], theta_prior_params[2],
@@ -114,5 +139,6 @@ ggumMCMC <- function(data, sample_iterations, burn_iterations,
                      delta_prior_params[1], delta_prior_params[2],
                      delta_prior_params[3], delta_prior_params[4],
                      tau_prior_params[1], tau_prior_params[2],
-                     tau_prior_params[3], tau_prior_params[4]))
+                     tau_prior_params[3], tau_prior_params[4],
+                     proposal_sds))
 }

@@ -9,25 +9,66 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
         double th_prior_mean, double th_prior_sd, double a_shape1,
         double a_shape2, double a_a, double a_b, double d_shape1,
         double d_shape2, double d_a, double d_b, double t_shape1,
-        double t_shape2, double t_a, double t_b){
-    // First we run the burn-in
-    // (for now, this will automatically tune the proposals)
-    List SDs = tune_proposals(data, thetas, alphas, deltas, taus, K,
-                              burn_iterations, n, m, th_prior_mean,
-                              th_prior_sd, a_shape1, a_shape2, a_a, a_b,
-                              d_shape1, d_shape2, d_a, d_b, t_shape1,
-                              t_shape2, t_a, t_b);
+        double t_shape2, double t_a, double t_b, List SDs){
     NumericVector theta_SDs = as<NumericVector>(SDs[0]);
     NumericVector alpha_SDs = as<NumericVector>(SDs[1]);
     NumericVector delta_SDs = as<NumericVector>(SDs[2]);
     NumericVector tau_SDs = as<NumericVector>(SDs[3]);
+    // First run the burn in
+    // Set up the progress display
+    Rcout.precision(1);
+    double adv_prog = 10000.0 / burn_iterations;
+    int current_break = 1;
+    Rcout << "\rBurning in:         0%";
+    // Then we run the burn in iterations:
+    for ( int iter = 0; iter < burn_iterations; ++iter ) {
+        if ( (iter+1) % 100 == 0 ) {
+            // Every 100 iterations we check for a user interrupt
+            // and update the progress bar
+            checkUserInterrupt();
+            double current_prog = current_break * adv_prog;
+            Rcout << "\rBurning in:         " << std::fixed << current_prog << "%";
+            current_break += 1;
+        }
+        // Then we update the variables
+        for ( int i = 0; i < n; ++i ) {
+            // Copy the parameter of interest:
+            double theta = thetas[i];
+            // Replace it (or not):
+            thetas[i] = update_theta_MCMC(data(i, _), theta, alphas,
+                    deltas, taus, theta_SDs[i], th_prior_mean, th_prior_sd);
+        }
+        for ( int j = 0; j < m; ++j ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            alphas[j] = update_alpha_MCMC(data(_, j), thetas, alpha,
+                    delta, taus[j], alpha_SDs[j], a_shape1, a_shape2, a_a, a_b);
+        }
+        for ( int j = 0; j < m; ++j ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            deltas[j] = update_delta_MCMC(data(_, j), thetas, alpha,
+                    delta, taus[j], delta_SDs[j], d_shape1, d_shape2, d_a, d_b);
+        }
+        for ( int j = 0; j < m; ++j ) {
+            double alpha = alphas[j];
+            double delta = deltas[j];
+            NumericVector thisTau = taus[j];
+            for ( int k = 1; k < K[j]; ++k ) {
+                thisTau[k] = update_tau_MCMC(k, data(_, j), thetas,
+                        alpha, delta, thisTau, tau_SDs[j], t_shape1, t_shape2,
+                        t_a, t_b);
+            }
+            taus[j] = thisTau;
+        }
+    }
+    Rcout << "\n";
     // This makes an empty matrix to store parameter values for every iteration:
     NumericMatrix chainMatrix(iterations, n+(2*m)+sum(K));
     // set up progress display
-    Rcout.precision(1);
-    double adv_prog = 10000.0 / iterations;
-    int current_break = 1;
-    Rcout << "\rRunning sampler: 0%";
+    adv_prog = 10000.0 / iterations;
+    current_break = 1;
+    Rcout << "\rSampling posterior: 0%";
     // Then we run the MCMC sampler:
     for ( int iter = 0; iter < iterations; ++iter ) {
         if ( (iter+1) % 100 == 0 ) {
@@ -35,7 +76,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
             // and update the progress bar
             checkUserInterrupt();
             double current_prog = current_break * adv_prog;
-            Rcout << "\rRunning sampler: " << std::fixed << current_prog << "%";
+            Rcout << "\rSampling posterior: " << std::fixed << current_prog << "%";
             current_break += 1;
         }
         // Then we update the variables

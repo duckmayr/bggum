@@ -4,27 +4,46 @@
 \alias{ggumMC3}
 \title{GGUM MC3}
 \usage{
-ggumMC3(data, sample_iterations, swap_interval, n_temps = length(temps),
-  temps = NULL, theta_init = NULL, alpha_init = NULL, delta_init = NULL,
-  tau_init = NULL, theta_prior_params = c(0, 1),
-  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
-  -5, 5), tau_prior_params = c(2, 2, -6, 6))
+ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
+  sd_tune_iterations = 5000, swap_interval = 1, n_temps = length(temps),
+  temps = NULL, proposal_sds = NULL, theta_init = NULL,
+  alpha_init = NULL, delta_init = NULL, tau_init = NULL,
+  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25, 4),
+  delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
 
 \item{sample_iterations}{A vector of length one giving the number of
-iterations the sampler should complete}
+iterations the sampler should complete (default is 10000)}
+
+\item{burn_iterations}{A vector of length one giving the number of
+iterations to burn in (default is 10000)}
+
+\item{sd_tune_iterations}{A numeric vector of length one; the number of
+iterations to use to tune the proposals before the burn-in period
+begins (default is 5000). If 0 is given, the proposals are not tuned.}
 
 \item{swap_interval}{The period by which to attempt chain swaps;
-e.g. if W = 100, a state swap will be proposed between two adjacent chains
-every 100 iterations}
+e.g. if swap_interval = 100, a state swap will be proposed between two
+adjacent chains every 100 iterations (default is 1)}
 
 \item{n_temps}{The number of chains}
 
 \item{temps}{(Optional) A numeric vector giving the temperatures;
 if not provided, each temperature T_t for t > 1 is given by
 T_{t-1} * (t + 1), and T_1 = 1.}
+
+\item{proposal_sds}{(Optional) A list of length four where is element is a
+numeric vector giving standard deviations for the proposals;
+the first element should be a numeric vector with a standard deviation
+for the proposal for each respondent's theta parameter (the latent trait),
+the second a vector with a standard deviation for each item's alpha
+(discrimination) parameter, the third a vector with a standard deviation
+for each item's delta (location) parameter, and the fourth a vector with
+a standard deviation for each item's tau (option threshold) parameters.
+If not given, the standard deviations are all set to 1.0 before any
+tuning begins.}
 
 \item{theta_init}{(Optional) Either a numeric vector giving an initial value
 for each respondent's theta parameter, or a numeric matrix giving an

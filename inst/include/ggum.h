@@ -76,7 +76,7 @@ double update_tau_MC3(const int k, const IntegerVector& choices,
 // Proposal tuning function
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         NumericVector& alphas, NumericVector& deltas, List& taus,
-        const IntegerVector& K, const int burn_iters, int n, int m,
+        const IntegerVector& K, const int tune_iters, int n, int m,
         double th_prior_mean, double th_prior_sd, double a_shape1,
         double a_shape2, double a_a, double a_b, double d_shape1,
         double d_shape2, double d_a, double d_b, double t_shape1,

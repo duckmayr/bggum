@@ -4,7 +4,8 @@
 \alias{ggumMCMC}
 \title{GGUM MCMC Sampler}
 \usage{
-ggumMCMC(data, sample_iterations, burn_iterations, theta_init = NULL,
+ggumMCMC(data, sample_iterations = 50000, burn_iterations = 50000,
+  tune_iterations = 5000, proposal_sds = NULL, theta_init = NULL,
   alpha_init = NULL, delta_init = NULL, tau_init = NULL,
   theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25, 4),
   delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
@@ -14,11 +15,28 @@ ggumMCMC(data, sample_iterations, burn_iterations, theta_init = NULL,
 respondent to each item}
 
 \item{sample_iterations}{A numeric vector of length one;
-the number of iterations the sampler should store}
+the number of iterations the sampler should store
+(default is 50000)}
 
 \item{burn_iterations}{A numeric vector of length one; the number of
 "burn-in" iterations to run, during which parameter draws are not
-stored. Currently, proposal densities are tuned during burn-in.}
+stored. Currently, proposal densities are tuned during burn-in.
+(default is 50000)}
+
+\item{tune_iterations}{A numeric vector of length one; the number of
+iterations to use to tune the proposals before the burn-in period
+begins (default is 5000). If 0 is given, the proposals are not tuned.}
+
+\item{proposal_sds}{(Optional) A list of length four where is element is a
+numeric vector giving standard deviations for the proposals;
+the first element should be a numeric vector with a standard deviation
+for the proposal for each respondent's theta parameter (the latent trait),
+the second a vector with a standard deviation for each item's alpha
+(discrimination) parameter, the third a vector with a standard deviation
+for each item's delta (location) parameter, and the fourth a vector with
+a standard deviation for each item's tau (option threshold) parameters.
+If not given, the standard deviations are all set to 1.0 before any
+tuning begins.}
 
 \item{theta_init}{(Optional) A numeric vector giving an initial value
 for each respondent's theta parameter;

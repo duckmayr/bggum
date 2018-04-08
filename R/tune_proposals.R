@@ -1,0 +1,99 @@
+#' Tune proposal densities
+#' 
+#' Tunes the standard deviation for the parameters' proposal densities
+#' 
+#' This function runs the MCMC algorithm for the number of iterations
+#' specified in \code{tune_iterations}, updating parameter values at each
+#' iteration. Every 100 iterations, the function determines how many
+#' of the previous 100 iterations resulted in an accepted proposal for
+#' each parameter. If the number of acceptances was less than 20,
+#' the standard deviation of the proposal for that parameter is
+#' decreased by (20 - N) * 0.01, where N is the number of acceptances in
+#' the previous 100 iterations. If N is greater than 25, the proposal
+#' standard deviation is increased by (N - 25) * 0.01.
+#' 
+#' @param data A numeric matrix giving the response by each
+#'   respondent to each item
+#' @param tune_iterations A numeric vector of length one;
+#'   the number of iterations to complete
+#' @param K A numeric vector with an element for each item giving the number
+#'   of options for the item
+#' @param thetas (Optional) A numeric vector giving an initial value
+#'   for each respondent's theta parameter;
+#'   if not given, the initial values are drawn from the prior distribution
+#' @param alphas (Optional) A numeric vector giving an initial value
+#'   for each item's alpha parameter;
+#'   if not given, the initial values are drawn from the prior distribution
+#' @param deltas (Optional) A numeric vector giving an initial value
+#'   for each item's delta parameter;
+#'   if not given, the initial values are drawn from the prior distribution
+#' @param taus (Optional) A list giving an initial value
+#'   for each item's tau vector;
+#'   if not given, the initial values are drawn from the prior distribution
+#' @param theta_prior_params A numeric vector of length two;
+#'   the mean and standard deviation of theta parameters' prior distribution
+#'   (where the theta parameters have a normal prior; the default is 0 and 1)
+#' @param alpha_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for alpha parameters' prior
+#'   distribution (where the alpha parameters have a four parameter beta prior;
+#'   the default is 1.5, 1.5, 0.25, and 4)
+#' @param delta_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for delta parameters' prior
+#'   distribution (where the delta parameters have a four parameter beta prior;
+#'   the default is 2, 2, -5, and 5)
+#' @param tau_prior_params A numeric vector of length four;
+#'   the two shape parameters and a and b values for tau parameters' prior
+#'   distribution (where the tau parameters have a four parameter beta prior;
+#'   the default is 2, 2, -6, and 6)
+#' 
+#' @return A list, where each element is a numeric vector;
+#'   the first element is a numeric vector of standard deviations for the
+#'   theta parameters' proposals, the second for the alpha parameters, the
+#'   third for the delta parameters, and the fourth for the tau parameters
+#' 
+#' @section Warning:
+#' The parameters are updated in place;
+#' that is, if you supply objects for the \code{theta}, \code{alpha},
+#' \code{delta}, and \code{tau} arguments, the objects will not hold the
+#' same values after the function is run
+#' (in the underlying C++ function, these objects are passed by reference).
+#' @export
+tune_proposals <- function(data, tune_iterations, K = NULL, thetas = NULL,
+                           alphas = NULL, deltas = NULL, taus = NULL,
+                           theta_prior_params = c(0.0, 1.0),
+                           alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
+                           delta_prior_params = c(2.0, 2.0, -5.0, 5.0),
+                           tau_prior_params = c(2.0, 2.0, -6.0, 6.0)) {
+    n <- nrow(data)
+    m <- ncol(data)
+    if ( is.null(K) ) {
+        K <- integer(m)
+        for ( j in 1:m ) {
+            K[j] = length(unique(na.omit(data[ , j])))
+        }
+    }
+    if ( is.null(thetas) ) {
+        thetas <- init_thetas(n, theta_prior_params[1], theta_prior_params[2])
+    }
+    if ( is.null(alphas) ) {
+        alphas <- init_alphas(m, alpha_prior_params[1], alpha_prior_params[2],
+                              alpha_prior_params[3], alpha_prior_params[4])
+    }
+    if ( is.null(deltas) ) {
+        deltas <- init_deltas(m, delta_prior_params[1], delta_prior_params[2],
+                              delta_prior_params[3], delta_prior_params[4])
+    }
+    if ( is.null(taus) ) {
+        taus <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
+                          tau_prior_params[3], tau_prior_params[4], K)
+    }
+    return(.tune_proposals(data, thetas, alphas, deltas, taus, K,
+                           tune_iterations, nrow(data), ncol(data),
+                           theta_prior_params[1], theta_prior_params[2],
+                           alpha_prior_params[1], alpha_prior_params[2],
+                           alpha_prior_params[3], alpha_prior_params[4],
+                           delta_prior_params[1], delta_prior_params[2],
+                           delta_prior_params[3], delta_prior_params[4],
+                           tau_prior_params[1], tau_prior_params[2],
+                           tau_prior_params[3], tau_prior_params[4]))
+}

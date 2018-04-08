@@ -4,14 +4,29 @@
 #'
 #' @param data A numeric matrix giving the individuals' responses
 #' @param sample_iterations A vector of length one giving the number of
-#'   iterations the sampler should complete
+#'   iterations the sampler should complete (default is 10000)
+#' @param burn_iterations A vector of length one giving the number of
+#'   iterations to burn in (default is 10000)
+#' @param sd_tune_iterations A numeric vector of length one; the number of
+#'   iterations to use to tune the proposals before the burn-in period
+#'   begins (default is 5000). If 0 is given, the proposals are not tuned.
 #' @param swap_interval The period by which to attempt chain swaps;
-#'   e.g. if W = 100, a state swap will be proposed between two adjacent chains
-#'   every 100 iterations
+#'   e.g. if swap_interval = 100, a state swap will be proposed between two
+#'   adjacent chains every 100 iterations (default is 1)
 #' @param n_temps The number of chains
 #' @param temps (Optional) A numeric vector giving the temperatures;
 #'   if not provided, each temperature T_t for t > 1 is given by
 #'   T_{t-1} * (t + 1), and T_1 = 1.
+#' @param proposal_sds (Optional) A list of length four where is element is a
+#'   numeric vector giving standard deviations for the proposals;
+#'   the first element should be a numeric vector with a standard deviation
+#'   for the proposal for each respondent's theta parameter (the latent trait),
+#'   the second a vector with a standard deviation for each item's alpha
+#'   (discrimination) parameter, the third a vector with a standard deviation
+#'   for each item's delta (location) parameter, and the fourth a vector with
+#'   a standard deviation for each item's tau (option threshold) parameters.
+#'   If not given, the standard deviations are all set to 1.0 before any
+#'   tuning begins.
 #' @param theta_init (Optional) Either a numeric vector giving an initial value
 #'   for each respondent's theta parameter, or a numeric matrix giving an
 #'   initial value for each respondent's theta parameter for each parallel chain;
@@ -50,8 +65,10 @@
 #' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMCMC}}
 #'
 #' @export
-ggumMC3 <- function(data, sample_iterations, swap_interval,
-                    n_temps = length(temps), temps = NULL,
+ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
+                    sd_tune_iterations = 5000,
+                    swap_interval = 1, n_temps = length(temps), temps = NULL,
+                    proposal_sds = NULL,
                     theta_init = NULL, alpha_init = NULL, delta_init = NULL,
                     tau_init = NULL, theta_prior_params = c(0.0, 1.0),
                     alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
@@ -98,6 +115,16 @@ ggumMC3 <- function(data, sample_iterations, swap_interval,
     else if ( is.atomic(tau_init[[1]]) ) {
         tau_init <- lapply(1:n_temps, function(x) tau_init)
     }
+    if ( is.null(proposal_sds) ) {
+        proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+    }
+    if ( sd_tune_iterations > 0 ) {
+        proposal_sds <- tune_proposals(data, sd_tune_iterations, K,
+                                       theta_init[1,], alpha_init[1,],
+                                       delta_init[1,], tau_init[[1]],
+                                       theta_prior_params, alpha_prior_params,
+                                       delta_prior_params, tau_prior_params)
+    }
     if ( is.null(temps) ) {
         if ( n_temps < 2 ) {
             stop(paste("Please provide a vector of temperatures,",
@@ -109,8 +136,9 @@ ggumMC3 <- function(data, sample_iterations, swap_interval,
             temps[t] <- 1.0 / (temps[t-1] * (t + 1))
         }
     }
-    return(.ggumMC3(data, n, m, sample_iterations, n_temps, swap_interval,
-                    temps, theta_init, alpha_init, delta_init, tau_init, K,
+    return(.ggumMC3(data, sample_iterations, burn_iterations, n_temps,
+                    swap_interval, temps, theta_init, alpha_init,
+                    delta_init, tau_init, n, m, K, proposal_sds,
                     theta_prior_params[1], theta_prior_params[2],
                     alpha_prior_params[1], alpha_prior_params[2],
                     alpha_prior_params[3], alpha_prior_params[4],

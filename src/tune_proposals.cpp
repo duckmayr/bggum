@@ -2,18 +2,18 @@
 
 using namespace Rcpp;
 
-//[[Rcpp::export]]
+// [[Rcpp::export(.tune_proposals)]]
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         NumericVector& alphas, NumericVector& deltas, List& taus,
-        const IntegerVector& K, const int burn_iters, int n, int m,
+        const IntegerVector& K, const int tune_iters, int n, int m,
         double th_prior_mean, double th_prior_sd, double a_shape1,
         double a_shape2, double a_a, double a_b, double d_shape1,
         double d_shape2, double d_a, double d_b, double t_shape1,
         double t_shape2, double t_a, double t_b) {
     // set up progress display
     Rcout.precision(1);
-    double adv_sdtune_progress = 1000.0 / burn_iters;
-    Rcout << "\rTuning proposals: 0%";
+    double adv_sdtune_progress = 1000.0 / tune_iters;
+    Rcout << "\rTuning proposals:   0%";
     int current_break = 1;
     // set up vectors for proposal SDs
     NumericVector theta_SD(n, 0.01);
@@ -25,12 +25,12 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
     IntegerVector alpha_acceptances(m);
     IntegerVector delta_acceptances(m);
     IntegerVector tau_acceptances(m);
-    for ( int iter = 0; iter < burn_iters; ++iter ) {
+    for ( int iter = 0; iter < tune_iters; ++iter ) {
         if ( (iter+1) % 10 == 0 ) {
             // Check for user interruption
             checkUserInterrupt();
             // Update progress display
-            Rcout << "\rTuning proposals: " << std::fixed << current_break * adv_sdtune_progress << "%";
+            Rcout << "\rTuning proposals:   " << std::fixed << current_break * adv_sdtune_progress << "%";
             current_break += 1;
         }
         if ( (iter+1) % 100 == 0 ) {
@@ -127,7 +127,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         }
     }
     // Close out the progress display
-    Rcout << "\rTuning proposals: " << std::fixed << 100.0 << "%\n";
+    Rcout << "\rTuning proposals:   " << std::fixed << 100.0 << "%\n";
     // And return the results
     return List::create(theta_SD, alpha_SD, delta_SD, tau_SD);
 }
