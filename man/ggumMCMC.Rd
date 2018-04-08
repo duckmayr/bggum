@@ -113,7 +113,6 @@ de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
   Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
   Psychological Measurement} 30(3): 216--232.
-  algorithm
 }
 \seealso{
 \code{\link{ggumProbability}}, \code{\link{ggumMC3}}

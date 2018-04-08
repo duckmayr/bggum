@@ -19,7 +19,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
     Rcout.precision(1);
     double adv_prog = 10000.0 / burn_iterations;
     int current_break = 1;
-    Rcout << "\rBurning in:         0%";
+    Rcout << "\rBurning in:          0%";
     // Then we run the burn in iterations:
     for ( int iter = 0; iter < burn_iterations; ++iter ) {
         if ( (iter+1) % 100 == 0 ) {
@@ -27,7 +27,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
             // and update the progress bar
             checkUserInterrupt();
             double current_prog = current_break * adv_prog;
-            Rcout << "\rBurning in:         " << std::fixed << current_prog << "%";
+            Rcout << "\rBurning in:          " << std::fixed << current_prog << "%";
             current_break += 1;
         }
         // Then we update the variables
@@ -68,7 +68,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
     // set up progress display
     adv_prog = 10000.0 / iterations;
     current_break = 1;
-    Rcout << "\rSampling posterior: 0%";
+    Rcout << "\rSampling posterior:  0%";
     // Then we run the MCMC sampler:
     for ( int iter = 0; iter < iterations; ++iter ) {
         if ( (iter+1) % 100 == 0 ) {
@@ -76,7 +76,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
             // and update the progress bar
             checkUserInterrupt();
             double current_prog = current_break * adv_prog;
-            Rcout << "\rSampling posterior: " << std::fixed << current_prog << "%";
+            Rcout << "\rSampling posterior:  " << std::fixed << current_prog << "%";
             current_break += 1;
         }
         // Then we update the variables

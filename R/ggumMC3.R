@@ -10,13 +10,30 @@
 #' @param sd_tune_iterations A numeric vector of length one; the number of
 #'   iterations to use to tune the proposals before the burn-in period
 #'   begins (default is 5000). If 0 is given, the proposals are not tuned.
+#' @param temp_tune_iterations A numeric vector of length one; if a temperature
+#'   schedule is not provided in the \code{temps} argument and 
+#'   \code{optimize_temps} = TRUE, \code{temp_tune_iterations} gives the number
+#'   of iterations to use to tune each temperature before the burn-in period
+#'   begins (default is 5000) -- see \code{\link{tune_temperatures}}
+#' @param temp_n_draws A numeric vector of length one; if a temperature
+#'   schedule is not provided in the \code{temps} argument and 
+#'   \code{optimize_temps} = TRUE, \code{temp_n_draws} gives the number
+#'   of draws from the temperature finding algorithm to calculate each
+#'   temperature (default is 2500) -- see \code{\link{tune_temperatures}}
 #' @param swap_interval The period by which to attempt chain swaps;
 #'   e.g. if swap_interval = 100, a state swap will be proposed between two
 #'   adjacent chains every 100 iterations (default is 1)
-#' @param n_temps The number of chains
+#' @param n_temps The number of chains; should only be given if \code{temps}
+#'   is not specified
 #' @param temps (Optional) A numeric vector giving the temperatures;
-#'   if not provided, each temperature T_t for t > 1 is given by
-#'   T_{t-1} * (t + 1), and T_1 = 1.
+#'   if not provided and \code{optimize_temps} = FALSE, each temperature T_t
+#'   for t > 1 is given by T_{t-1} * (t + 1), and T_1 = 1, while if
+#'   optimize_temps = TRUE, the temperature schedule is determined
+#'   according to an optimal temperature finding algorithm
+#' @param optimize_temps A logical vector of length one; if TRUE and a
+#'   temperature schedule is not provided in the \code{temps} argument,
+#'   an algorithm is run to determine the optimal temperature schedule
+#'   (default is TRUE) -- see \code{\link{tune_temperatures}}
 #' @param proposal_sds (Optional) A list of length four where is element is a
 #'   numeric vector giving standard deviations for the proposals;
 #'   the first element should be a numeric vector with a standard deviation
@@ -62,13 +79,15 @@
 #' @return A numeric matrix giving the parameter values at each iteration
 #'   for the cold chain
 #'
-#' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMCMC}}
+#' @seealso \code{\link{ggumProbability}}, \code{\link{ggumMCMC}},
+#'   \code{\link{tune_temperatures}}
 #'
 #' @export
 ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
-                    sd_tune_iterations = 5000,
-                    swap_interval = 1, n_temps = length(temps), temps = NULL,
-                    proposal_sds = NULL,
+                    sd_tune_iterations = 5000, temp_tune_iterations = 5000,
+                    temp_n_draws = 2500, swap_interval = 1,
+                    n_temps = length(temps), temps = NULL,
+                    optimize_temps = TRUE, proposal_sds = NULL,
                     theta_init = NULL, alpha_init = NULL, delta_init = NULL,
                     tau_init = NULL, theta_prior_params = c(0.0, 1.0),
                     alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
@@ -131,9 +150,17 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
                        "or set n_temps to a number greater than 1."),
                  call. = FALSE)
         }
-        temps <- rep(1.0, n_temps)
-        for ( t in 2:n_temps ) {
-            temps[t] <- 1.0 / (temps[t-1] * (t + 1))
+        if ( optimize_temps ) {
+            temps <- tune_temperatures(data, n_temps, temp_tune_iterations,
+                                       temp_n_draws, K, proposal_sds,
+                                       theta_prior_params, alpha_prior_params,
+                                       delta_prior_params, tau_prior_params)
+        }
+        else{
+            temps <- rep(1.0, n_temps)
+            for ( t in 2:n_temps ) {
+                temps[t] <- 1.0 / (temps[t-1] * (t + 1))
+            }
         }
     }
     return(.ggumMC3(data, sample_iterations, burn_iterations, n_temps,

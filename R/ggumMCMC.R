@@ -87,7 +87,6 @@
 #'   Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
 #'   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
 #'   Psychological Measurement} 30(3): 216--232.
-#'   algorithm
 #' @export
 ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
                      tune_iterations = 5000, proposal_sds = NULL,

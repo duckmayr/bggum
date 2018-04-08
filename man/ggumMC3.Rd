@@ -5,11 +5,13 @@
 \title{GGUM MC3}
 \usage{
 ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
-  sd_tune_iterations = 5000, swap_interval = 1, n_temps = length(temps),
-  temps = NULL, proposal_sds = NULL, theta_init = NULL,
-  alpha_init = NULL, delta_init = NULL, tau_init = NULL,
-  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25, 4),
-  delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  sd_tune_iterations = 5000, temp_tune_iterations = 5000,
+  temp_n_draws = 2500, swap_interval = 1, n_temps = length(temps),
+  temps = NULL, optimize_temps = TRUE, proposal_sds = NULL,
+  theta_init = NULL, alpha_init = NULL, delta_init = NULL,
+  tau_init = NULL, theta_prior_params = c(0, 1),
+  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
+  -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -24,15 +26,35 @@ iterations to burn in (default is 10000)}
 iterations to use to tune the proposals before the burn-in period
 begins (default is 5000). If 0 is given, the proposals are not tuned.}
 
+\item{temp_tune_iterations}{A numeric vector of length one; if a temperature
+schedule is not provided in the \code{temps} argument and 
+\code{optimize_temps} = TRUE, \code{temp_tune_iterations} gives the number
+of iterations to use to tune each temperature before the burn-in period
+begins (default is 5000) -- see \code{\link{tune_temperatures}}}
+
+\item{temp_n_draws}{A numeric vector of length one; if a temperature
+schedule is not provided in the \code{temps} argument and 
+\code{optimize_temps} = TRUE, \code{temp_n_draws} gives the number
+of draws from the temperature finding algorithm to calculate each
+temperature (default is 2500) -- see \code{\link{tune_temperatures}}}
+
 \item{swap_interval}{The period by which to attempt chain swaps;
 e.g. if swap_interval = 100, a state swap will be proposed between two
 adjacent chains every 100 iterations (default is 1)}
 
-\item{n_temps}{The number of chains}
+\item{n_temps}{The number of chains; should only be given if \code{temps}
+is not specified}
 
 \item{temps}{(Optional) A numeric vector giving the temperatures;
-if not provided, each temperature T_t for t > 1 is given by
-T_{t-1} * (t + 1), and T_1 = 1.}
+if not provided and \code{optimize_temps} = FALSE, each temperature T_t
+for t > 1 is given by T_{t-1} * (t + 1), and T_1 = 1, while if
+optimize_temps = TRUE, the temperature schedule is determined
+according to an optimal temperature finding algorithm}
+
+\item{optimize_temps}{A logical vector of length one; if TRUE and a
+temperature schedule is not provided in the \code{temps} argument,
+an algorithm is run to determine the optimal temperature schedule
+(default is TRUE) -- see \code{\link{tune_temperatures}}}
 
 \item{proposal_sds}{(Optional) A list of length four where is element is a
 numeric vector giving standard deviations for the proposals;
@@ -92,5 +114,6 @@ A numeric matrix giving the parameter values at each iteration
 Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
 }
 \seealso{
-\code{\link{ggumProbability}}, \code{\link{ggumMCMC}}
+\code{\link{ggumProbability}}, \code{\link{ggumMCMC}},
+  \code{\link{tune_temperatures}}
 }

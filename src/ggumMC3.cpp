@@ -24,7 +24,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
     Rcout.precision(1);
     double adv_prog = 10000.0 / burn_iters;
     int current_break = 1;
-    Rcout << "\rBurning in:         0%";
+    Rcout << "\rBurning in:          0%";
     // Then we run the burn in iterations:
     for ( int iter = 0; iter < burn_iters; ++iter ) { // for each iteration
         for ( int t = 0; t < N; ++t ) { // for each temperature
@@ -64,7 +64,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
             // and update the progress bar
             checkUserInterrupt();
             double current_prog = current_break * adv_prog;
-            Rcout << "\rBurning in:         " << std::fixed << current_prog << "%";
+            Rcout << "\rBurning in:          " << std::fixed << current_prog << "%";
             current_break += 1;
         }
         if ( iter % W == 0 ) {
@@ -123,7 +123,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
     // set up progress display
     adv_prog = 10000.0 / iters;
     current_break = 1;
-    Rcout << "\rSampling posterior: 0%";
+    Rcout << "\rSampling posterior:  0%";
     // now run the sampler
     for ( int iter = 0; iter < iters; ++iter ) { // for each iteration
         for ( int t = 0; t < N; ++t ) { // for each temperature
@@ -161,7 +161,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
         if ( (iter+1) % 100 == 0 ) {
             checkUserInterrupt();
             double current_prog = current_break * adv_prog;
-            Rcout << "\rSampling posterior: " << std::fixed << current_prog << "%";
+            Rcout << "\rSampling posterior:  " << std::fixed << current_prog << "%";
             current_break += 1;
         }
         if ( iter % W == 0 ) {

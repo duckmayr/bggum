@@ -13,7 +13,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
     // set up progress display
     Rcout.precision(1);
     double adv_sdtune_progress = 1000.0 / tune_iters;
-    Rcout << "\rTuning proposals:   0%";
+    Rcout << "\rTuning proposals:    0%";
     int current_break = 1;
     // set up vectors for proposal SDs
     NumericVector theta_SD(n, 0.01);
@@ -30,7 +30,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
             // Check for user interruption
             checkUserInterrupt();
             // Update progress display
-            Rcout << "\rTuning proposals:   " << std::fixed << current_break * adv_sdtune_progress << "%";
+            Rcout << "\rTuning proposals:    " << std::fixed << current_break * adv_sdtune_progress << "%";
             current_break += 1;
         }
         if ( (iter+1) % 100 == 0 ) {
@@ -127,7 +127,7 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         }
     }
     // Close out the progress display
-    Rcout << "\rTuning proposals:   " << std::fixed << 100.0 << "%\n";
+    Rcout << "\rTuning proposals:    " << std::fixed << 100.0 << "%\n";
     // And return the results
     return List::create(theta_SD, alpha_SD, delta_SD, tau_SD);
 }

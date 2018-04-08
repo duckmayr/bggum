@@ -116,6 +116,10 @@ log_probRow <- function(choices, th, a, d, t) {
     .Call('_ggum_tune_proposals', PACKAGE = 'ggum', responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
 }
 
+.tune_temperatures <- function(data, n_temps, temp_tune_iters, n_draws, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
+    .Call('_ggum_tune_temps', PACKAGE = 'ggum', data, n_temps, temp_tune_iters, n_draws, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
+}
+
 update_alpha_MCMC <- function(responses, thetas, cv, delta, taus, proposal_sd, shape1, shape2, a, b) {
     .Call('_ggum_update_alpha_MCMC', PACKAGE = 'ggum', responses, thetas, cv, delta, taus, proposal_sd, shape1, shape2, a, b)
 }
