@@ -122,13 +122,15 @@ ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
                               tau_prior_params[3], tau_prior_params[4], K)
     }
     if ( is.null(proposal_sds) ) {
-        proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
-    }
-    if ( tune_iterations > 0 ) {
-        proposal_sds <- tune_proposals(data, tune_iterations, K, theta_init,
-                                       alpha_init, delta_init, tau_init,
-                                       theta_prior_params, alpha_prior_params,
-                                       delta_prior_params, tau_prior_params)
+        if ( tune_iterations > 0 ) {
+            proposal_sds <- tune_proposals(data, tune_iterations, K, theta_init,
+                                           alpha_init, delta_init, tau_init,
+                                           theta_prior_params, alpha_prior_params,
+                                           delta_prior_params, tau_prior_params)
+        }
+        else {
+            proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+        }
     }
     return(.ggumMCMC(data, n, m, sample_iterations, burn_iterations,
                      theta_init, alpha_init, delta_init, tau_init, K,

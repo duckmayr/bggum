@@ -135,14 +135,16 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
         tau_init <- lapply(1:n_temps, function(x) tau_init)
     }
     if ( is.null(proposal_sds) ) {
-        proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
-    }
-    if ( sd_tune_iterations > 0 ) {
-        proposal_sds <- tune_proposals(data, sd_tune_iterations, K,
-                                       theta_init[1,], alpha_init[1,],
-                                       delta_init[1,], tau_init[[1]],
-                                       theta_prior_params, alpha_prior_params,
-                                       delta_prior_params, tau_prior_params)
+        if ( sd_tune_iterations > 0 ) {
+            proposal_sds <- tune_proposals(data, sd_tune_iterations, K,
+                                           theta_init[1,], alpha_init[1,],
+                                           delta_init[1,], tau_init[[1]],
+                                           theta_prior_params, alpha_prior_params,
+                                           delta_prior_params, tau_prior_params)
+        }
+        else {
+            proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+        }
     }
     if ( is.null(temps) ) {
         if ( n_temps < 2 ) {
