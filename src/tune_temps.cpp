@@ -43,7 +43,7 @@ NumericVector tune_temps(IntegerMatrix data, int n_temps, int temp_tune_iters,
     Rcout.precision(1);
     double adv_prog = 100.0 / ((temp_tune_iters / 100.0) * (n_temps - 1));
     int current_break = 1;
-    Rcout << "\rTuning Temperatures: 0%";
+    Rcout << "\rTuning temperatures: 0%";
     double alph = 0.0;
     for ( int T = 1; T < n_temps; ++T ) {
         for ( int iter = 0; iter < temp_tune_iters; ++iter ) {
@@ -52,7 +52,7 @@ NumericVector tune_temps(IntegerMatrix data, int n_temps, int temp_tune_iters,
                 // and update the progress bar
                 checkUserInterrupt();
                 double current_prog = current_break * adv_prog;
-                Rcout << "\rTuning Temperatures: " << std::fixed << current_prog << "%";
+                Rcout << "\rTuning temperatures: " << std::fixed << current_prog << "%";
                 current_break += 1;
             }
             for ( int t = one; t < two + 1; ++t ) { // for each temperature
@@ -137,7 +137,7 @@ NumericVector tune_temps(IntegerMatrix data, int n_temps, int temp_tune_iters,
             temps[two] = temps[one] / (1.0 + exp(rho1));
         }
     }
-    Rcout << "\n";
+    Rcout << "\rTuning temperatures: 100.0%\n";
     return temps;
 }
 

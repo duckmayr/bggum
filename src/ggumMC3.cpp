@@ -24,7 +24,9 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
     Rcout.precision(1);
     double adv_prog = 10000.0 / burn_iters;
     int current_break = 1;
-    Rcout << "\rBurning in:          0%";
+    if ( burn_iters > 0 ) {
+        Rcout << "\rBurning in:          0%";
+    }
     // Then we run the burn in iterations:
     for ( int iter = 0; iter < burn_iters; ++iter ) { // for each iteration
         for ( int t = 0; t < N; ++t ) { // for each temperature
@@ -117,7 +119,9 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
             two = (two % (N - 1)) + 1;
         }
     }
-    Rcout << "\n";
+    if ( burn_iters > 0 ) {
+        Rcout << "\rBurning in:          100.0%\n";
+    }
     one = 0;
     two = 1;
     // set up progress display
@@ -236,7 +240,8 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
         }
     }
     // return the cold chain
-    Rcout << "\n" << howmanyswaps << " successful swaps occurred.\n";
+    Rcout << "\rSampling posterior:  100.0%\n";
+    Rcout << howmanyswaps << " successful swaps occurred.\n";
     Rcout << coldswaps << " were with the cold chain.\n";
     Rcout << "(Out of " << coldattempts << " attempted cold chain swaps.)\n";
     return result;

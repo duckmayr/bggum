@@ -19,7 +19,9 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
     Rcout.precision(1);
     double adv_prog = 10000.0 / burn_iterations;
     int current_break = 1;
-    Rcout << "\rBurning in:          0%";
+    if ( burn_iterations > 0 ) {
+        Rcout << "\rBurning in:          0%";
+    }
     // Then we run the burn in iterations:
     for ( int iter = 0; iter < burn_iterations; ++iter ) {
         if ( (iter+1) % 100 == 0 ) {
@@ -62,7 +64,9 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
             taus[j] = thisTau;
         }
     }
-    Rcout << "\n";
+    if ( burn_iterations > 0 ) {
+        Rcout << "\rBurning in:          100.0%\n";
+    }
     // This makes an empty matrix to store parameter values for every iteration:
     NumericMatrix chainMatrix(iterations, n+(2*m)+sum(K));
     // set up progress display
@@ -123,7 +127,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
         }
     }
     // Close out the progress display
-    Rcout << "\n";
+    Rcout << "\rSampling posterior:  100.0%\n";
     // And finally, we return the chain matrix
     return chainMatrix;
 }
