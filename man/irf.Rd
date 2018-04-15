@@ -4,28 +4,52 @@
 \alias{irf}
 \title{Item Response Function}
 \usage{
-irf(a, d, t, from = -3, to = 3, by = 0.01, sub = "")
+irf(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
+  layout_matrix = matrix(1:length(a), ncol = 1, byrow = TRUE),
+  option_names = NULL, color = FALSE, color_palette = c("#000000",
+  "#e69f00", "#56b4e9", "#009e73", "#f0e442", "#0072b2", "#d55e00", "#cc79a7"))
 }
 \arguments{
-\item{a}{A numeric vector of length one, the alpha parameter}
+\item{a}{A numeric vector of alpha parameters}
 
-\item{d}{A numeric vector of length one, the delta parameter}
+\item{d}{A numeric vector of delta parameters}
 
-\item{t}{A numeric vector of length K (the number of options),
-the vector of tau parameters for each option --
-note the first element of the vector should be zero}
+\item{t}{Either a list of numeric vectors for the tau parameters for each
+option, or a numeric vector if the IRF for only one item is desired --
+note the first element of each vector should be zero}
 
 \item{from}{A numeric vector of length one,
-the lowest theta value to estimate response probabilities for}
+the lowest theta value to estimate response probabilities for;
+default is -3}
 
 \item{to}{A numeric vector of length one,
-the highest theta value to estimate response probabilities for}
+the highest theta value to estimate response probabilities for;
+default is 3}
 
 \item{by}{A numeric vector of length one giving the spacing between
-theta values}
+theta values; default is 0.01}
 
-\item{sub}{A subtitle for the resulting plot}
+\item{sub}{An optional subtitle for the resulting plot}
+
+\item{layout_matrix}{An integer matrix dictating the layout of the plot;
+the default is a one-column matrix with one element for each item}
+
+\item{option_names}{An optional character vector giving names for the items'
+options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
+are used}
+
+\item{color}{A logical vector of length one; if TRUE, each option's line
+is printed in a different color (automatically selected via viridis),
+while if FALSE (the default), each line is plotted in black}
+
+\item{color_palette}{A vector of colors to use if color = TRUE;
+the default is an eight color, colorblind friendly palette
+from Wong (2011)}
 }
 \description{
-Plots a response function given alpha, delta, and tau parameters.
+Plots response functions given alpha, delta, and tau parameters.
+}
+\references{
+Wong, Bang. 2011. "Points of view: Color blindness." Nature
+  Methods 8:441.
 }
