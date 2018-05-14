@@ -4,7 +4,8 @@ using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMC3)]]
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
-        int W, NumericVector temps, NumericMatrix thetas, NumericMatrix alphas,
+        int W, int flip_interval,
+        NumericVector temps, NumericMatrix thetas, NumericMatrix alphas,
         NumericMatrix deltas, List taus, int n, int m, IntegerVector K,
         List SDs, double th_prior_mean, double th_prior_sd, double a_shape1,
         double a_shape2, double a_a, double a_b, double d_shape1,
@@ -167,6 +168,10 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
             double current_prog = current_break * adv_prog;
             Rcout << "\rSampling posterior:  " << std::fixed << current_prog << "%";
             current_break += 1;
+        }
+        if ( (iter+1) % flip_interval == 0 ) {
+            thetas = thetas * -1.0;
+            deltas = deltas * -1.0;
         }
         if ( iter % W == 0 ) {
             if ( one == 0 || two == 0 ) {

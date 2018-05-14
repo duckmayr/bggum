@@ -4,7 +4,8 @@ using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMCMC)]]
 NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
-        int burn_iterations, NumericVector thetas, NumericVector alphas,
+        int burn_iterations, int flip_interval,
+        NumericVector thetas, NumericVector alphas,
         NumericVector deltas, List taus, IntegerVector K,
         double th_prior_mean, double th_prior_sd, double a_shape1,
         double a_shape2, double a_a, double a_b, double d_shape1,
@@ -82,6 +83,10 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
             double current_prog = current_break * adv_prog;
             Rcout << "\rSampling posterior:  " << std::fixed << current_prog << "%";
             current_break += 1;
+        }
+        if ( (iter+1) % flip_interval == 0 ) {
+            thetas = thetas * -1.0;
+            deltas = deltas * -1.0;
         }
         // Then we update the variables
         for ( int i = 0; i < n; ++i ) {

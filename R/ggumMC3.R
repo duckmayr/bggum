@@ -23,6 +23,11 @@
 #' @param swap_interval The period by which to attempt chain swaps;
 #'   e.g. if swap_interval = 100, a state swap will be proposed between two
 #'   adjacent chains every 100 iterations (default is 1)
+#' @param flip_interval (Optional) If given, provides the number of iterations
+#'   after which the sign of the thetas and deltas should be changed.
+#'   For example, if \code{flip_interval = 1000},
+#'   every 1000 iterations the theta and delta parameters will be multiplied
+#'   by -1 (a valid parameter value change as discussed in Geyer (1991)).
 #' @param n_temps The number of chains; should only be given if \code{temps}
 #'   is not specified
 #' @param temps (Optional) A numeric vector giving the temperatures;
@@ -85,7 +90,7 @@
 #' @export
 ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
                     sd_tune_iterations = 5000, temp_tune_iterations = 5000,
-                    temp_n_draws = 2500, swap_interval = 1,
+                    temp_n_draws = 2500, swap_interval = 1, flip_interval = NA,
                     n_temps = length(temps), temps = NULL,
                     optimize_temps = TRUE, proposal_sds = NULL,
                     theta_init = NULL, alpha_init = NULL, delta_init = NULL,
@@ -96,6 +101,9 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
     n <- nrow(data)
     m <- ncol(data)
     K <- integer(m)
+    if ( is.na(flip_interval) ) {
+        flip_interval <- sample_iterations + 1
+    }
     for ( j in 1:m ) {
         K[j] = length(unique(na.omit(data[ , j])))
     }
@@ -166,7 +174,7 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
         }
     }
     return(.ggumMC3(data, sample_iterations, burn_iterations, n_temps,
-                    swap_interval, temps, theta_init, alpha_init,
+                    swap_interval, flip_interval, temps, theta_init, alpha_init,
                     delta_init, tau_init, n, m, K, proposal_sds,
                     theta_prior_params[1], theta_prior_params[2],
                     alpha_prior_params[1], alpha_prior_params[2],

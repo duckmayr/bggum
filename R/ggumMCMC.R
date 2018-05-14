@@ -34,6 +34,11 @@
 #' @param tune_iterations A numeric vector of length one; the number of
 #'   iterations to use to tune the proposals before the burn-in period
 #'   begins (default is 5000). If 0 is given, the proposals are not tuned.
+#' @param flip_interval (Optional) If given, provides the number of iterations
+#'   after which the sign of the thetas and deltas should be changed.
+#'   For example, if \code{flip_interval = 1000},
+#'   every 1000 iterations the theta and delta parameters will be multiplied
+#'   by -1 (a valid parameter value change as discussed in Geyer (1991)).
 #' @param proposal_sds (Optional) A list of length four where is element is a
 #'   numeric vector giving standard deviations for the proposals;
 #'   the first element should be a numeric vector with a standard deviation
@@ -89,7 +94,8 @@
 #'   Psychological Measurement} 30(3): 216--232.
 #' @export
 ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
-                     tune_iterations = 5000, proposal_sds = NULL,
+                     tune_iterations = 5000, flip_interval = NA,
+                     proposal_sds = NULL,
                      theta_init = NULL, alpha_init = NULL, delta_init = NULL,
                      tau_init = NULL, theta_prior_params = c(0.0, 1.0),
                      alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
@@ -98,6 +104,9 @@ ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
     n <- nrow(data)
     m <- ncol(data)
     K <- integer(m)
+    if ( is.na(flip_interval) ) {
+        flip_interval <- sample_iterations + 1
+    }
     for ( j in 1:m ) {
         K[j] = length(unique(na.omit(data[ , j])))
     }
@@ -133,6 +142,7 @@ ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
         }
     }
     return(.ggumMCMC(data, n, m, sample_iterations, burn_iterations,
+                     flip_interval,
                      theta_init, alpha_init, delta_init, tau_init, K,
                      theta_prior_params[1], theta_prior_params[2],
                      alpha_prior_params[1], alpha_prior_params[2],

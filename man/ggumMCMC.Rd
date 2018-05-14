@@ -5,10 +5,11 @@
 \title{GGUM MCMC Sampler}
 \usage{
 ggumMCMC(data, sample_iterations = 50000, burn_iterations = 50000,
-  tune_iterations = 5000, proposal_sds = NULL, theta_init = NULL,
-  alpha_init = NULL, delta_init = NULL, tau_init = NULL,
-  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25, 4),
-  delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  tune_iterations = 5000, flip_interval = NA, proposal_sds = NULL,
+  theta_init = NULL, alpha_init = NULL, delta_init = NULL,
+  tau_init = NULL, theta_prior_params = c(0, 1),
+  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
+  -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each
@@ -26,6 +27,12 @@ stored. Currently, proposal densities are tuned during burn-in.
 \item{tune_iterations}{A numeric vector of length one; the number of
 iterations to use to tune the proposals before the burn-in period
 begins (default is 5000). If 0 is given, the proposals are not tuned.}
+
+\item{flip_interval}{(Optional) If given, provides the number of iterations
+after which the sign of the thetas and deltas should be changed.
+For example, if \code{flip_interval = 1000},
+every 1000 iterations the theta and delta parameters will be multiplied
+by -1 (a valid parameter value change as discussed in Geyer (1991)).}
 
 \item{proposal_sds}{(Optional) A list of length four where is element is a
 numeric vector giving standard deviations for the proposals;

@@ -6,10 +6,10 @@
 \usage{
 ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
   sd_tune_iterations = 5000, temp_tune_iterations = 5000,
-  temp_n_draws = 2500, swap_interval = 1, n_temps = length(temps),
-  temps = NULL, optimize_temps = TRUE, proposal_sds = NULL,
-  theta_init = NULL, alpha_init = NULL, delta_init = NULL,
-  tau_init = NULL, theta_prior_params = c(0, 1),
+  temp_n_draws = 2500, swap_interval = 1, flip_interval = NA,
+  n_temps = length(temps), temps = NULL, optimize_temps = TRUE,
+  proposal_sds = NULL, theta_init = NULL, alpha_init = NULL,
+  delta_init = NULL, tau_init = NULL, theta_prior_params = c(0, 1),
   alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
   -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
@@ -41,6 +41,12 @@ temperature (default is 2500) -- see \code{\link{tune_temperatures}}}
 \item{swap_interval}{The period by which to attempt chain swaps;
 e.g. if swap_interval = 100, a state swap will be proposed between two
 adjacent chains every 100 iterations (default is 1)}
+
+\item{flip_interval}{(Optional) If given, provides the number of iterations
+after which the sign of the thetas and deltas should be changed.
+For example, if \code{flip_interval = 1000},
+every 1000 iterations the theta and delta parameters will be multiplied
+by -1 (a valid parameter value change as discussed in Geyer (1991)).}
 
 \item{n_temps}{The number of chains; should only be given if \code{temps}
 is not specified}
