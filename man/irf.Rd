@@ -29,7 +29,7 @@ default is 3}
 \item{by}{A numeric vector of length one giving the spacing between
 theta values; default is 0.01}
 
-\item{sub}{An optional subtitle for the resulting plot}
+\item{sub}{An optional character vector of subtitles for the resulting plots}
 
 \item{layout_matrix}{An integer matrix dictating the layout of the plot;
 the default is a one-column matrix with one element for each item}

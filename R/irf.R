@@ -15,7 +15,7 @@
 #'   default is 3
 #' @param by A numeric vector of length one giving the spacing between
 #'   theta values; default is 0.01
-#' @param sub An optional subtitle for the resulting plot
+#' @param sub An optional character vector of subtitles for the resulting plots
 #' @param layout_matrix An integer matrix dictating the layout of the plot;
 #'   the default is a one-column matrix with one element for each item
 #' @param option_names An optional character vector giving names for the items'
@@ -40,6 +40,9 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
     if ( length(a) != length(d) | (length(a) > 1 & length(a) != length(t)) ) {
         stop("Please provide a, d, and t of the same length.", call. = FALSE)
     }
+    if ( length(sub) == 1 ) {
+        sub <- rep(sub, length(a))
+    }
     graphics::layout(layout_matrix)
     th <- seq(from = from, to = to, by = by)
     if ( is.list(t) ) {
@@ -60,8 +63,8 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
     }
     for ( j in 1:length(a) ) {
         y = sapply(th, function(x) ggumProbability(1, x, a[j], d[j], t[[j]]))
-        graphics::plot(x = th, y = y, col = colors[1],
-                       type = "l", main = paste("Item Response Function", sub),
+        graphics::plot(x = th, y = y, col = colors[1], type = "l",
+                       main = paste("Item Response Function", sub[j]),
                        xlab = expression(theta), ylab = expression(P[ij](k)),
                        xlim = c(from, to), ylim=c(0, 1.2))
         for ( k in 2:K[j] ) {
