@@ -6,8 +6,10 @@
 \usage{
 irf(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
   layout_matrix = matrix(1:length(a), ncol = 1, byrow = TRUE),
-  option_names = NULL, color = FALSE, color_palette = c("#000000",
-  "#e69f00", "#56b4e9", "#009e73", "#f0e442", "#0072b2", "#d55e00", "#cc79a7"))
+  option_names = NULL, line_types = NULL, color = FALSE,
+  color_palette = c("#000000", "#e69f00", "#56b4e9", "#009e73", "#f0e442",
+  "#0072b2", "#d55e00", "#cc79a7"), rug = FALSE, thetas = NULL,
+  responses = NULL, sides = 1, rug_colors = "black")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}
@@ -38,6 +40,10 @@ the default is a one-column matrix with one element for each item}
 options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
 are used}
 
+\item{line_types}{An optional integer vector specifying lty for each option;
+if not provided, the first option for each question will have lty = 1,
+the second will have lty = 2, etc.}
+
 \item{color}{A logical vector of length one; if TRUE, each option's line
 is printed in a different color (automatically selected via viridis),
 while if FALSE (the default), each line is plotted in black}
@@ -45,6 +51,30 @@ while if FALSE (the default), each line is plotted in black}
 \item{color_palette}{A vector of colors to use if color = TRUE;
 the default is an eight color, colorblind friendly palette
 from Wong (2011)}
+
+\item{rug}{A logical vector of length one specifying whether to draw a
+rug of theta estimates; the default is FALSE}
+
+\item{thetas}{An optional vector of theta estimates for rug drawing;
+if \code{rug = TRUE} and \code{thetas} is not provided,
+an error will be thrown.}
+
+\item{responses}{An optional matrix or vector (if the IRF for only one item
+is desired) of responses; if \code{rug = TRUE} and \code{responses} is not
+provided, an error will be thrown.
+NOTE: The lowest response for each item should be 0, not 1.}
+
+\item{sides}{A vector giving the side(s) to draw the rug on if
+\code{rug = TRUE}; if the vector is of length > 1, the first option for
+each item will be drawn on the side given by the first element of the
+vector, the rug for the second option for each item will be drawn on the
+side given by the second element of the vector, etc.}
+
+\item{rug_colors}{A vector giving the color(s) to draw the rug in if
+\code{rug = TRUE}; if the vector is of length > 1, the first option for
+each item will be drawn in the color given by the first element of the
+vector, the rug for the second option for each item will be drawn in the
+color given by the second element of the vector, etc.}
 }
 \description{
 Plots response functions given alpha, delta, and tau parameters.
