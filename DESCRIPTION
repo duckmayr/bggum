@@ -20,6 +20,7 @@ Suggests:
 Collate:
     'ggum-package.R'
     'RcppExports.R'
+    'ggumProbability.R'
     'tune_proposals.R'
     'tune_temps.R'
     'ggumMCMC.R'

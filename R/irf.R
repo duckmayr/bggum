@@ -1,7 +1,7 @@
 #' Item Response Function
-#' 
+#'
 #' Plots response functions given alpha, delta, and tau parameters.
-#' 
+#'
 #' @param a A numeric vector of alpha parameters
 #' @param d A numeric vector of delta parameters
 #' @param t Either a list of numeric vectors for the tau parameters for each
@@ -52,7 +52,7 @@
 #'
 #' @references Wong, Bang. 2011. "Points of view: Color blindness." Nature
 #'   Methods 8:441.
-#' 
+#'
 #' @export
 irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
                 layout_matrix = matrix(1:length(a), ncol = 1, byrow = TRUE),
@@ -117,7 +117,7 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
         }
     }
     for ( j in 1:m ) {
-        y <- sapply(th, function(x) ggumProbability(1, x, a[j], d[j], t[[j]]))
+        y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))
         graphics::plot(x = th, y = y, col = colors[1], type = "l",
                        main = paste("Item Response Function", sub[j]),
                        xlab = expression(theta), ylab = "", yaxt = "n",
@@ -128,7 +128,7 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
         graphics::title(ylab = expression(P[ij](k)), line = 2.25)
         for ( k in 2:K[j] ) {
             graphics::lines(th, sapply(th, function(x) {
-                ggumProbability(k, x, a[j], d[j], t[[j]])
+                ggumProbability(k-1, x, a[j], d[j], t[[j]])
             }), lty = line_types[k], col = colors[k])
         }
         graphics::legend(x = from, y = 1.2, option_names, lty = line_types,
