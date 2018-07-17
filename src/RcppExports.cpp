@@ -140,21 +140,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ggumProbability
-NumericVector ggumProbability(NumericVector k, double theta, double alpha, double delta, NumericVector tau);
-RcppExport SEXP _ggum_ggumProbability(SEXP kSEXP, SEXP thetaSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type k(kSEXP);
-    Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumProbability(k, theta, alpha, delta, tau));
-    return rcpp_result_gen;
-END_RCPP
-}
 // prob
 double prob(const int choice, const double th, const double a, const double d, const NumericVector& t);
 RcppExport SEXP _ggum_prob(SEXP choiceSEXP, SEXP thSEXP, SEXP aSEXP, SEXP dSEXP, SEXP tSEXP) {
@@ -462,7 +447,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ggum_init_taus", (DL_FUNC) &_ggum_init_taus, 6},
     {"_ggum_ggumMC3", (DL_FUNC) &_ggum_ggumMC3, 29},
     {"_ggum_ggumMCMC", (DL_FUNC) &_ggum_ggumMCMC, 26},
-    {"_ggum_ggumProbability", (DL_FUNC) &_ggum_ggumProbability, 5},
     {"_ggum_prob", (DL_FUNC) &_ggum_prob, 5},
     {"_ggum_probCol", (DL_FUNC) &_ggum_probCol, 5},
     {"_ggum_probRow", (DL_FUNC) &_ggum_probRow, 5},
