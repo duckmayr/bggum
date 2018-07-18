@@ -4,12 +4,12 @@
 \alias{irf}
 \title{Item Response Function}
 \usage{
-irf(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
-  layout_matrix = matrix(1:length(a), ncol = 1, byrow = TRUE),
-  option_names = NULL, line_types = NULL, color = FALSE,
-  color_palette = c("#000000", "#e69f00", "#56b4e9", "#009e73", "#f0e442",
-  "#0072b2", "#d55e00", "#cc79a7"), rug = FALSE, thetas = NULL,
-  responses = NULL, sides = 1, rug_colors = "black")
+irf(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
+  main_title = "Item Response Function", sub = "", option_names = NULL,
+  line_types = NULL, color = FALSE, color_palette = c("#e69f00",
+  "#56b4e9", "#009e73", "#f0e442", "#0072b2", "#d55e00", "#cc79a7", "#000000"),
+  rug = FALSE, thetas = NULL, responses = NULL, sides = 1,
+  rug_colors = "black")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}
@@ -31,10 +31,15 @@ default is 3}
 \item{by}{A numeric vector of length one giving the spacing between
 theta values; default is 0.01}
 
-\item{sub}{An optional character vector of subtitles for the resulting plots}
-
 \item{layout_matrix}{An integer matrix dictating the layout of the plot;
 the default is a one-column matrix with one element for each item}
+
+\item{main_title}{A character vector giving the plots' main titles;
+default is "Item Response Function".}
+
+\item{sub}{An optional character vector of subtitles for the resulting plots,
+to be pasted onto the main title (helpful for titling individual plots
+when plotting multiple items' IRFs).}
 
 \item{option_names}{An optional character vector giving names for the items'
 options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
@@ -45,7 +50,7 @@ if not provided, the first option for each question will have lty = 1,
 the second will have lty = 2, etc.}
 
 \item{color}{A logical vector of length one; if TRUE, each option's line
-is printed in a different color (automatically selected via viridis),
+is printed in a different color (see the \code{color_palette} parameter),
 while if FALSE (the default), each line is plotted in black}
 
 \item{color_palette}{A vector of colors to use if color = TRUE;

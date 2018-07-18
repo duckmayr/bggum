@@ -15,9 +15,13 @@
 #'   default is 3
 #' @param by A numeric vector of length one giving the spacing between
 #'   theta values; default is 0.01
-#' @param sub An optional character vector of subtitles for the resulting plots
 #' @param layout_matrix An integer matrix dictating the layout of the plot;
 #'   the default is a one-column matrix with one element for each item
+#' @param main_title A character vector giving the plots' main titles;
+#'   default is "Item Response Function".
+#' @param sub An optional character vector of subtitles for the resulting plots,
+#'   to be pasted onto the main title (helpful for titling individual plots
+#'   when plotting multiple items' IRFs).
 #' @param option_names An optional character vector giving names for the items'
 #'   options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
 #'   are used
@@ -25,7 +29,7 @@
 #'   if not provided, the first option for each question will have lty = 1,
 #'   the second will have lty = 2, etc.
 #' @param color A logical vector of length one; if TRUE, each option's line
-#'   is printed in a different color (automatically selected via viridis),
+#'   is printed in a different color (see the \code{color_palette} parameter),
 #'   while if FALSE (the default), each line is plotted in black
 #' @param color_palette A vector of colors to use if color = TRUE;
 #'   the default is an eight color, colorblind friendly palette
@@ -54,11 +58,11 @@
 #'   Methods 8:441.
 #'
 #' @export
-irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
-                layout_matrix = matrix(1:length(a), ncol = 1, byrow = TRUE),
+irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
+                main_title = "Item Response Function", sub = "",
                 option_names = NULL, line_types = NULL, color = FALSE,
-                color_palette = c("#000000", "#e69f00", "#56b4e9", "#009e73",
-                                  "#f0e442", "#0072b2", "#d55e00", "#cc79a7"),
+                color_palette = c("#e69f00", "#56b4e9", "#009e73", "#f0e442",
+                                  "#0072b2", "#d55e00", "#cc79a7", "#000000"),
                 rug = FALSE, thetas = NULL, responses = NULL, sides = 1,
                 rug_colors = "black") {
     if ( length(a) != length(d) | (length(a) > 1 & length(a) != length(t)) ) {
@@ -85,6 +89,9 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
             stop("Please provide responses for all items when rug = TRUE.",
                  call. = FALSE)
         }
+    }
+    if ( length(main_title) == 1 ) {
+        main_title <- rep(main_title, m)
     }
     if ( length(sub) == 1 ) {
         sub <- rep(sub, m)
@@ -119,7 +126,7 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, sub = "",
     for ( j in 1:m ) {
         y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))
         graphics::plot(x = th, y = y, col = colors[1], type = "l",
-                       main = paste("Item Response Function", sub[j]),
+                       main = paste(main_title[j], sub[j]),
                        xlab = expression(theta), ylab = "", yaxt = "n",
                        xlim = c(from, to), ylim=c(0, 1.2),
                        lty = line_types[1])
