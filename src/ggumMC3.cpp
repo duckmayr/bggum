@@ -20,7 +20,7 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
     int one = 0, two = 1;
     IntegerVector chains = seq_len(N) - 1;
     // set up a matrix to store the cold chain values
-    NumericMatrix result(iters, n+ 2*m + sum(K));
+    NumericMatrix result(iters, n+ 2*m + sum(K-1));
     // set up the progress display
     Rcout.precision(1);
     double adv_prog = 10000.0 / burn_iters;
@@ -239,9 +239,9 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
             result(iter, n+m+j) = deltas(0, j);
             NumericVector thisTau = as<NumericVector>(coldTau[j]);
             for ( int k = 1; k < K[j]; ++k ) {
-                result(iter, n+2*m+k+K_ind) = thisTau[k];
+                result(iter, n+2*m+k+K_ind-1) = thisTau[k];
             }
-            K_ind += K[j];
+            K_ind += K[j]-1;
         }
     }
     // return the cold chain

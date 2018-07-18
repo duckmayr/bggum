@@ -8,7 +8,7 @@
 #' though the package allows parameter estimation from \code{R},
 #' the functions are actually written in \code{C++} to allow for reasonable
 #' execution time.
-#' 
+#'
 #' Our sampler creates random initial values for the parameters of the model,
 #' according to their prior distributions.
 #' At each iteration, new parameter values are proposed
@@ -141,15 +141,22 @@ ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
             proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
         }
     }
-    return(.ggumMCMC(data, n, m, sample_iterations, burn_iterations,
-                     flip_interval,
-                     theta_init, alpha_init, delta_init, tau_init, K,
-                     theta_prior_params[1], theta_prior_params[2],
-                     alpha_prior_params[1], alpha_prior_params[2],
-                     alpha_prior_params[3], alpha_prior_params[4],
-                     delta_prior_params[1], delta_prior_params[2],
-                     delta_prior_params[3], delta_prior_params[4],
-                     tau_prior_params[1], tau_prior_params[2],
-                     tau_prior_params[3], tau_prior_params[4],
-                     proposal_sds))
+    result <- .ggumMCMC(data, n, m, sample_iterations, burn_iterations,
+                        flip_interval,
+                        theta_init, alpha_init, delta_init, tau_init, K,
+                        theta_prior_params[1], theta_prior_params[2],
+                        alpha_prior_params[1], alpha_prior_params[2],
+                        alpha_prior_params[3], alpha_prior_params[4],
+                        delta_prior_params[1], delta_prior_params[2],
+                        delta_prior_params[3], delta_prior_params[4],
+                        tau_prior_params[1], tau_prior_params[2],
+                        tau_prior_params[3], tau_prior_params[4],
+                        proposal_sds)
+    colnames(result) <- c(paste0("theta", 1:n),
+                          paste0("alpha", 1:m),
+                          paste0("delta", 1:m),
+                          paste(paste0("tau", rep(1:m, times = K-1)),
+                                unlist(c(sapply(K-1, seq_len))),
+                                sep = "_"))
+    return(result)
 }

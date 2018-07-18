@@ -69,7 +69,7 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
         Rcout << "\rBurning in:          100.0%\n";
     }
     // This makes an empty matrix to store parameter values for every iteration:
-    NumericMatrix chainMatrix(iterations, n+(2*m)+sum(K));
+    NumericMatrix chainMatrix(iterations, n+(2*m)+sum(K-1));
     // set up progress display
     adv_prog = 10000.0 / iterations;
     current_break = 1;
@@ -125,10 +125,10 @@ NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations,
                 thisTau[k] = update_tau_MCMC(k, data(_, j), thetas,
                         alpha, delta, thisTau, tau_SDs[j], t_shape1, t_shape2,
                         t_a, t_b);
-                chainMatrix(iter, n+(2*m)+Ksum+k) = thisTau[k];
+                chainMatrix(iter, n+(2*m)+Ksum+k-1) = thisTau[k];
             }
             taus[j] = thisTau;
-            Ksum += K[j];
+            Ksum += K[j]-1;
         }
     }
     // Close out the progress display

@@ -11,12 +11,12 @@
 #'   iterations to use to tune the proposals before the burn-in period
 #'   begins (default is 5000). If 0 is given, the proposals are not tuned.
 #' @param temp_tune_iterations A numeric vector of length one; if a temperature
-#'   schedule is not provided in the \code{temps} argument and 
+#'   schedule is not provided in the \code{temps} argument and
 #'   \code{optimize_temps} = TRUE, \code{temp_tune_iterations} gives the number
 #'   of iterations to use to tune each temperature before the burn-in period
 #'   begins (default is 5000) -- see \code{\link{tune_temperatures}}
 #' @param temp_n_draws A numeric vector of length one; if a temperature
-#'   schedule is not provided in the \code{temps} argument and 
+#'   schedule is not provided in the \code{temps} argument and
 #'   \code{optimize_temps} = TRUE, \code{temp_n_draws} gives the number
 #'   of draws from the temperature finding algorithm to calculate each
 #'   temperature (default is 2500) -- see \code{\link{tune_temperatures}}
@@ -41,7 +41,7 @@
 #'   an algorithm is run to determine the optimal temperature schedule
 #'   (default is TRUE) -- see \code{\link{tune_temperatures}}
 #' @param temp_multiplier A numeric vector of length one; if a temperature
-#'   schedule is not provided and \code{optimize_temps = FALSE}, 
+#'   schedule is not provided and \code{optimize_temps = FALSE},
 #'   controls the differences between temperatures as described in the
 #'   description of the \code{temps} argument (default is 0.1)
 #' @param proposal_sds (Optional) A list of length four where is element is a
@@ -180,14 +180,21 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
             }
         }
     }
-    return(.ggumMC3(data, sample_iterations, burn_iterations, n_temps,
-                    swap_interval, flip_interval, temps, theta_init, alpha_init,
-                    delta_init, tau_init, n, m, K, proposal_sds,
-                    theta_prior_params[1], theta_prior_params[2],
-                    alpha_prior_params[1], alpha_prior_params[2],
-                    alpha_prior_params[3], alpha_prior_params[4],
-                    delta_prior_params[1], delta_prior_params[2],
-                    delta_prior_params[3], delta_prior_params[4],
-                    tau_prior_params[1], tau_prior_params[2],
-                    tau_prior_params[3], tau_prior_params[4]))
+    result <- .ggumMC3(data, sample_iterations, burn_iterations, n_temps,
+                       swap_interval, flip_interval, temps, theta_init, alpha_init,
+                       delta_init, tau_init, n, m, K, proposal_sds,
+                       theta_prior_params[1], theta_prior_params[2],
+                       alpha_prior_params[1], alpha_prior_params[2],
+                       alpha_prior_params[3], alpha_prior_params[4],
+                       delta_prior_params[1], delta_prior_params[2],
+                       delta_prior_params[3], delta_prior_params[4],
+                       tau_prior_params[1], tau_prior_params[2],
+                       tau_prior_params[3], tau_prior_params[4])
+    colnames(result) <- c(paste0("theta", 1:n),
+                          paste0("alpha", 1:m),
+                          paste0("delta", 1:m),
+                          paste(paste0("tau", rep(1:m, times = K-1)),
+                                unlist(c(sapply(K-1, seq_len))),
+                                sep = "_"))
+    return(result)
 }

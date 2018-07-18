@@ -27,13 +27,13 @@ iterations to use to tune the proposals before the burn-in period
 begins (default is 5000). If 0 is given, the proposals are not tuned.}
 
 \item{temp_tune_iterations}{A numeric vector of length one; if a temperature
-schedule is not provided in the \code{temps} argument and 
+schedule is not provided in the \code{temps} argument and
 \code{optimize_temps} = TRUE, \code{temp_tune_iterations} gives the number
 of iterations to use to tune each temperature before the burn-in period
 begins (default is 5000) -- see \code{\link{tune_temperatures}}}
 
 \item{temp_n_draws}{A numeric vector of length one; if a temperature
-schedule is not provided in the \code{temps} argument and 
+schedule is not provided in the \code{temps} argument and
 \code{optimize_temps} = TRUE, \code{temp_n_draws} gives the number
 of draws from the temperature finding algorithm to calculate each
 temperature (default is 2500) -- see \code{\link{tune_temperatures}}}
@@ -64,7 +64,7 @@ an algorithm is run to determine the optimal temperature schedule
 (default is TRUE) -- see \code{\link{tune_temperatures}}}
 
 \item{temp_multiplier}{A numeric vector of length one; if a temperature
-schedule is not provided and \code{optimize_temps = FALSE}, 
+schedule is not provided and \code{optimize_temps = FALSE},
 controls the differences between temperatures as described in the
 description of the \code{temps} argument (default is 0.1)}
 
