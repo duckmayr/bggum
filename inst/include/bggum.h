@@ -1,8 +1,8 @@
-#ifndef GGUM_H
-#define GGUM_H
-#define RCPPDIST_DONT_USE_ARMA
+#ifndef BGGUM_H
+#define BGGUM_H
 
-#include <RcppDist.h>
+#include <Rcpp.h>
+#include <4beta.h>
 
 using namespace Rcpp;
 
@@ -24,8 +24,6 @@ NumericVector probCol(const IntegerVector& choices, const NumericVector& thetas,
         const double a, const double d, const NumericVector& t);
 NumericVector probRow(const IntegerVector& choices, const double th,
         const NumericVector& a, const NumericVector& d, const List& t);
-NumericVector ggumProbability(NumericVector k, double theta, double alpha,
-        double delta, NumericVector tau);
 NumericVector log_probCol(const IntegerVector& choices,
         const NumericVector& thetas, const double a, const double d,
         const NumericVector& t);

@@ -1,4 +1,4 @@
-#include "../inst/include/ggum.h"
+#include "../inst/include/bggum.h"
 
 using namespace Rcpp;
 

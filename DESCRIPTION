@@ -1,10 +1,10 @@
-Package: ggum
+Package: bggum
 Title: Generalized Graded Unfolding Model for R
 Version: 0.5
-Date: 2018-01-08
+Date: 2018-07-17
 Author: JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
 Maintainer: JB Duck-Mayr <j.duck-mayr@wustl.edu>
-Description: ggum provides R tools for the generalized graded unfolding model.
+Description: bggum provides R tools for the generalized graded unfolding model.
 Depends:
     R (>= 3.0.0)
 Imports:
@@ -18,7 +18,7 @@ Suggests:
     devtools,
     testthat
 Collate:
-    'ggum-package.R'
+    'bggum-package.R'
     'RcppExports.R'
     'ggumProbability.R'
     'tune_proposals.R'

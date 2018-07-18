@@ -1,2 +1,2 @@
 library(testthat)
-test_check("ggum")
+test_check("bggum")

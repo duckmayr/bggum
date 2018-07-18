@@ -11,5 +11,5 @@ citEntry(entry = "Manual",
   textVersion  =
   paste("JB Duck-Mayr, Patrick Cunha Silva, and Luwei Ying. 2018.",
         "Generalized Graded Unfolding Model for R.",
-        "R package version 0.1.")
+        "R package version 0.5.")
 )
