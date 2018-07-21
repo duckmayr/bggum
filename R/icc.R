@@ -25,17 +25,7 @@
 #' @param option_names An optional character vector giving names for the items'
 #'   options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
 #'   are used
-#' @param line_types An optional integer vector specifying lty for each option;
-#'   if not provided, the first option for each question will have lty = 1,
-#'   the second will have lty = 2, etc.
-#' @param color A logical vector of length one; if TRUE, each option's line
-#'   is printed in a different color (see the \code{color_palette} parameter),
-#'   while if FALSE (the default), each line is plotted in black
-#' @param color_palette A vector of colors to use if color = TRUE,
-#'   or a character vector of length one giving the name of a \code{bggum}
-#'   palette to use.
-#'   See \code{\link{color_palettes}} for a list of color palettes provided
-#'   by \code{bggum}, or a custom palette may be provided.
+#' @param color The color to plot the ICC line in; default is "black"
 #' @param rug A logical vector of length one specifying whether to draw a
 #'   rug of theta estimates; the default is FALSE
 #' @param thetas An optional vector of theta estimates for rug drawing;
@@ -60,11 +50,11 @@
 #'   by \code{bggum}, or a custom palette may be provided.
 #'
 #' @export
-irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
-                main_title = "Item Response Function", sub = "",
-                option_names = NULL, line_types = NULL, color = FALSE,
-                color_palette = "default", rug = FALSE, thetas = NULL,
-                responses = NULL, sides = 1, rug_colors = "black") {
+icc <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
+                main_title = "Item Characteristic Curve", sub = "",
+                color = "black", rug = FALSE, option_names = NULL,
+                thetas = NULL, responses = NULL, sides = 1,
+                rug_colors = "black") {
     if ( length(a) != length(d) | (length(a) > 1 & length(a) != length(t)) ) {
         stop("Please provide a, d, and t of the same length.", call. = FALSE)
     }
@@ -105,32 +95,9 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
         K <- length(t)
         t <- list(t)
     }
-    if ( color ) {
-        colors <- switch(color_palette[1],
-                         default = default,
-                         default_alpha = default_alpha,
-                         wong = wong,
-                         wong_alpha = wong_alpha,
-                         color_palette
-        )
-        if ( length(colors) < max(K) ) {
-            colors <- rep(colors, length.out = max(K))
-        }
-    }
-    else {
-        colors <- rep("black", max(K))
-    }
     option_vector <- 1:max(K)
     if ( is.null(option_names) ) {
         option_names <- paste("Option", option_vector)
-    }
-    if ( is.null(line_types) ) {
-        line_types <- option_vector
-    }
-    else {
-        if ( length(line_types) == 1 ) {
-            line_types = rep(line_types, max(K))
-        }
     }
     if ( length(sides) == 1 ) {
         sides <- rep(sides, max(K))
@@ -144,28 +111,25 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
                          rep(rug_colors, length.out = max(K))
     )
     for ( j in 1:m ) {
-        y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))
-        graphics::plot(x = th, y = y, col = colors[1], type = "l",
+        kk <- K[j] - 1
+        y <- sapply(th, function(x) {
+            sum(0:kk * ggumProbability(0:kk, x, a[j], d[j], t[[j]]))
+        })
+        graphics::plot(x = th, y = y, col = color, type = "l",
                        main = paste(main_title[j], sub[j]),
                        xlab = expression(theta), ylab = "", yaxt = "n",
-                       xlim = c(from, to), ylim=c(0, 1.2),
-                       lty = line_types[1])
+                       xlim = c(from, to), ylim=c(0, kk + 0.2))
         graphics::axis(side = 2, at = c(0, 0.25, 0.5, 0.75, 1),
                        labels = c("0", "0.25", "0.5", "0.75", "1"))
-        graphics::title(ylab = expression(P[ij](k)), line = 2.25)
-        for ( k in 2:K[j] ) {
-            graphics::lines(th, sapply(th, function(x) {
-                ggumProbability(k-1, x, a[j], d[j], t[[j]])
-            }), lty = line_types[k], col = colors[k])
-        }
-        graphics::legend(x = from, y = 1.2, option_names, lty = line_types,
-                         horiz = TRUE, bty = "n", col = colors)
+        graphics::title(ylab = "Expected Response", line = 2.25)
         if ( rug ) {
-            for ( k in 1:K[j] ) {
+            for ( k in  1:K[j] ) {
                 idx <- which(responses[ , j] == k - 1)
                 k_thetas <- thetas[idx]
                 graphics::rug(k_thetas, side = sides[k], col = rug_colors[k])
             }
+            graphics::legend(x = from, y = 1.2, option_names, lty = 1,
+                             horiz = TRUE, bty = "n", col = rug_colors)
         }
     }
     graphics::layout(1) # resets layout

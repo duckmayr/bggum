@@ -25,7 +25,9 @@ Collate:
     'tune_temps.R'
     'ggumMCMC.R'
     'ggumMC3.R'
+    'color_palettes.R'
     'irf.R'
+    'icc.R'
     'estModes.R'
 Remotes: duckmayr/RcppDist
 Encoding: UTF-8

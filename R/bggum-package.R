@@ -1,6 +1,6 @@
 #' bggum
 #'
-#' bggum provides R tools for the generalized graded unfolding model.  
+#' bggum provides R tools for the generalized graded unfolding model.
 #' @name bggum
 #' @docType package
 #' @author  JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
