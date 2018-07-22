@@ -247,6 +247,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// summarize_matrix
+NumericMatrix summarize_matrix(NumericMatrix x);
+RcppExport SEXP _bggum_summarize_matrix(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(summarize_matrix(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // tune_proposals
 List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas, NumericVector& alphas, NumericVector& deltas, List& taus, const IntegerVector& K, const int tune_iters, int n, int m, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b);
 RcppExport SEXP _bggum_tune_proposals(SEXP responseMatrixSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP tune_itersSEXP, SEXP nSEXP, SEXP mSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP) {
@@ -471,6 +482,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bggum_log_prob", (DL_FUNC) &_bggum_log_prob, 5},
     {"_bggum_log_probCol", (DL_FUNC) &_bggum_log_probCol, 5},
     {"_bggum_log_probRow", (DL_FUNC) &_bggum_log_probRow, 5},
+    {"_bggum_summarize_matrix", (DL_FUNC) &_bggum_summarize_matrix, 1},
     {"_bggum_tune_proposals", (DL_FUNC) &_bggum_tune_proposals, 23},
     {"_bggum_tune_temps", (DL_FUNC) &_bggum_tune_temps, 22},
     {"_bggum_update_alpha_MCMC", (DL_FUNC) &_bggum_update_alpha_MCMC, 10},

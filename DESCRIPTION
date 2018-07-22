@@ -30,6 +30,7 @@ Collate:
     'irf.R'
     'icc.R'
     'estModes.R'
+    'summary.R'
 Remotes: duckmayr/RcppDist
 Encoding: UTF-8
 RoxygenNote: 6.0.1

@@ -196,5 +196,7 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
                           paste(paste0("tau", rep(1:m, times = K-1)),
                                 unlist(c(sapply(K-1, seq_len))),
                                 sep = "_"))
+    class(result) <- c("ggum", "mcmc", class(result))
+    attr(result, "mcpar") <- c(1, sample_iterations, 1)
     return(result)
 }

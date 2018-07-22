@@ -53,6 +53,10 @@ log_probRow <- function(choices, th, a, d, t) {
     .Call('_bggum_log_probRow', PACKAGE = 'bggum', choices, th, a, d, t)
 }
 
+summarize_matrix <- function(x) {
+    .Call('_bggum_summarize_matrix', PACKAGE = 'bggum', x)
+}
+
 .tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
     .Call('_bggum_tune_proposals', PACKAGE = 'bggum', responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
 }
