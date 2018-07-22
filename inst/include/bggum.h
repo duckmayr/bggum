@@ -79,6 +79,6 @@ List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas,
         double a_shape2, double a_a, double a_b, double d_shape1,
         double d_shape2, double d_a, double d_b, double t_shape1,
         double t_shape2, double t_a, double t_b);
-
+        
 
 # endif

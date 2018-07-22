@@ -65,6 +65,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ggum_simulation
+IntegerMatrix ggum_simulation(const int n, const int m, const IntegerVector& K, const NumericVector& theta, const NumericVector& alpha, const NumericVector& delta, const List& tau);
+RcppExport SEXP _bggum_ggum_simulation(SEXP nSEXP, SEXP mSEXP, SEXP KSEXP, SEXP thetaSEXP, SEXP alphaSEXP, SEXP deltaSEXP, SEXP tauSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type K(KSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< const List& >::type tau(tauSEXP);
+    rcpp_result_gen = Rcpp::wrap(ggum_simulation(n, m, K, theta, alpha, delta, tau));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ggumMC3
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N, int W, int flip_interval, NumericVector temps, NumericMatrix thetas, NumericMatrix alphas, NumericMatrix deltas, List taus, int n, int m, IntegerVector K, List SDs, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b);
 RcppExport SEXP _bggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP burn_itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP flip_intervalSEXP, SEXP tempsSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP nSEXP, SEXP mSEXP, SEXP KSEXP, SEXP SDsSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP) {
@@ -445,6 +462,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bggum_init_alphas", (DL_FUNC) &_bggum_init_alphas, 5},
     {"_bggum_init_deltas", (DL_FUNC) &_bggum_init_deltas, 5},
     {"_bggum_init_taus", (DL_FUNC) &_bggum_init_taus, 6},
+    {"_bggum_ggum_simulation", (DL_FUNC) &_bggum_ggum_simulation, 7},
     {"_bggum_ggumMC3", (DL_FUNC) &_bggum_ggumMC3, 29},
     {"_bggum_ggumMCMC", (DL_FUNC) &_bggum_ggumMCMC, 26},
     {"_bggum_prob", (DL_FUNC) &_bggum_prob, 5},

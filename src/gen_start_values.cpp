@@ -25,7 +25,7 @@ List init_taus(int m, double shape1, double shape2, double a, double b,
     List taus(m);
     for ( int j = 0; j < m; ++j ){
         NumericVector thisTau(K[j]);
-        thisTau[Range(1, K[j]-1)] = r4beta(K[j]-1, 2, 2, -2, 0);
+        thisTau[Range(1, K[j]-1)] = r4beta(K[j]-1, shape1, shape2, a, b);
         taus[j] = thisTau;
     }
     return taus;

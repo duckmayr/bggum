@@ -25,6 +25,7 @@ Collate:
     'tune_temps.R'
     'ggumMCMC.R'
     'ggumMC3.R'
+    'ggum_simulation.R'
     'color_palettes.R'
     'irf.R'
     'icc.R'
