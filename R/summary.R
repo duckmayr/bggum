@@ -42,8 +42,9 @@ summary.ggum <- function(object, ...) {
     delta <- statistics[grepl("delta", param_names), J]
     m <- length(delta)
     tau <- lapply(1:m, function(j) {
-        c(0, statistics[grepl(paste0("tau", j), param_names), J])
+        c(0, statistics[grepl(paste0("tau", j, "_"), param_names), J])
     })
+    names(tau) <- sub("_.+", "", param_names[grepl("tau", param_names)])
     estimates <- list(theta = theta, alpha = alpha, delta = delta, tau = tau)
     J <- "Posterior SD"
     theta_sds <- statistics[grepl("theta", param_names), J]
@@ -51,8 +52,9 @@ summary.ggum <- function(object, ...) {
     delta_sds <- statistics[grepl("delta", param_names), J]
     m <- length(delta)
     tau_sds <- lapply(1:m, function(j) {
-        c(0, statistics[grepl(paste0("tau", j), param_names), J])
+        c(0, statistics[grepl(paste0("tau", j, "_"), param_names), J])
     })
+    names(tau_sds) <- sub("_.+", "", param_names[grepl("tau", param_names)])
     sds <- list(theta_sds = theta_sds, alpha_sds = alpha_sds,
                 delta_sds = delta_sds, tau_sds = tau_sds)
     result <- list(estimates = estimates, sds = sds, statistics = statistics)
