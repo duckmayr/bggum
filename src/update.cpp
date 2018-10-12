@@ -1,4 +1,4 @@
-#include "../inst/include/bggum.h"
+#include "bggum.h"
 
 using namespace Rcpp;
 
@@ -30,7 +30,6 @@ double update_theta_MCMC(const IntegerVector& responses, const double cv,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_alpha_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double cv, const double delta,
         const NumericVector& taus, const double proposal_sd,
@@ -51,7 +50,6 @@ double update_alpha_MCMC(const IntegerVector& responses,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_delta_MCMC(const IntegerVector& responses,
         const NumericVector& thetas, const double alpha, const double cv,
         const NumericVector& taus, const double proposal_sd,
@@ -72,7 +70,6 @@ double update_delta_MCMC(const IntegerVector& responses,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_tau_MCMC(const int k, const IntegerVector& responses,
         const NumericVector& thetas, const double alpha, const double delta,
         const NumericVector& taus, const double proposal_sd,
@@ -100,7 +97,6 @@ double update_tau_MCMC(const int k, const IntegerVector& responses,
 
 // Parameter updating functions for MC3:
 
-//[[Rcpp::export]]
 double update_theta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& a, const NumericVector& d, const List& t,
         const double temp, const double proposal_sd,
@@ -117,7 +113,6 @@ double update_theta_MC3(const double cv, const IntegerVector& choices,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_alpha_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double d, const NumericVector& t,
         const double temp, const double proposal_sd,
@@ -138,7 +133,6 @@ double update_alpha_MC3(const double cv, const IntegerVector& choices,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_delta_MC3(const double cv, const IntegerVector& choices,
         const NumericVector& th, const double a, const NumericVector& t,
         const double temp, const double proposal_sd,
@@ -159,7 +153,6 @@ double update_delta_MC3(const double cv, const IntegerVector& choices,
     return cv;
 }
 
-//[[Rcpp::export]]
 double update_tau_MC3(const int k, const IntegerVector& choices,
         const NumericVector& th, const double a, const double d,
         const NumericVector& t, const double temp, const double proposal_sd,

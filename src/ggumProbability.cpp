@@ -73,7 +73,6 @@ NumericVector probRow(const IntegerVector& choices, const double th,
     return result;
 }
 
-//[[Rcpp::export]]
 double log_prob(const int choice, const double th, const double a,
         const double d, const NumericVector& t){
     int K = t.size();
@@ -90,7 +89,6 @@ double log_prob(const int choice, const double th, const double a,
     return log(result) - log(denominator);
 }
 
-//[[Rcpp::export]]
 NumericVector log_probCol(const IntegerVector& choices,
         const NumericVector& thetas, const double a, const double d,
         const NumericVector& t){
@@ -117,7 +115,6 @@ NumericVector log_probCol(const IntegerVector& choices,
     return result;
 }
 
-//[[Rcpp::export]]
 NumericVector log_probRow(const IntegerVector& choices, const double th,
         const NumericVector& a, const NumericVector& d, const List& t){
     int m = choices.size();
