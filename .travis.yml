@@ -3,12 +3,13 @@
 language: R
 sudo: false
 cache: packages
-fortran: false
-
-os:
-  - linux
-  - osx
 
 r:
   - release
+
+matrix:
+    include:
+        - os: linux
+        - os: osx
+          fortran: false
 
