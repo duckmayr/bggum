@@ -3,6 +3,7 @@
 language: R
 sudo: false
 cache: packages
+fortran: false
 
 os:
   - linux
