@@ -135,14 +135,16 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
     if ( length(sides) == 1 ) {
         sides <- rep(sides, max(K))
     }
-    rug_colors <- switch(rug_colors,
-                         black = rep("black", max(K)),
-                         default = rep(default, length.out = max(K)),
-                         default_alpha = rep(default_alpha, length.out = max(K)),
-                         wong = rep(wong, length.out = max(K)),
-                         wong_alpha = rep(wong_alpha, length.out = max(K)),
-                         rep(rug_colors, length.out = max(K))
+    rug_colors <- switch(rug_colors[1],
+                         default = default,
+                         default_alpha = default_alpha,
+                         wong = wong,
+                         wong_alpha = wong_alpha,
+                         rug_colors
     )
+    if ( length(rug_colors) < max(K) ) {
+        rug_colors <- rep(rug_colors, length.out = max(K))
+    }
     for ( j in 1:m ) {
         y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))
         graphics::plot(x = th, y = y, col = colors[1], type = "l",
