@@ -5,10 +5,10 @@
 \title{Item Response Function}
 \usage{
 irf(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
-  main_title = "Item Response Function", sub = "", option_names = NULL,
-  line_types = NULL, color = FALSE, color_palette = "default",
-  rug = FALSE, thetas = NULL, responses = NULL, sides = 1,
-  rug_colors = "black")
+  main_title = "Item Response Function", sub = "",
+  option_names = NULL, line_types = NULL, color = FALSE,
+  color_palette = "default", rug = FALSE, thetas = NULL,
+  responses = NULL, sides = 1, rug_colors = "black")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}

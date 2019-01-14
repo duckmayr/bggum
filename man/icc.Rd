@@ -5,9 +5,9 @@
 \title{Item Response Function}
 \usage{
 icc(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
-  main_title = "Item Characteristic Curve", sub = "", color = "black",
-  rug = FALSE, option_names = NULL, thetas = NULL, responses = NULL,
-  sides = 1, rug_colors = "black")
+  main_title = "Item Characteristic Curve", sub = "",
+  color = "black", rug = FALSE, option_names = NULL, thetas = NULL,
+  responses = NULL, sides = 1, rug_colors = "black")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}

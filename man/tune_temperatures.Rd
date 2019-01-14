@@ -7,8 +7,8 @@
 tune_temperatures(data, n_temps, temp_tune_iterations = 5000,
   n_draws = 2500, K = NULL, proposal_sds = NULL,
   sd_tune_iterations = 5000, theta_prior_params = c(0, 1),
-  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
-  -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2,
+  2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each

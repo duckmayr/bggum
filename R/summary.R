@@ -3,8 +3,15 @@
 #' Summarize the results of \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.
 #'
 #' @param object A numeric matrix of posterior draws as returned by
-#'   \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}
+#'   \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}, or a list of
+#'   such matrices.
 #' @param ... Arguments to be passed to or from other methods
+#' @param combine A logical vector of length one; if \code{TRUE} and
+#'   \code{object} is a list of \code{ggum} result objects, the matrices are
+#'   combined and a summary of the combined sample is given; if \code{FALSE}
+#'   and \code{object} is a list of \code{ggum} result objects, each matrix
+#'   will be summarized individually; and if \code{object} is not a list, it
+#'   has no effect. The default is \code{TRUE}.
 #'
 #' @return A list with three elements: estimates (a list of length four;
 #'   a numeric vector giving the means of the theta draws, a numeric vector
@@ -20,10 +27,15 @@
 #'   Fan 1996, rather than the type 7 algorithm that would be the default
 #'   from R's \code{quantile()}).
 #'
+#'   If \code{object} is a list and \code{combine} is \code{FALSE},
+#'   a list of such lists will be returned.
+#'
 #' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
 #'
 #' @references Hyndman, R. J. and Fan, Y. 1996. "Sample Quantiles in
 #'   Packages." American Statistician 50, 361--365.
+#' @name summary.ggum
+#' @rdname summary.ggum
 #' @export
 summary.ggum <- function(object, ...) {
     obj_class <- class(object)
@@ -61,4 +73,23 @@ summary.ggum <- function(object, ...) {
     result <- list(estimates = estimates, sds = sds, statistics = statistics)
     class(result) <- "summary.ggum"
     return(result)
+}
+
+#' @name summary.ggum
+#' @rdname summary.ggum
+#' @export
+summary.list <- function(object, ..., combine = TRUE) {
+    classes <- lapply(object, class)
+    if ( all(grepl("ggum", classes)) ) {
+        if ( combine ) {
+            chain <- do.call("rbind", object)
+            class(chain) <- c("ggum", "mcmc")
+            result <- summary.ggum(chain)
+        } else {
+            result <- lapply(object, summary.ggum)
+        }
+        return(result)
+    } else {
+        return(summary.default(object, ...))
+    }
 }

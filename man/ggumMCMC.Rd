@@ -8,8 +8,8 @@ ggumMCMC(data, sample_iterations = 50000, burn_iterations = 50000,
   tune_iterations = 5000, flip_interval = NA, proposal_sds = NULL,
   theta_init = NULL, alpha_init = NULL, delta_init = NULL,
   tau_init = NULL, theta_prior_params = c(0, 1),
-  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2, 2,
-  -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2,
+  2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each

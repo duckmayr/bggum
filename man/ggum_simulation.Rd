@@ -5,8 +5,9 @@
 \title{GGUM Simulation}
 \usage{
 ggum_simulation(n, m, K, theta = NULL, alpha = NULL, delta = NULL,
-  tau = NULL, theta_params = c(0, 1), alpha_params = c(1.5, 1.5, 0.25, 4),
-  delta_params = c(2, 2, -5, 5), tau_params = c(1.5, 1.5, -2, 0))
+  tau = NULL, theta_params = c(0, 1), alpha_params = c(1.5, 1.5,
+  0.25, 4), delta_params = c(2, 2, -5, 5), tau_params = c(1.5, 1.5, -2,
+  0))
 }
 \arguments{
 \item{n}{An integer vector of length one giving the number of respondents}

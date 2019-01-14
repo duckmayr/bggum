@@ -2,15 +2,26 @@
 % Please edit documentation in R/summary.R
 \name{summary.ggum}
 \alias{summary.ggum}
+\alias{summary.list}
 \title{Summarize Posterior Draws for GGUM Parameters}
 \usage{
 \method{summary}{ggum}(object, ...)
+
+\method{summary}{list}(object, ..., combine = TRUE)
 }
 \arguments{
 \item{object}{A numeric matrix of posterior draws as returned by
-\code{\link{ggumMCMC}} or \code{\link{ggumMC3}}}
+\code{\link{ggumMCMC}} or \code{\link{ggumMC3}}, or a list of
+such matrices.}
 
 \item{...}{Arguments to be passed to or from other methods}
+
+\item{combine}{A logical vector of length one; if \code{TRUE} and
+\code{object} is a list of \code{ggum} result objects, the matrices are
+combined and a summary of the combined sample is given; if \code{FALSE}
+and \code{object} is a list of \code{ggum} result objects, each matrix
+will be summarized individually; and if \code{object} is not a list, it
+has no effect. The default is \code{TRUE}.}
 }
 \value{
 A list with three elements: estimates (a list of length four;
@@ -26,6 +37,9 @@ A list with three elements: estimates (a list of length four;
   type 8 algorithm from Hyndman and Fan 1996, as suggested by Hyndman and
   Fan 1996, rather than the type 7 algorithm that would be the default
   from R's \code{quantile()}).
+
+  If \code{object} is a list and \code{combine} is \code{FALSE},
+  a list of such lists will be returned.
 }
 \description{
 Summarize the results of \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.

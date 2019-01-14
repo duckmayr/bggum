@@ -10,8 +10,9 @@ ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
   n_temps = length(temps), temps = NULL, optimize_temps = TRUE,
   temp_multiplier = 0.1, proposal_sds = NULL, theta_init = NULL,
   alpha_init = NULL, delta_init = NULL, tau_init = NULL,
-  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25, 4),
-  delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25,
+  4), delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2,
+  -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}

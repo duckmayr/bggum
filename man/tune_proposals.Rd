@@ -5,9 +5,10 @@
 \title{Tune proposal densities}
 \usage{
 tune_proposals(data, tune_iterations, K = NULL, thetas = NULL,
-  alphas = NULL, deltas = NULL, taus = NULL, theta_prior_params = c(0,
-  1), alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2,
-  2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  alphas = NULL, deltas = NULL, taus = NULL,
+  theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25,
+  4), delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2,
+  -6, 6))
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each
