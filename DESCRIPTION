@@ -31,5 +31,6 @@ Collate:
     'icc.R'
     'estModes.R'
     'summary.R'
+    'post_process.R'
 Encoding: UTF-8
 RoxygenNote: 6.1.0

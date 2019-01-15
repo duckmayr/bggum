@@ -1,0 +1,45 @@
+#' Post-process a Posterior Sample
+#'
+#' Post-process the results of \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}
+#' using an artificial identifiability constraint (AIC).
+#'
+#' Since under the GGUM the probability of a response is the same for any given
+#' choice of theta and delta parameters and the negative of that choice; i.e.
+#'
+#' \deqn{Pr(z | \theta, \alpha, \delta, \tau) = Pr(z | -\theta, \alpha, -\delta, \tau),}
+#'
+#' if symmetric priors are used, the posterior has a reflective mode.
+#' This function transforms a posterior sample by enforcing a constraint
+#' that a particular parameter is of a given sign, essentially transforming
+#' it into a sample from only one of the reflective modes if a suitable
+#' constraint is chosen; using a sufficiently extreme parameter is suggested.
+#'
+#' @param sample A numeric matrix of posterior draws as returned by
+#'   \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.
+#' @param constraint An integer vector of length one giving the column number
+#'   of the parameter to constrain, or a character vector of length one giving
+#'   the column name for the constraint.
+#' @param expected_sign A character vector of length one giving the sign for
+#'   the constraint; it should be either "-" if the constrained parameter is
+#'   to be negative or "+" if the constrained parameter is to be positive.
+#'
+#' @return A numeric matrix, the post-processed sample.
+#'
+#' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
+#' @export
+post_process <- function(sample, constraint, expected_sign) {
+    if ( ! "ggum" %in% class(sample) ) {
+        stop("Provide output from ggumMCMC() or ggumMC3() as sample.")
+    }
+    comparison <- switch(expected_sign[1],
+                         "-" = get(">"),
+                         "+" = get("<"),
+                         stop("Provide + or - as expected_sign."))
+    n <- sum(grepl("theta", colnames(sample)))
+    m <- sum(grepl("alpha", colnames(sample)))
+    flipcols <- c(1:n, (n+m+1):(n+2*m))
+    fliprows <- which(comparison(sample[ , constraint], 0))
+    sample[fliprows, flipcols] <- -sample[fliprows, flipcols]
+    return(sample)
+}
+
