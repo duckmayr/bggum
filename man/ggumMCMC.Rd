@@ -9,7 +9,7 @@ ggumMCMC(data, sample_iterations = 50000, burn_iterations = 50000,
   theta_init = NULL, alpha_init = NULL, delta_init = NULL,
   tau_init = NULL, theta_prior_params = c(0, 1),
   alpha_prior_params = c(1.5, 1.5, 0.25, 4), delta_prior_params = c(2,
-  2, -5, 5), tau_prior_params = c(2, 2, -6, 6))
+  2, -5, 5), tau_prior_params = c(2, 2, -6, 6), return_sds = TRUE)
 }
 \arguments{
 \item{data}{A numeric matrix giving the response by each
@@ -79,6 +79,10 @@ the default is 2, 2, -5, and 5)}
 the two shape parameters and a and b values for tau parameters' prior
 distribution (where the tau parameters have a four parameter beta prior;
 the default is 2, 2, -6, and 6)}
+
+\item{return_sds}{A logical vector of length one; if TRUE, the proposal
+standard deviations are stored in an attribute of the returned object
+named "proposal_sds." The default is TRUE.}
 }
 \value{
 A chain matrix; a numeric matrix with \code{sample_iterations} rows

@@ -33,8 +33,8 @@
 #'
 #' @return A list with five elements; "theta" containing the theta draws,
 #'   "alpha" containing the alpha draws, "delta" containing the delta draws,
-#'   "tau" containing the tau draws, and "resp_mat" containing the simulated
-#'   response matrix.
+#'   "tau" containing the tau draws, and "response_matrix" containing the
+#'   simulated response matrix.
 #'
 #' @seealso \code{\link{ggumProbability}}
 #' @export
@@ -61,7 +61,7 @@ ggum_simulation <- function(n, m, K, theta = NULL, alpha = NULL, delta = NULL,
         tau <- init_taus(m, tau_params[1], tau_params[2],
                          tau_params[3], tau_params[4], K)
     }
-    resp_mat <- .ggum_simulation(n, m, K, theta, alpha, delta, tau)
+    response_matrix <- .ggum_simulation(n, m, K, theta, alpha, delta, tau)
     return(list(theta = theta, alpha = alpha, delta = delta, tau = tau,
-                resp_mat = resp_mat))
+                resp_mat = response_matrix))
 }

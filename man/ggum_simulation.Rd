@@ -52,8 +52,8 @@ each tau vector is drawn from; the default is 1.5, 1.5, -2, and 0}
 \value{
 A list with five elements; "theta" containing the theta draws,
   "alpha" containing the alpha draws, "delta" containing the delta draws,
-  "tau" containing the tau draws, and "resp_mat" containing the simulated
-  response matrix.
+  "tau" containing the tau draws, and "response_matrix" containing the
+  simulated response matrix.
 }
 \description{
 Generates randomly drawn item and person parameters, and simluated responses.
