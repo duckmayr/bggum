@@ -63,5 +63,5 @@ ggum_simulation <- function(n, m, K, theta = NULL, alpha = NULL, delta = NULL,
     }
     response_matrix <- .ggum_simulation(n, m, K, theta, alpha, delta, tau)
     return(list(theta = theta, alpha = alpha, delta = delta, tau = tau,
-                resp_mat = response_matrix))
+                response_matrix = response_matrix))
 }

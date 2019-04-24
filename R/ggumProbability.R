@@ -86,10 +86,6 @@ ggumProbability <- function(response, theta, alpha, delta, tau) {
         result <- probCol(response, theta, alpha, delta, tau)
     }
     else if ( length(alpha) > 1 ) {
-        if ( length(theta) > 1 ) {
-            stop(paste("For multiple items and respondents, provide a matrix",
-                       "of responses."), call. = FALSE)
-        }
         if ( length(response) == 1 ) {
             stop("Provide a response for each item.", call. = FALSE)
         }
