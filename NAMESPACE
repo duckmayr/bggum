@@ -2,7 +2,6 @@
 
 S3method(summary,ggum)
 S3method(summary,list)
-export(estModes)
 export(ggumMC3)
 export(ggumMCMC)
 export(ggumProbability)

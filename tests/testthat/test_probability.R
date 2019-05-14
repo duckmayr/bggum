@@ -31,14 +31,15 @@ m <- 10
 K <- 2
 set.seed(123)
 ggum_sim <- ggum_simulation(n, m, K)
+ggum_sim$response_matrix[1, 1] <- NA
 
 test_that("ggumProbability handles matrices correctly", {
     expect_error(ggumProbability(ggum_sim$response_matrix, 1, 1, 1, 1),
                  "For a response matrix")
     probs <- ggumProbability(ggum_sim$response_matrix, ggum_sim$theta,
                              ggum_sim$alpha, ggum_sim$delta, ggum_sim$tau)
-    expect_true(all(probs >= 0))
-    expect_true(all(probs <= 1))
+    expect_true(all(probs >= 0 | is.na(probs)))
+    expect_true(all(probs <= 1 | is.na(probs)))
     expect_equal(dim(probs), dim(ggum_sim$response_matrix))
 })
 
@@ -49,8 +50,8 @@ test_that("ggumProbability handles rows correctly", {
                  "Provide a response for each respondent.")
     probs <- ggumProbability(ggum_sim$response_matrix[1, ], ggum_sim$theta[1],
                              ggum_sim$alpha, ggum_sim$delta, ggum_sim$tau)
-    expect_true(all(probs >= 0))
-    expect_true(all(probs <= 1))
+    expect_true(all(probs >= 0 | is.na(probs)))
+    expect_true(all(probs <= 1 | is.na(probs)))
     expect_length(probs, m)
 })
 
@@ -60,7 +61,7 @@ test_that("ggumProbability handles columns correctly", {
     probs <- ggumProbability(ggum_sim$response_matrix[ , 1], ggum_sim$theta,
                              ggum_sim$alpha[1], ggum_sim$delta[1],
                              ggum_sim$tau[[1]])
-    expect_true(all(probs >= 0))
-    expect_true(all(probs <= 1))
+    expect_true(all(probs >= 0 | is.na(probs)))
+    expect_true(all(probs <= 1 | is.na(probs)))
     expect_length(probs, n)
 })

@@ -73,22 +73,6 @@ NumericVector probRow(const IntegerVector& choices, const double th,
     return result;
 }
 
-double log_prob(const int choice, const double th, const double a,
-        const double d, const NumericVector& t){
-    int K = t.size();
-    double result = 0, numerator = 0, denominator = 0, tSum = 0;
-    for ( int k = 0; k < K; ++k ) {
-        tSum += t[k];
-        numerator = exp(a * (k * (th - d) - tSum));
-        numerator += exp(a * ((2*K - 1 - k) * (th - d) - tSum));
-        denominator += numerator;
-        if ( k == choice ) {
-            result = numerator;
-        }
-    }
-    return log(result) - log(denominator);
-}
-
 NumericVector log_probCol(const IntegerVector& choices,
         const NumericVector& thetas, const double a, const double d,
         const NumericVector& t){

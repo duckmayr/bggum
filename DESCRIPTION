@@ -16,7 +16,8 @@ LinkingTo: Rcpp,
 License: GPL (>= 2)
 Suggests:
     devtools,
-    testthat
+    testthat,
+    covr
 Collate:
     'bggum-package.R'
     'RcppExports.R'
@@ -29,7 +30,6 @@ Collate:
     'color_palettes.R'
     'irf.R'
     'icc.R'
-    'estModes.R'
     'summary.R'
     'post_process.R'
 Encoding: UTF-8

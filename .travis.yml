@@ -13,3 +13,6 @@ matrix:
         - os: osx
           fortran: false
 
+after_success:
+    - Rscript -e 'covr::codecov()'
+
