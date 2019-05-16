@@ -6,7 +6,7 @@ K <- 2
 set.seed(123)
 ggum_sim   <- ggum_simulation(n, m, K)
 sds <- tune_proposals(ggum_sim$response_matrix, 100)
-temps <- tune_temperatures(ggum_sim$response_matrix, n_temps = 2,
+temps <- tune_temperatures(ggum_sim$response_matrix, n_temps = 3,
                            temp_tune_iterations = 100, n_draws = 50,
                            sd_tune_iterations = 100)
 
@@ -19,5 +19,5 @@ test_that("tune_proposals() produces expected output", {
 })
 
 test_that("tune_temperatures() produces expected output", {
-    expect_equal(temps, c(1, 0.9798585263))
+    expect_equal(temps, c(1, 0.9798585263, 0.9150885847))
 })

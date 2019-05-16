@@ -65,3 +65,8 @@ test_that("ggumProbability handles columns correctly", {
     expect_true(all(probs <= 1 | is.na(probs)))
     expect_length(probs, n)
 })
+
+test_that("ggumProbability handles multiple responses correctly", {
+    expect_equal(ggumProbability(0:1, 1, 1, 1, 1:2),
+                 c(0.8807970780, 0.1192029220))
+})

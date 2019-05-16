@@ -6,15 +6,24 @@ K <- 2
 set.seed(123)
 ggum_sim   <- ggum_simulation(n, m, K)
 response_matrix <- ggum_sim$response_matrix
+response_matrix[1, 1] <- NA
 mcmc_chain <- ggumMCMC(response_matrix,
                        tune_iterations = 100,
+                       burn_iterations = 100,
+                       sample_iterations = 100)
+mcmc_chain <- ggumMCMC(response_matrix,
+                       tune_iterations = 0,
                        burn_iterations = 100,
                        sample_iterations = 100)
 mc3_chain  <- ggumMC3(response_matrix,
                       sd_tune_iterations = 100,
                       burn_iterations = 100,
                       sample_iterations = 100,
-                      temps = c(1, 0.999))
+                      temps = c(1, 0.999),
+                      theta_init = ggum_sim$theta,
+                      alpha_init = ggum_sim$alpha,
+                      delta_init = ggum_sim$delta,
+                      tau_init = ggum_sim$tau)
 mc3_chain  <- ggumMC3(response_matrix,
                       sd_tune_iterations = 100,
                       burn_iterations = 100,
@@ -28,9 +37,11 @@ mc3_chain  <- ggumMC3(response_matrix,
                       sample_iterations = 100,
                       n_temps = 2,
                       optimize_temps = FALSE)
+processed_chain <- post_process(mc3_chain, which.min(ggum_sim$theta), "-")
 mcmc_summary  <- summary(mcmc_chain)
 list_summary  <- summary(list(mc3_chain, mc3_chain))
 list_summary2 <- summary(list(mc3_chain, mc3_chain), combine = FALSE)
+list_summary3 <- summary(list(1:10))
 
 test_that("ggumMCMC() produces expected output", {
     expect_s3_class(mcmc_chain, "ggum")
@@ -59,6 +70,20 @@ test_that("ggumMC3() produces expected output", {
     expect_length(attr(mc3_chain, "temps"), 2)
     expect_error(ggumMC3(response_matrix, n_temps = 1, sd_tune_iterations = 0),
                  "Please provide a vector of temperatures")
+})
+
+test_that("post_process() produces expected output", {
+    expect_error(post_process(1, 1, "-"),
+                 "Provide output from ggumMCMC\\(\\) or ggumMC3\\(\\) as sample")
+    expect_error(post_process(mc3_chain, 1, "x"),
+                 "Provide \\+ or - as expected_sign.")
+    expect_s3_class(processed_chain, "ggum")
+    expect_s3_class(processed_chain, "mcmc")
+    expect_length(processed_chain, length(mc3_chain))
+    processed_aic_draws <- processed_chain[ , which.min(ggum_sim$theta)]
+    unprocessed_aic_draws <- mc3_chain[ , which.min(ggum_sim$theta)]
+    idx <- which(unprocessed_aic_draws > 0)
+    expect_equal(processed_aic_draws[idx], -unprocessed_aic_draws[idx])
 })
 
 test_that("summary.ggum() produces expected output", {
@@ -105,4 +130,5 @@ test_that("summary.list() produces expected output", {
     expect_length(list_summary2, 2)
     expect_s3_class(list_summary2[[1]], "summary.ggum")
     expect_s3_class(list_summary2[[1]], "summary.ggum")
+    expect_s3_class(list_summary3, "summaryDefault")
 })
