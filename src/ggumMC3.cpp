@@ -4,7 +4,7 @@ using namespace Rcpp;
 
 //[[Rcpp::export(.ggumMC3)]]
 NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
-        int W, int flip_interval,
+        int W, int flip_interval, int recorded_chain,
         NumericVector temps, NumericMatrix thetas, NumericMatrix alphas,
         NumericMatrix deltas, List taus, int n, int m, IntegerVector K,
         List SDs, double th_prior_mean, double th_prior_sd, double a_shape1,
@@ -230,13 +230,13 @@ NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N,
             two = (two % (N - 1)) + 1;
         }
         for ( int i = 0; i < n; ++i ) {
-            result(iter, i) = thetas(0, i);
+            result(iter, i) = thetas(recorded_chain, i);
         }
         int K_ind = 0;
-        List coldTau = as<List>(taus[0]);
+        List coldTau = as<List>(taus[recorded_chain]);
         for ( int j = 0; j < m; ++j ) {
-            result(iter, n+j) = alphas(0, j);
-            result(iter, n+m+j) = deltas(0, j);
+            result(iter, n+j) = alphas(recorded_chain, j);
+            result(iter, n+m+j) = deltas(recorded_chain, j);
             NumericVector thisTau = as<NumericVector>(coldTau[j]);
             for ( int k = 1; k < K[j]; ++k ) {
                 result(iter, n+2*m+k+K_ind-1) = thisTau[k];

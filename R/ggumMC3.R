@@ -85,6 +85,8 @@
 #'   the two shape parameters and a and b values for tau parameters' prior
 #'   distribution (where the tau parameters have a four parameter beta prior;
 #'   the default is 2, 2, -6, and 6)
+#' @param recorded_chain An integer vector of length one giving the chain to
+#'   record; the default, 1, is the "cold" chain
 #' @param return_sds A logical vector of length one; if TRUE, the proposal
 #'   standard deviations are stored in an attribute of the returned object
 #'   named "proposal_sds." The default is TRUE.
@@ -111,6 +113,7 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
                     alpha_prior_params = c(1.5, 1.5, 0.25, 4.0),
                     delta_prior_params = c(2.0, 2.0, -5.0, 5.0),
                     tau_prior_params = c(2.0, 2.0, -6.0, 6.0),
+                    recorded_chain = 1,
                     return_sds = TRUE, return_temps = TRUE) {
     n <- nrow(data)
     m <- ncol(data)
@@ -187,8 +190,10 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
             }
         }
     }
+    recorded_chain <- recorded_chain - 1 # C++ is 0-indexed
     result <- .ggumMC3(data, sample_iterations, burn_iterations, n_temps,
-                       swap_interval, flip_interval, temps, theta_init, alpha_init,
+                       swap_interval, flip_interval, recorded_chain, temps,
+                       theta_init, alpha_init,
                        delta_init, tau_init, n, m, K, proposal_sds,
                        theta_prior_params[1], theta_prior_params[2],
                        alpha_prior_params[1], alpha_prior_params[2],

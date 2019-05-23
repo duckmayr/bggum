@@ -12,7 +12,7 @@ ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
   alpha_init = NULL, delta_init = NULL, tau_init = NULL,
   theta_prior_params = c(0, 1), alpha_prior_params = c(1.5, 1.5, 0.25,
   4), delta_prior_params = c(2, 2, -5, 5), tau_prior_params = c(2, 2,
-  -6, 6), return_sds = TRUE, return_temps = TRUE)
+  -6, 6), recorded_chain = 1, return_sds = TRUE, return_temps = TRUE)
 }
 \arguments{
 \item{data}{A numeric matrix giving the individuals' responses}
@@ -118,6 +118,9 @@ the default is 2, 2, -5, and 5)}
 the two shape parameters and a and b values for tau parameters' prior
 distribution (where the tau parameters have a four parameter beta prior;
 the default is 2, 2, -6, and 6)}
+
+\item{recorded_chain}{An integer vector of length one giving the chain to
+record; the default, 1, is the "cold" chain}
 
 \item{return_sds}{A logical vector of length one; if TRUE, the proposal
 standard deviations are stored in an attribute of the returned object
