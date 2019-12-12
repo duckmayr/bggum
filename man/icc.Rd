@@ -6,8 +6,8 @@
 \usage{
 icc(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
   main_title = "Item Characteristic Curve", sub = "",
-  color = "black", rug = FALSE, option_names = NULL, thetas = NULL,
-  responses = NULL, sides = 1, rug_colors = "black")
+  color = "black", plot_responses = FALSE, thetas = NULL,
+  responses = NULL, response_color = "#80808080")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}
@@ -41,36 +41,21 @@ when plotting multiple items' IRFs).}
 
 \item{color}{The color to plot the ICC line in; default is "black"}
 
-\item{rug}{A logical vector of length one specifying whether to draw a
-rug of theta estimates; the default is FALSE}
+\item{plot_responses}{A logical vector of length one specifying whether to
+draw points at the theta estimates of actual responses; default is FALSE}
 
-\item{option_names}{An optional character vector giving names for the items'
-options; if NULL, generic names (e.g. "Option 1", "Option 2", etc.)
-are used}
-
-\item{thetas}{An optional vector of theta estimates for rug drawing;
-if \code{rug = TRUE} and \code{thetas} is not provided,
+\item{thetas}{An optional vector of theta estimates for response drawing;
+if \code{plot_responses = TRUE} and \code{thetas} is not provided,
 an error will be thrown.}
 
 \item{responses}{An optional matrix or vector (if the IRF for only one item
-is desired) of responses; if \code{rug = TRUE} and \code{responses} is not
-provided, an error will be thrown.
+is desired) of responses; if \code{plot_responses = TRUE} and
+\code{responses} is not provided, an error will be thrown.
 NOTE: The lowest response for each item should be 0, not 1.}
 
-\item{sides}{A vector giving the side(s) to draw the rug on if
-\code{rug = TRUE}; if the vector is of length > 1, the first option for
-each item will be drawn on the side given by the first element of the
-vector, the rug for the second option for each item will be drawn on the
-side given by the second element of the vector, etc.}
-
-\item{rug_colors}{A vector giving the color(s) to draw the rug in if
-\code{rug = TRUE} or a character vector of length one giving the name
-of a \code{bggum} palette to use; if the palette provided contains more
-than one color, the first option for each item will be drawn in the color
-given by the first element, the rug for the second option for each item
-will be drawn in the second color, etc.
-See \code{\link{color_palettes}} for a list of color palettes provided
-by \code{bggum}, or a custom palette may be provided.}
+\item{response_color}{The color to plot the response points when
+\code{plot_responses = TRUE}; the default is \code{"#80808080"}
+(a semitransparent gray).}
 }
 \description{
 Plots response functions given alpha, delta, and tau parameters.

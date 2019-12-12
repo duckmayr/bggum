@@ -96,6 +96,9 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
     if ( length(sub) == 1 ) {
         sub <- rep(sub, m)
     }
+    margins <- "if"(any(main_title != ""), c(3, 3, 3, 1), c(3, 3, 1, 1)) + 0.1
+    opar <- graphics::par(mar = margins)
+    on.exit(graphics::par(opar))
     graphics::layout(layout_matrix)
     th <- seq(from = from, to = to, by = by)
     if ( is.list(t) ) {
@@ -149,12 +152,16 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
         y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))
         graphics::plot(x = th, y = y, col = colors[1], type = "l",
                        main = paste(main_title[j], sub[j]),
-                       xlab = expression(theta), ylab = "", yaxt = "n",
+                       xlab = "", ylab = "", yaxt = "n", xaxt = "n",
                        xlim = c(from, to), ylim=c(0, 1.2),
                        lty = line_types[1])
-        graphics::axis(side = 2, at = c(0, 0.25, 0.5, 0.75, 1),
+        graphics::axis(side = 1, tick = FALSE, line = -0.75)
+        graphics::axis(side = 2, tick = FALSE, line = -0.75,
+                       at = c(0, 0.25, 0.5, 0.75, 1),
                        labels = c("0", "0.25", "0.5", "0.75", "1"))
-        graphics::title(ylab = expression(P[ij](k)), line = 2.25)
+        graphics::title(ylab = expression(P[ij](k)),
+                        xlab = expression(theta),
+                        line = 1.5)
         for ( k in 2:K[j] ) {
             graphics::lines(th, sapply(th, function(x) {
                 ggumProbability(k-1, x, a[j], d[j], t[[j]])
