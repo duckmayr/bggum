@@ -17,7 +17,9 @@ License: GPL (>= 2)
 Suggests:
     devtools,
     testthat,
-    covr
+    covr,
+    knitr,
+    rmarkdown
 Collate:
     'bggum-package.R'
     'RcppExports.R'
@@ -34,3 +36,4 @@ Collate:
     'post_process.R'
 Encoding: UTF-8
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

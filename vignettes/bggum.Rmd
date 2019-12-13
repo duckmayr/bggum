@@ -1,0 +1,85 @@
+---
+title: "Bayesian Estimation of Generalized Graded Unfolding Model Parameters"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bayesian Estimation of Generalized Graded Unfolding Model Parameters}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: vignette-references.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo = FALSE}
+library(bggum)
+```
+
+The Generalized Graded Unfolding Model (GGUM) [@Robertsetal:2000] is an item response model designed to allow for disagreement from both ends of the latent space.
+`bggum` provides R tools for Bayesian estimation of GGUM parameters.
+This vignette provides a brief introduction to the GGUM (readers are suggested to refer to @Robertsetal:2000 or @Duck-MayrMontgomery:2019 for details) and an overview of our posterior sampling algorithm before going through a simple example of preparing data, sampling, and analyzing the posterior samples.
+
+## The GGUM
+
+For voter $i \in \{1, \ldots, N\}$ on vote $j \in \{1, \ldots, J\}$, let $k \in \{0, \ldots, K_j-1\}$ indicate the choice where $K_j$ is the number of choices available for vote $j$.
+We denote the probability of $i$ choosing option $k$ for item $j$ as $P(y_{ij}=k|\theta_i) = P_{jk}(\theta_i)$.
+Then
+
+\begin{equation}
+    \label{eq:ggum-response-probability}
+    P_{jk}(\theta_i) = 
+    \frac{\exp (\alpha_j [k (\theta_i - \delta_j) - \sum_{m=0}^k \tau_{jm}]) + \exp (\alpha_j [(2K - k - 1) (\theta_i - \delta_j) - \sum_{m=0}^k \tau_{jm}])}{\sum_{l=0}^{K-1} [\exp (\alpha_j [l (\theta_i - \delta_j) - \sum_{m=0}^l \tau_{jm}]) + \exp (\alpha_j [(2K - l - 1) (\theta_i - \delta_j) - \sum_{m=0}^l \tau_{jm}])]},
+\end{equation}
+
+where
+
+- $\alpha_j$ is the discrimination parameter for item $j$,
+- $\delta_j$ is the location parameter for item $j$,
+- $\theta_i$ is respondent $i$'s latent trait, and
+- $\tau_j$ is the vector of option threshold paramters for item $j$,
+  with $\tau_{j0} \triangleq 0$.
+  
+## Estimating GGUM Parameters
+
+@Robertsetal:2000 outline a procedure whereby item parameters are estimated using a marginal maximum likelihood approach and the $\theta$ parameters are then calculated by an expected a posteriori estimator.
+@delaTorreetal:2006 provides a Bayesian approach to estimation via Markov chain Monte Carlo (MCMC).
+
+However, for the reasons discussed in @Duck-MayrMontgomery:2019, we prefer a Metropolis coupled Markov chain Monte Carlo (MC3) approach [@Gill:2008, 512--513; @Geyer:1991].
+In MC3 sampling, we use $N$ parallel chains at inverse "temperatures" $\beta_1 = 1 > \beta_2 > \ldots > \beta_N > 0$.
+We update parameters for each chain using Metropolis-Hastings steps, where new parameters are accepted with some probability $p$ that is a function of the current value and the proposed value (e.g., $p\left(\theta_{bi}^*, \theta_{bi}^{t-1}\right)$).
+The "temperatures" modify this probability by making the proposed value more likely to be accepted in chains with lower $\beta_b$; the probability $p$ of accepting a proposed parameter value becomes $p^{\beta_b}$, so that chains become increasingly likely to accept all proposals as $\beta \rightarrow 0$.
+We  then allow adjacent chains to "swap" states periodically as a Metropolis update.
+Only draws from the first "cold" chain are recorded for inference.
+(Interested readers can refer to @Gill:2008 or @Geyer:1991 for more details).
+
+We follow @delaTorreetal:2006 in using the following priors:
+
+\begin{align*}
+	P(\theta_i)  & \sim \mathcal{N}(0, 1), \\
+	P(\alpha_j)  & \sim Beta(\nu_\alpha, \omega_\alpha, a_\alpha, b_\alpha), \\
+	P(\delta_j)  & \sim Beta(\nu_\delta, \omega_\delta, a_\delta, b_\delta), \\
+	P(\tau_{jk}) & \sim Beta(\nu_\tau, \omega_\tau, a_\tau, b_\tau),
+\end{align*}
+
+where $Beta(\nu, \omega, a, b)$ is the four parameter Beta distribution with shape parameters $\nu$ and $\omega$, with limits $a$ and $b$ (rather than $0$ and $1$ as under the two parameter Beta distribution).
+We then use the following MC3 algorithm to draw posterior samples:
+
+- At iteration $t = 0$, set initial parameter values; by default we draw initial values from the parameters' prior distributions.
+- For each iteration $t = 1, 2, \ldots, T$:
+    + For each chain $b = 1, 2, \ldots, N$:
+        - Draw each $\theta_{bi}^*$ from $\mathcal{N}\left(\theta_{bi}^{t-1}, \sigma_{\theta_i}^2\right)$, and set $\theta_{bi}^t = \theta_{bi}^*$ with probability $p\left(\theta_{bi}^*, \theta_{bi}^{t-1}\right) = \min\left\{1, \left(\frac{P\left(\theta_{bi}^*\right) L\left(X_i | \theta_{bi}^*, \alpha_{b}^{t-1}, \delta_{b}^{t-1}, \tau_{b}^{t-1}\right)}{P\left(\theta_{bi}^{t-1}\right) L\left(X_i | \theta_{bi}^{t-1}, \alpha_b^{t-1}, \delta_b^{t-1}, \tau_b^{t-1}\right)}\right)^{\beta_b}\right\}$; otherwise set $\theta_{bi}^t = \theta_{bi}^{t-1}$.
+        - Draw each $\alpha_{bj}^*$ from $\mathcal{N}\left(\alpha_{bj}^{t-1}, \sigma_{\alpha_j}^2\right)$, and set $\alpha_{bj}^t = \alpha_{bj}^*$ with probability $p\left(\alpha_{bj}^*, \alpha_{bj}^{t-1}\right) = \min\left\{1, \left(\frac{P\left(\alpha_{bj}^*\right) L\left(X_j | \theta_{b}^{t}, \alpha_{bj}^*, \delta_{bj}^{t-1}, \tau_{bj}^{t-1}\right)}{P\left(\alpha_{bj}^{t-1}\right) L\left(X_j | \theta_b^{t}, \alpha_{bj}^{t-1}, \delta_{bj}^{t-1}, \tau_{bj}^{t-1}\right)}\right)^{\beta_b}\right\}$; otherwise set $\alpha_{bj}^t = \alpha_{bj}^{t-1}$.
+        - Draw each $\delta_{bj}^*$ from $\mathcal{N}\left(\delta_{bj}^{t-1}, \sigma_{\delta_j}^2\right)$, and set $\delta_{bj}^t = \delta_{bj}^*$ with probability $p\left(\delta_{bj}^*, \delta_{bj}^{t-1}\right) = \min\left\{1, \left(\frac{P\left(\delta_{bj}^*\right) L\left(X_j | \theta_b^{t}, \alpha_{bj}^{t}, \delta_{bj}^*, \tau_{bj}^{t-1}\right)}{P\left(\delta_{bj}^{t-1}\right) L\left(X_j | \theta_b^{t}, \alpha_{bj}^{t}, \delta_{bj}^{t-1}, \tau_{bj}^{t-1}\right)}\right)^{\beta_b}\right\}$; otherwise set $\delta_{bj}^t = \delta_{bj}^{t-1}$.
+        - Draw each $\tau_{bjk}^*$ from $\mathcal{N}\left(\tau_{bjk}^{t-1}, \sigma_{\tau_j}^2\right)$, and set $\tau_{bjk}^t = \tau_{bjk}^*$ with probability $p\left(\tau_{bjk}^*, \tau_{bjk}^{t-1}\right) = \min\left\{1, \left(\frac{P\left(\tau_{bjk}^*\right) L\left(X_j | \theta_b^{t}, \alpha_{bj}^t, \delta_{bj}^t, \tau_{bj}^*\right)}{P\left(\tau_{bjk}^{t-1}\right) L\left(X_j | \theta_b^t, \alpha_{bj}^{t}, \delta_{bj}^{t}, \tau_{bj}^{t-1}\right)}\right)^{\beta_b}\right\}$; otherwise set $\tau_{bjk}^t = \tau_{bjk}^{t-1}$.
+    + For each chain $b = 1, 2, \ldots, N-1$:
+      Swap states between chains $b$ and $b+1$ (i.e., set $\theta_b^t = \theta_{b+1}^t$ and $\theta_{b+1}^t = \theta_b^t$, etc.) via a Metropolis step; the swap is accepted with probability
+      $$
+      \min\left\{1, \frac{P_b^{\beta_{b+1}} P_{b+1}^{\beta_b}}{P_{b+1}^{\beta_{b+1}} P_{b}^{\beta_b}}\right\},
+      $$
+      where $P_b = P(\theta_b)P(\alpha_b)P(\delta_b) P(\tau_b) L(X|\theta_b, \alpha_b, \delta_b, \tau_b)$.
+
+## References
