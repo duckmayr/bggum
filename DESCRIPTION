@@ -1,10 +1,27 @@
 Package: bggum
-Title: Generalized Graded Unfolding Model for R
-Version: 0.5
-Date: 2018-07-17
-Author: JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
-Maintainer: JB Duck-Mayr <j.duck-mayr@wustl.edu>
-Description: bggum provides R tools for the generalized graded unfolding model.
+Title: Bayesian Estimation of Generalized Graded Unfolding Model Parameters
+Version: 0.9.0.9000
+Date: 2019-12-15
+Authors@R: c(person(given = "JBrandon",
+                    family = "Duck-Mayr",
+                    email = "j.duckmayr@gmail.com",
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-2231-1294")),
+             person(given = "Jacob",
+                    family = "Montgomery",
+                    role = c("aut")),
+             person(given = "Patrick",
+                    family = "Silva",
+                    role = "ctb"),
+             person(given = "Luwei",
+                    family = "Ying",
+                    role = "ctb")
+            )
+Description: Provides an MCMCMC sampler, post-processing and parameter
+    estimation functions, and plotting utilities for the generalized graded
+    unfolding model.
+URL: https://github.com/duckmayr/bggum
+BugReports: https://github.com/duckmayr/bggum/issues
 Depends:
     R (>= 3.5.0)
 Imports:

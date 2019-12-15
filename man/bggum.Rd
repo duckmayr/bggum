@@ -6,8 +6,9 @@
 \alias{bggum-package}
 \title{bggum}
 \description{
-bggum provides R tools for the generalized graded unfolding model.
+bggum provides R tools for the Bayesian estimation of generalized graded
+unfolding model parameters. For more information, see vignette("bggum").
 }
 \author{
-JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
+JBrandon Duck-Mayr and Jacob Montgomery
 }
