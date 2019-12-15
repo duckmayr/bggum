@@ -86,6 +86,18 @@ test_that("post_process() produces expected output", {
     expect_equal(processed_aic_draws[idx], -unprocessed_aic_draws[idx])
 })
 
+test_that("summarize_matrix() produces expected output", {
+    set.seed(123)
+    mat <- matrix(rnorm(300), ncol = 3)
+    qs1 <- t(apply(mat, 2, function(x) {
+        q <- function(x, p) quantile(x, p, type = 8)
+        return(c(q(x, 0.025), median(x), mean(x), q(x, 0.975), sd(x)))
+    }))
+    qs2 <- summarize_matrix(mat)
+    dimnames(qs1) <- NULL
+    expect_equal(qs1, qs2)
+})
+
 test_that("summary.ggum() produces expected output", {
     expect_s3_class(mcmc_summary, "summary.ggum")
     expect_named(mcmc_summary, c("estimates", "sds", "statistics"))
