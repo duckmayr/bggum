@@ -81,5 +81,254 @@ We then use the following MC3 algorithm to draw posterior samples:
       \min\left\{1, \frac{P_b^{\beta_{b+1}} P_{b+1}^{\beta_b}}{P_{b+1}^{\beta_{b+1}} P_{b}^{\beta_b}}\right\},
       $$
       where $P_b = P(\theta_b)P(\alpha_b)P(\delta_b) P(\tau_b) L(X|\theta_b, \alpha_b, \delta_b, \tau_b)$.
+      
+## Example
+
+The high-level how-to for going from data to estimates follows six steps:
+
+1. Correctly structure the data so that it is an integer matrix containing only responses, with respondents as rows and items as columns.
+2. (Optional, but encouraged) Tune the standard deviations for proposal densities (using `tune_proposals()`) and the temperature schedule for the parallel chains (using `tune_temperatures()`).
+3. Sample the posterior, preferably including a "burn-in" period (using `ggumMC3()`).
+4. Post-process the output to identify which of the model's reflective modes should be summarized (using `post_process()`).
+5. Assess convergence (we use tools from the package `coda` for this purpose) and censoring (discussed below).
+6. Obtain estimates using `summary()`. You can then view the items' response functions and characteristic curves using `irf()` and `icc()`.
+
+To illustrate how to use the package, we will use data on justices' votes in cases at the U.S. Supreme Court.
+The Supreme Court Database [@scdb] provides data on all cases decided by the Supreme Court, including the individual justices' votes.
+We will use a subset of this dataset giving the justices' votes in cases decided during the Roberts Court (that is, since John Roberts because the Chief Justice of the United States).^[We have excluded from this dataset cases decided with no oral argument and equally divided cases.]
+
+### 1. Prepare the data
+
+This data is arranged so that each row records a justice's vote in a case:
+
+```{r read_in_raw_data}
+roberts_court <- read.csv("roberts_court.csv", stringsAsFactors = FALSE)
+head(roberts_court)
+```
+
+We need to do three things with this data:
+
+- Recode the responses (the variable `vote`) to be integers in $\{0, \ldots, K_j - 1\}$. In this case we will be using a dichotomous coding where $1$ is voting for the same outcome as the majority coalition and $0$ is voting for the opposite outcome.
+- Reshape the data so that a row is a justice's response to every case rather than a row being a justice's response to one case.
+- Eliminate all unanimous votes
+
+Here's one way to accomplish those goals:
+
+```{r reshape_data}
+## Recode the votes to be integers in $\{0, \ldots, K_j - 1\}$
+roberts_court$vote <- ifelse(roberts_court$vote %in% c(2, 7), 0, 1)
+## Reshape the data
+library(dplyr)
+library(tidyr)
+responses <- roberts_court %>%
+    select(-caseId, -term) %>%
+    spread(lexisCite, vote)
+## I like to keep the respondents' names as the rownames
+rownames(responses) <- responses$justiceName
+## Now we just eliminate the respondent ID column and turn it into a matrix
+responses <- as.matrix(responses[ , -1])
+## Eliminate unanimous items
+unanimous <- apply(responses, 2, function(x) length(unique(na.omit(x))) == 1)
+responses <- responses[ , !unanimous]
+## Here are responses to a few items:
+responses[ , c(1, floor(ncol(responses) / 2), ncol(responses))]
+```
+
+### 2. Tune Hyperparameters
+
+You can use any positive value for the proposal densities' standard deviations, and any value in $(0, 1]$ for the inverse "temperatures," but we provide routines to generate hyperparameters to help you more efficiently sample the posterior.
+To tune the proposals, we start with proposal standard deviations of $1$, then run iterations of the sampler, periodically incrementing or decrementing the standard deviations by $0.01$ to reach an optimal rejection rate.
+To tune the temperatures, we implement the optimal temperature finding algorithm from @Atchadeetal:2011.
+
+Here's how we'd do that in this case
+
+```{r tune_proposals, eval = FALSE}
+## Load the package
+library(bggum)
+## Set the seed for reproducibility
+set.seed(123)
+## Tune the proposal densities
+proposal_sds <- tune_proposals(responses, tune_iterations = 5000)
+set.seed(456)
+## Tune the temperature schedule
+temps <- tune_temperatures(responses, n_temps = 6, proposal_sds = proposal_sds)
+```
+
+```{r load_hypers, echo = FALSE}
+## (These are the results when I ran the above unevaluated code locally)
+temps <- c(1, 0.933, 0.870, 0.812, 0.758, 0.706)
+```
+
+The temperature finding routine also relies on running iterations of the sampler (though the tuning process is quite different).
+Although in the authors' experience it happens very rarely, with finite iterations it is possible for the temperature schedule tuning algorithm to become stuck in a non-optimal region resulting in a decidedly not optimal temperature schedule.
+We recommend examining the temerature schedule before proceeding to ensure this has not occurred:
+
+```{r check_temps}
+round(temps, 2)
+```
+
+The most sure sign of a problem is a very large jump (e.g. going from 1 as the first inverse temperature to 0.1 as the second) or a very small jump (e.g. going from 1 to 0.999).
+Here, as is typical, there were no issues.
+
+### 3. Sample the posterior
+
+We suggest running multiple chains to be able to assess convergence, and to run those chains in parallel:
+
+```{r sample_posterior, eval = FALSE}
+## We need the parallel package
+library(parallel)
+## We'll set up the cluster with two cores (for two chains)
+cl <- makeCluster(2, type = "FORK", outfile = "bggum-log.txt")
+## Deal with reproducibility
+clusterSetRNGStream(cl = cl, iseed = 789)
+## Produce the chains
+chains <- parLapplyLB(cl = cl, X = 1:2, fun = function(x) {
+    ggumMC3(data = responses,
+            sample_iterations = 50000,
+            burn_iterations = 5000,
+            proposal_sds = proposal_sds,
+            temps = temps)
+})
+## Stop the cluster
+stopCluster(cl)
+```
+
+### 4. Post process
+
+The GGUM is subject to reflective invariance; the likelihood of a set of responses given $\theta$ and $\delta$ vectors is equal to the the likelihood given vectors $-\theta$ and $-\delta$.
+While sometimes informative priors on a few respondents or items is used to identify models with rotational invariance during sampling, we find it more reliable to handle identification in post-processing [@Duck-MayrMontgomery:2019].
+(For the validity of this approach to solving reflective invariance, see Proposition 3.1 and Corollary 3.2 in [@Stephens:1997]).
+
+In this example, the reflectives modes are one in which all the liberal justices, such as Justice Ruth Bader Ginsburg, are scored positively on the latent scale and all the conservative justices, such as Justice Clarence Thomas, are scored negatively; and one in which all the liberal justices are scored negatively on the latent scale and all the conservative justices are scored positively.
+We will use Justice Ginsburg as a constraint to post-process our posterior samples:
+
+```{r post_process, eval = FALSE}
+constraint <- which(rownames(responses) == "RBGinsburg")
+processed_chains <- lapply(chains, post_process, constraint = constraint,
+                           expected_sign = "-")
+```
+
+The key is to select a respondent or item for which you have good reason to believe that their posterior density should not have appreciable mass on the "wrong side" of $0$.
+We can check how well this worked by looking at the posterior samples for other justices; here, for example, are the raw posterior samples (which freely sample from both reflective modes) and the post-processed samples for Chief Justice John Roberts, a reliable (though not extreme) conservative:
+
+```{r roberts_trace_plots_setup1, eval = FALSE}
+roberts <- which(rownames(responses) == "JGRoberts")
+trace_colors <- c("#0072b280", "#d55e0080")
+iters <- nrow(chains[[1]])
+idx <- seq(floor(iters / 1000), iters, floor(iters / 1000))
+chain1_raw <- chains[[1]][idx, roberts]
+chain2_raw <- chains[[2]][idx, roberts]
+chain1_pp  <- processed_chains[[1]][idx, roberts]
+chain2_pp  <- processed_chains[[2]][idx, roberts]
+```
+
+```{r roberts_trace_plots_setup2, echo = FALSE}
+roberts <- which(rownames(responses) == "JGRoberts")
+trace_colors <- c("#0072b280", "#d55e0080")
+roberts_draws <- read.csv("roberts_draws.csv", stringsAsFactors = FALSE)
+iters <- nrow(roberts_draws) * 50
+idx <- 1:nrow(roberts_draws)
+chain1_raw <- roberts_draws[idx, "chain1_raw"]
+chain2_raw <- roberts_draws[idx, "chain2_raw"]
+chain1_pp  <- roberts_draws[idx, "chain1_pp"]
+chain2_pp  <- roberts_draws[idx, "chain2_pp"]
+idx <- seq(floor(iters / 1000), iters, floor(iters / 1000))
+```
+
+```{r roberts_trace_plots, results = 'asis', fig.dim = c(6, 4)}
+ylims <- range(c(chain1_raw, chain2_raw, chain1_pp, chain2_pp))
+opar <- par(mar = c(3, 3, 3, 1) + 0.1)
+plot(idx, chain1_raw, type = "l", col = trace_colors[1], ylim = ylims,
+     xlab = "", ylab = "", xaxt = "n", yaxt = "n", main = "Raw Samples")
+lines(idx, chain2_raw, col = trace_colors[2])
+axis(side = 1, tick = FALSE, line = -0.75)
+axis(side = 2, tick = FALSE, line = -0.75)
+title(xlab = "Iteration", ylab = expression(theta[Roberts]), line = 1.5)
+plot(idx, chain1_pp, type = "l", col = trace_colors[1], ylim = ylims,
+     xlab = "", ylab = "", xaxt = "n", yaxt = "n", main = "Processed Samples")
+lines(idx, chain2_pp, col = trace_colors[2])
+axis(side = 1, tick = FALSE, line = -0.75)
+axis(side = 2, tick = FALSE, line = -0.75)
+title(xlab = "Iteration", ylab = expression(theta[Roberts]), line = 1.5)
+par(opar)
+```
+
+### 5. Assess convergence
+
+As with any Bayesian model, it is important to assess convergence.
+`ggumMC3()` returns an object that has as one of its classes `mcmc` (with the necessary relevant attributes) so that `coda` tools can be used for this purpose:
+
+```{r convergence1, eval = FALSE}
+library(coda)
+## Look at the Gelman-Rubin potential scale reduction factor:
+convergence_stats <- gelman.diag(processed_chains)
+## See what estimates are:
+summary(convergence_stats$psrf[ , 1])
+```
+
+```{r convergence2, echo = FALSE}
+convergence_stats <- read.csv("convergence.csv")
+summary(convergence_stats[ , 1])
+```
+
+One additional issue that must be tended to before confidently proceeding to the estimates is censoring.
+Recall the item parameter priors censor allowed draws to be within $[a, b]$.
+You must take care that the prior hyperparameters are chosen so they do not bias the posterior via censoring.
+In practice, the default limits on $\delta$ ($a = -5, b = 5$) and $\tau$ ($a = -6, b = 6$) have not presented the authors with any issues.
+Likewise, the default limits on $alpha$ ($a = 0.25, b = 4$) do not usually present issues; however, the authors have observed censoring when analyzing rollcall data from the U.S. Congress, which was fixed by expanding the limits.
+In this U.S. Supreme Court application, no censoring was observed.
+
+### 6. Obtain estimates
+
+Now that we have sampled the posterior, post-processed the output, and assessed convergence, obtaining respondent and item parameters is easily done by calling `summary()`:
+
+```{r summary, eval = FALSE}
+posterior_summary <- summary(processed_chains)
+```
+
+```{r load_summary, echo = FALSE}
+posterior_summary <- readRDS("posterior_summary.rds")
+```
+
+Let's see how the justices' rank ideologically according to the GGUM:
+
+```{r plot_thetas, results = 'asis', fig.dim = c(6, 6)}
+theta <- posterior_summary$estimates$theta
+names(theta) <- rownames(responses)
+n <- length(theta)
+opar <- par(mar = c(3, 6, 1, 1) + 0.1)
+plot(theta, factor(names(theta), levels = names(theta)), pch = 19,
+     xlim = c(-3, 2.5), xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+axis(side = 1, tick = FALSE, line = -0.75)
+axis(side = 2, tick = FALSE, line = -0.75, las = 1, labels = names(theta),
+     at = 1:n)
+title(xlab = expression(theta), line = 1.5)
+segments(x0 = posterior_summary$statistics[1:n, 1], y0 = 1:n,
+         x1 = posterior_summary$statistics[1:n, 4], y1 = 1:n)
+par(opar)
+```
+
+The justices are arrayed on the left-right continuum largely as we'd expect (Justices John Paul Stevens, Ruth Bader Ginsburg, and Sonia Sotomayor well to the left; Justices Clarence Thomas, Antonin Scalia, and Samuel Alito well to right; Justice Anthony Kennedy just right of center).
+The estimates are also fairly precise, with the exception of Justice Sandra Day O'Connor (who only participated in 1.5% of the cases in our data), Justice Brett Kavanaugh (who only participated in 6.1% of the cases in our data), and Justice Neil Gorsuch (who participated in 14.5% of the cases in our data).
+
+We can also oberve the item characteristic curves:
+
+```{r plot_items, results = 'asis', fig.dim = c(6, 4)}
+alpha <- posterior_summary$estimates$alpha
+delta <- posterior_summary$estimates$delta
+tau   <- posterior_summary$estimates$tau
+phillip_morris <- which(colnames(responses) == "2007 U.S. LEXIS 1332")
+rucho <- which(colnames(responses) == "2019 U.S. LEXIS 4401")
+icc(alpha[phillip_morris], delta[phillip_morris], tau[[phillip_morris]],
+    main_title = "Philip Morris USA, Inc. v. Williams",
+    plot_responses = TRUE, thetas = theta, response_color = "#0000005f",
+    responses = responses[ , phillip_morris])
+icc(alpha[rucho], delta[rucho], tau[[rucho]],
+    main_title = "Rucho v. Common Cause",
+    plot_responses = TRUE, thetas = theta, response_color = "#0000005f",
+    responses = responses[ , rucho])
+```
+
+(Item response functions are also available via `irf()`).
 
 ## References

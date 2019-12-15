@@ -6,7 +6,7 @@ Author: JB Duck-Mayr, Patrick Cunha Silva, Luwei Ying
 Maintainer: JB Duck-Mayr <j.duck-mayr@wustl.edu>
 Description: bggum provides R tools for the generalized graded unfolding model.
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.5.0)
 Imports:
     stats,
     graphics,
@@ -19,7 +19,9 @@ Suggests:
     testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    dplyr,
+    tidyr
 Collate:
     'bggum-package.R'
     'RcppExports.R'
