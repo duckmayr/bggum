@@ -21,7 +21,9 @@ library(bggum)
 
 The Generalized Graded Unfolding Model (GGUM) [@Robertsetal:2000] is an item response model designed to allow for disagreement from both ends of the latent space.
 `bggum` provides R tools for Bayesian estimation of GGUM parameters.
-This vignette provides a brief introduction to the GGUM (readers are suggested to refer to @Robertsetal:2000 or @Duck-MayrMontgomery:2019 for details) and an overview of our posterior sampling algorithm before going through a simple example of preparing data, sampling, and analyzing the posterior samples.
+This vignette provides a brief introduction to the GGUM and an overview of our posterior sampling algorithm before going through a simple example of preparing data, sampling, and analyzing the posterior samples.
+The vignette provides a practical guide; for more details and theoretical discussion of the GGUM, please see @Robertsetal:2000 or @Duck-MayrMontgomery:2019.
+@Duck-MayrMontgomery:2019 also provides more detail behind the development of our sampling algorithm; some of the more technical parts of this vignette closely follow the presentation there.
 
 ## The GGUM
 
@@ -95,7 +97,7 @@ The high-level how-to for going from data to estimates follows six steps:
 
 To illustrate how to use the package, we will use data on justices' votes in cases at the U.S. Supreme Court.
 The Supreme Court Database [@scdb] provides data on all cases decided by the Supreme Court, including the individual justices' votes.
-We will use a subset of this dataset giving the justices' votes in cases decided during the Roberts Court (that is, since John Roberts because the Chief Justice of the United States).^[We have excluded from this dataset cases decided with no oral argument and equally divided cases.]
+We will use a subset of this dataset giving the justices' votes in cases decided during the Roberts Court (that is, since John Roberts because the Chief Justice of the United States).^[We have excluded from this dataset cases decided with no oral argument and equally divided cases. The code to reproduce all data used in this vignette can be found in the `data-raw/` sub-directory of our GitHub repository (https://github.com/duckmayr/bggum).]
 
 ### 1. Prepare the data
 
@@ -275,7 +277,7 @@ One additional issue that must be tended to before confidently proceeding to the
 Recall the item parameter priors censor allowed draws to be within $[a, b]$.
 You must take care that the prior hyperparameters are chosen so they do not bias the posterior via censoring.
 In practice, the default limits on $\delta$ ($a = -5, b = 5$) and $\tau$ ($a = -6, b = 6$) have not presented the authors with any issues.
-Likewise, the default limits on $alpha$ ($a = 0.25, b = 4$) do not usually present issues; however, the authors have observed censoring when analyzing rollcall data from the U.S. Congress, which was fixed by expanding the limits.
+Likewise, the default limits on $\alpha$ ($a = 0.25, b = 4$) do not usually present issues; however, the authors have observed censoring when analyzing rollcall data from the U.S. Congress, which was fixed by expanding the limits.
 In this U.S. Supreme Court application, no censoring was observed.
 
 ### 6. Obtain estimates
@@ -321,11 +323,11 @@ phillip_morris <- which(colnames(responses) == "2007 U.S. LEXIS 1332")
 rucho <- which(colnames(responses) == "2019 U.S. LEXIS 4401")
 icc(alpha[phillip_morris], delta[phillip_morris], tau[[phillip_morris]],
     main_title = "Philip Morris USA, Inc. v. Williams",
-    plot_responses = TRUE, thetas = theta, response_color = "#0000005f",
+    plot_responses = TRUE, thetas = theta,
     responses = responses[ , phillip_morris])
 icc(alpha[rucho], delta[rucho], tau[[rucho]],
     main_title = "Rucho v. Common Cause",
-    plot_responses = TRUE, thetas = theta, response_color = "#0000005f",
+    plot_responses = TRUE, thetas = theta,
     responses = responses[ , rucho])
 ```
 
