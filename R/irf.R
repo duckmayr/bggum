@@ -28,14 +28,12 @@
 #' @param line_types An optional integer vector specifying lty for each option;
 #'   if not provided, the first option for each question will have lty = 1,
 #'   the second will have lty = 2, etc.
-#' @param color A logical vector of length one; if TRUE, each option's line
-#'   is printed in a different color (see the \code{color_palette} parameter),
-#'   while if FALSE (the default), each line is plotted in black
-#' @param color_palette A vector of colors to use if color = TRUE,
-#'   or a character vector of length one giving the name of a \code{bggum}
-#'   palette to use.
-#'   See \code{\link{color_palettes}} for a list of color palettes provided
-#'   by \code{bggum}, or a custom palette may be provided.
+#' @param color A specification of the colors to draw lines in. Colors can be
+#'   specified by either a character vector of colors (either names that R
+#'   recognizes or hexidecimal specifications) or a function taking a single
+#'   argument for the number of colors to return. See
+#'   \code{\link{color_palettes}} for a list of color palettes provided
+#'   by \code{bggum}. The default is "black" (for all lines).
 #' @param rug A logical vector of length one specifying whether to draw a
 #'   rug of theta estimates; the default is FALSE
 #' @param thetas An optional vector of theta estimates for rug drawing;
@@ -51,20 +49,16 @@
 #'   vector, the rug for the second option for each item will be drawn on the
 #'   side given by the second element of the vector, etc.
 #' @param rug_colors A vector giving the color(s) to draw the rug in if
-#'   \code{rug = TRUE} or a character vector of length one giving the name
-#'   of a \code{bggum} palette to use; if the palette provided contains more
-#'   than one color, the first option for each item will be drawn in the color
-#'   given by the first element, the rug for the second option for each item
-#'   will be drawn in the second color, etc.
-#'   See \code{\link{color_palettes}} for a list of color palettes provided
-#'   by \code{bggum}, or a custom palette may be provided.
+#'   \code{rug = TRUE} or a function taking a single argument for the number of
+#'   colors to return. See \code{\link{color_palettes}} for a list of color
+#'   palettes provided by \code{bggum}. The default is "black" (for all rugs).
 #'
 #' @export
 irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
                 main_title = "Item Response Function", sub = "",
-                option_names = NULL, line_types = NULL, color = FALSE,
-                color_palette = "default", rug = FALSE, thetas = NULL,
-                responses = NULL, sides = 1, rug_colors = "black") {
+                option_names = NULL, line_types = NULL, color = "black",
+                rug = FALSE, thetas = NULL, responses = NULL, sides = 1,
+                rug_colors = "black") {
     if ( length(a) != length(d) | (length(a) > 1 & length(a) != length(t)) ) {
         stop("Please provide a, d, and t of the same length.", call. = FALSE)
     }
@@ -108,20 +102,12 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
         K <- length(t)
         t <- list(t)
     }
-    if ( color ) {
-        colors <- switch(color_palette[1],
-                         default = default,
-                         default_alpha = default_alpha,
-                         wong = wong,
-                         wong_alpha = wong_alpha,
-                         color_palette
-        )
-        if ( length(colors) < max(K) ) {
-            colors <- rep(colors, length.out = max(K))
-        }
-    }
-    else {
-        colors <- rep("black", max(K))
+    if ( is.character(color) ) {
+        colors <- rep(color, length.out = max(K))
+    } else if ( is.function(color) ) {
+        colors <- color(max(K))
+    } else {
+        stop("Invalid color specification.")
     }
     option_vector <- 1:max(K)
     if ( is.null(option_names) ) {
@@ -138,15 +124,12 @@ irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
     if ( length(sides) == 1 ) {
         sides <- rep(sides, max(K))
     }
-    rug_colors <- switch(rug_colors[1],
-                         default = default,
-                         default_alpha = default_alpha,
-                         wong = wong,
-                         wong_alpha = wong_alpha,
-                         rug_colors
-    )
-    if ( length(rug_colors) < max(K) ) {
+    if ( is.character(rug_colors) ) {
         rug_colors <- rep(rug_colors, length.out = max(K))
+    } else if ( is.function(rug_colors) ) {
+        rug_colors <- rug_colors(max(K))
+    } else {
+        stop("Invalid rug color specification.")
     }
     for ( j in 1:m ) {
         y <- sapply(th, function(x) ggumProbability(0, x, a[j], d[j], t[[j]]))

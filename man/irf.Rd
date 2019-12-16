@@ -6,9 +6,9 @@
 \usage{
 irf(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
   main_title = "Item Response Function", sub = "",
-  option_names = NULL, line_types = NULL, color = FALSE,
-  color_palette = "default", rug = FALSE, thetas = NULL,
-  responses = NULL, sides = 1, rug_colors = "black")
+  option_names = NULL, line_types = NULL, color = "black",
+  rug = FALSE, thetas = NULL, responses = NULL, sides = 1,
+  rug_colors = "black")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}
@@ -48,15 +48,12 @@ are used}
 if not provided, the first option for each question will have lty = 1,
 the second will have lty = 2, etc.}
 
-\item{color}{A logical vector of length one; if TRUE, each option's line
-is printed in a different color (see the \code{color_palette} parameter),
-while if FALSE (the default), each line is plotted in black}
-
-\item{color_palette}{A vector of colors to use if color = TRUE,
-or a character vector of length one giving the name of a \code{bggum}
-palette to use.
-See \code{\link{color_palettes}} for a list of color palettes provided
-by \code{bggum}, or a custom palette may be provided.}
+\item{color}{A specification of the colors to draw lines in. Colors can be
+specified by either a character vector of colors (either names that R
+recognizes or hexidecimal specifications) or a function taking a single
+argument for the number of colors to return. See
+\code{\link{color_palettes}} for a list of color palettes provided
+by \code{bggum}. The default is "black" (for all lines).}
 
 \item{rug}{A logical vector of length one specifying whether to draw a
 rug of theta estimates; the default is FALSE}
@@ -77,13 +74,9 @@ vector, the rug for the second option for each item will be drawn on the
 side given by the second element of the vector, etc.}
 
 \item{rug_colors}{A vector giving the color(s) to draw the rug in if
-\code{rug = TRUE} or a character vector of length one giving the name
-of a \code{bggum} palette to use; if the palette provided contains more
-than one color, the first option for each item will be drawn in the color
-given by the first element, the rug for the second option for each item
-will be drawn in the second color, etc.
-See \code{\link{color_palettes}} for a list of color palettes provided
-by \code{bggum}, or a custom palette may be provided.}
+\code{rug = TRUE} or a function taking a single argument for the number of
+colors to return. See \code{\link{color_palettes}} for a list of color
+palettes provided by \code{bggum}. The default is "black" (for all rugs).}
 }
 \description{
 Plots response functions given alpha, delta, and tau parameters.

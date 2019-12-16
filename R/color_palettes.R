@@ -1,36 +1,44 @@
 #' Color palettes provided by \code{bggum}.
 #'
 #' bggum provides color palettes that can be used with its plotting functions.
-#' The \code{default} palettes (one at full opacity and one at 50% opacity)
-#' contain a red, gree, blue, orange, purple, yellow, teal, and dark gray.
-#' The \code{wong} palettes (again, one at full opacity and one at 50% opacity)
-#' are the eight-color colorblind-friendly palette from Wong (2011).
+#' The \code{okabe_ito} palette is the eight color, colorblind-friendly palette
+#' from Okabe and Ito (2008).
+#' The \code{tango} palette is comprised of six colors from the Tango palette
+#' (Tango Desktop Project 2013).
+#'
+#' @param n An integer vector of length one; the number of colors to return.
+#'   If \code{n} is greater than the number of colors in the palette, the
+#'   colors will be recycled so that the result is of length \code{n}.
 #'
 #' @section Palettes provided:
 #'
 #' \describe{
-#'   \item{default}{c("firebrick2", "chartreuse3", "dodgerblue3", "darkorange2",
-#'   "orchid3", "gold2", "cyan3", "gray30")}
-#'   \item{default_alpha}{c("#ee2c2c80", "#66cd0080", "#1874cd80", "#ee760080",
-#'   "#cd69c980", "#eec90080", "#00cdcd80", "#4d4d4d80")}
-#'   \item{wong}{c("#e69f00", "#56b4e9", "#009e73", "#f0e442",
+#'   \item{okabe_ito}{c("#e69f00", "#56b4e9", "#009e73", "#f0e442",
 #'   "#0072b2", "#d55e00", "#cc79a7", "#000000")}
-#'   \item{wong_alpha}{c("#e69f0080", "#56b4e980", "#009e7380", "#f0e44280",
-#'   "#0072b280", "#d55e0080", "#cc79a780", "#00000080")}
+#'   \item{tango}{c("#cc0000", "#75507b", "#73d216", "#f57900", "#3465a4",
+#'   "#555753")}
 #' }
 #'
-#' @references Wong, Bang. 2011. "Points of view: Color blindness." Nature
-#'   Methods 8:441.
+#' @references Okabe, Masataka and Kei Ito. 2008. "Color Universal Design."
+#'     https://jfly.uni-koeln.de/color/.
+#'
+#'     Tango Desktop Project. 2013. "Tango Icon Theme Guidelines."
+#'     https://web.archive.org/web/20160202102503/http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines
 #'
 #' @name color_palettes
 NULL
 
-default <- c("firebrick2", "chartreuse3", "dodgerblue3", "darkorange2",
-             "orchid3", "gold2", "cyan3", "gray30")
-default_alpha <- apply(col2rgb(default), 2, function(x) {
-    rgb(x[1], x[2], x[3], alpha = 128, maxColorValue = 255)
-})
-wong <- c("#e69f00", "#56b4e9", "#009e73", "#f0e442",
-          "#0072b2", "#d55e00", "#cc79a7", "#000000")
-wong_alpha <- c("#e69f0080", "#56b4e980", "#009e7380", "#f0e44280",
-                "#0072b280", "#d55e0080", "#cc79a780", "#00000080")
+#' @rdname color_palettes
+#' @export
+okabe_ito <- function(n) {
+    res <- c("#e69f00", "#56b4e9", "#009e73", "#f0e442",
+             "#0072b2", "#d55e00", "#cc79a7", "#000000")
+    return(rep(res, length.out = n))
+}
+
+#' @rdname color_palettes
+#' @export
+tango <- function(n) {
+    res <- c("#cc0000", "#75507b", "#73d216", "#f57900", "#3465a4", "#555753")
+    return(rep(res, length.out = n))
+}

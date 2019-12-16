@@ -7,7 +7,7 @@
 icc(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
   main_title = "Item Characteristic Curve", sub = "",
   color = "black", plot_responses = FALSE, thetas = NULL,
-  responses = NULL, response_color = "#80808080")
+  responses = NULL, response_color = "#0000005f")
 }
 \arguments{
 \item{a}{A numeric vector of alpha parameters}
@@ -54,8 +54,7 @@ is desired) of responses; if \code{plot_responses = TRUE} and
 NOTE: The lowest response for each item should be 0, not 1.}
 
 \item{response_color}{The color to plot the response points when
-\code{plot_responses = TRUE}; the default is \code{"#80808080"}
-(a semitransparent gray).}
+\code{plot_responses = TRUE}; the default is \code{"#0000005f"}.}
 }
 \description{
 Plots response functions given alpha, delta, and tau parameters.

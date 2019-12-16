@@ -33,14 +33,13 @@
 #'   \code{responses} is not provided, an error will be thrown.
 #'   NOTE: The lowest response for each item should be 0, not 1.
 #' @param response_color The color to plot the response points when
-#'   \code{plot_responses = TRUE}; the default is \code{"#80808080"}
-#'   (a semitransparent gray).
+#'   \code{plot_responses = TRUE}; the default is \code{"#0000005f"}.
 #'
 #' @export
 icc <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
                 main_title = "Item Characteristic Curve", sub = "",
                 color = "black", plot_responses = FALSE,
-                thetas = NULL, responses = NULL, response_color = "#80808080") {
+                thetas = NULL, responses = NULL, response_color = "#0000005f") {
     if ( length(a) != length(d) | (length(a) > 1 & length(a) != length(t)) ) {
         stop("Please provide a, d, and t of the same length.", call. = FALSE)
     }
