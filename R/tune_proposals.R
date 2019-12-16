@@ -1,7 +1,7 @@
 #' Tune proposal densities
-#' 
+#'
 #' Tunes the standard deviation for the parameters' proposal densities
-#' 
+#'
 #' This function runs the MCMC algorithm for the number of iterations
 #' specified in \code{tune_iterations}, updating parameter values at each
 #' iteration. Every 100 iterations, the function determines how many
@@ -11,7 +11,10 @@
 #' decreased by (20 - N) * 0.01, where N is the number of acceptances in
 #' the previous 100 iterations. If N is greater than 25, the proposal
 #' standard deviation is increased by (N - 25) * 0.01.
-#' 
+#'
+#' Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+#' practical guide to Bayesian estimation of GGUM parameters.
+#'
 #' @param data A numeric matrix giving the response by each
 #'   respondent to each item
 #' @param tune_iterations A numeric vector of length one;
@@ -46,18 +49,29 @@
 #'   the two shape parameters and a and b values for tau parameters' prior
 #'   distribution (where the tau parameters have a four parameter beta prior;
 #'   the default is 2, 2, -6, and 6)
-#' 
+#'
 #' @return A list, where each element is a numeric vector;
 #'   the first element is a numeric vector of standard deviations for the
 #'   theta parameters' proposals, the second for the alpha parameters, the
 #'   third for the delta parameters, and the fourth for the tau parameters
-#' 
+#'
 #' @section Warning:
 #' The parameters are updated in place;
 #' that is, if you supply objects for the \code{theta}, \code{alpha},
 #' \code{delta}, and \code{tau} arguments, the objects will not hold the
 #' same values after the function is run
 #' (in the underlying C++ function, these objects are passed by reference).
+#'
+#' @examples
+#' \dontrun{
+#' ## We'll simulate data to use for this example:
+#' set.seed(123)
+#' sim_data <- ggum_simulation(1000, 20, 2)
+#' ## Now we can generate posterior draws:
+#' proposal_sds <- tune_proposals(data = sim_data$response_matrix,
+#'                                tune_iterations = 5000)
+#' }
+#'
 #' @export
 tune_proposals <- function(data, tune_iterations, K = NULL, thetas = NULL,
                            alphas = NULL, deltas = NULL, taus = NULL,

@@ -139,7 +139,7 @@ responses[ , c(1, floor(ncol(responses) / 2), ncol(responses))]
 ### 2. Tune Hyperparameters
 
 You can use any positive value for the proposal densities' standard deviations, and any value in $(0, 1]$ for the inverse "temperatures," but we provide routines to generate hyperparameters to help you more efficiently sample the posterior.
-To tune the proposals, we start with proposal standard deviations of $1$, then run iterations of the sampler, periodically incrementing or decrementing the standard deviations by $0.01$ to reach an optimal rejection rate.
+To tune the proposals, we start with proposal standard deviations of $1$, then run iterations of the sampler, periodically incrementing or decrementing the standard deviations to reach an optimal rejection rate.
 To tune the temperatures, we implement the optimal temperature finding algorithm from @Atchadeetal:2011.
 
 Here's how we'd do that in this case

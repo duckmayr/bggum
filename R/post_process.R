@@ -14,6 +14,9 @@
 #' it into a sample from only one of the reflective modes if a suitable
 #' constraint is chosen; using a sufficiently extreme parameter is suggested.
 #'
+#' Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+#' practical guide to Bayesian estimation of GGUM parameters.
+#'
 #' @param sample A numeric matrix of posterior draws as returned by
 #'   \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.
 #' @param constraint An integer vector of length one giving the column number
@@ -26,6 +29,20 @@
 #' @return A numeric matrix, the post-processed sample.
 #'
 #' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
+#'
+#' @examples
+#' \dontrun{
+#' ## We'll simulate data to use for this example:
+#' set.seed(123)
+#' sim_data <- ggum_simulation(1000, 20, 2)
+#' ## Now we can generate posterior draws
+#' draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
+#' ## Then you can post-process the output
+#' processed_draws <- post_process(sample = draws,
+#'                                 constraint = which.min(sim_data$theta),
+#'                                 expected_sign = "-")
+#' }
+#'
 #' @export
 post_process <- function(sample, constraint, expected_sign) {
     if ( ! "ggum" %in% class(sample) ) {

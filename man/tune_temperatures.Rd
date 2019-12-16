@@ -69,14 +69,38 @@ A numeric vector of temperatures
 Find Optimal Temperatures for the GGUM MCMCMC Sampler
 }
 \details{
-Atchadé et al (2011) determine the optimal swap-acceptance rate for
-Metropolis-coupled MCMC and provide an algorithm for building optimal
-temperature schedules. We implement this algorithm in the context of
+Atchadé, Roberts, and Rosenthal (2011) determine the optimal swap-acceptance
+rate for Metropolis-coupled MCMC and provide an algorithm for building
+optimal temperature schedules. We implement this algorithm in the context of
 the GGUM to provide a temperature schedule that should result in
 approximately 0.234 swap acceptance rate between adjacent chains.
+
+Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+practical guide to Bayesian estimation of GGUM parameters.
+}
+\examples{
+\dontrun{
+## We'll simulate data to use for this example:
+set.seed(123)
+sim_data <- ggum_simulation(1000, 20, 2)
+## Now we can generate posterior draws:
+temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 6)
+## You could tune the proposal densities *before* tuning the temperature
+## schedule (this is our recommendation):
+proposal_sds <- tune_proposals(data = sim_data$response_matrix,
+                               tune_iterations = 5000)
+temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 6,
+                           proposal_sds = proposal_sds)
+## (We recommend tuning the proposals first so you can retain that same list
+## of proposal standard deviations to pass to posterior sampling functions)
+}
+
 }
 \references{
 Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S.
   Rosenthal. 2011. ``Towards optimal scaling of metropolis-coupled Markov
   chain Monte Carlo." \emph{Statistics and Computing} 21(4): 555--568.
+}
+\seealso{
+\code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
 }

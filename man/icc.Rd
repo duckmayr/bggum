@@ -37,7 +37,7 @@ default is "Item Response Function".}
 
 \item{sub}{An optional character vector of subtitles for the resulting plots,
 to be pasted onto the main title (helpful for titling individual plots
-when plotting multiple items' IRFs).}
+when plotting multiple items' ICCs).}
 
 \item{color}{The color to plot the ICC line in; default is "black"}
 
@@ -48,7 +48,7 @@ draw points at the theta estimates of actual responses; default is FALSE}
 if \code{plot_responses = TRUE} and \code{thetas} is not provided,
 an error will be thrown.}
 
-\item{responses}{An optional matrix or vector (if the IRF for only one item
+\item{responses}{An optional matrix or vector (if the ICC for only one item
 is desired) of responses; if \code{plot_responses = TRUE} and
 \code{responses} is not provided, an error will be thrown.
 NOTE: The lowest response for each item should be 0, not 1.}
@@ -58,4 +58,18 @@ NOTE: The lowest response for each item should be 0, not 1.}
 }
 \description{
 Plots response functions given alpha, delta, and tau parameters.
+}
+\examples{
+## We'll simulate data to use for these examples:
+set.seed(123)
+sim_data <- ggum_simulation(100, 10, 4)
+## You can plot the ICC for one item:
+icc(sim_data$alpha[1], sim_data$delta[1], sim_data$tau[[1]])
+## Or multiple items:
+icc(sim_data$alpha[1:2], sim_data$delta[1:2], sim_data$tau[1:2], sub = 1:2)
+## You can also plot the actual responses over the expected response line:
+icc(sim_data$alpha[1], sim_data$delta[1], sim_data$tau[[1]],
+    plot_responses = TRUE, responses = sim_data$response_matrix[ , 1],
+    thetas = sim_data$theta)
+
 }

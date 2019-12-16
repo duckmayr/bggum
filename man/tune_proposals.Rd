@@ -75,6 +75,9 @@ the standard deviation of the proposal for that parameter is
 decreased by (20 - N) * 0.01, where N is the number of acceptances in
 the previous 100 iterations. If N is greater than 25, the proposal
 standard deviation is increased by (N - 25) * 0.01.
+
+Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+practical guide to Bayesian estimation of GGUM parameters.
 }
 \section{Warning}{
 
@@ -85,3 +88,14 @@ same values after the function is run
 (in the underlying C++ function, these objects are passed by reference).
 }
 
+\examples{
+\dontrun{
+## We'll simulate data to use for this example:
+set.seed(123)
+sim_data <- ggum_simulation(1000, 20, 2)
+## Now we can generate posterior draws:
+proposal_sds <- tune_proposals(data = sim_data$response_matrix,
+                               tune_iterations = 5000)
+}
+
+}

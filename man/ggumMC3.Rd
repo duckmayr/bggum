@@ -54,7 +54,8 @@ is not specified}
 
 \item{temps}{(Optional) A numeric vector giving the temperatures;
 if not provided and \code{optimize_temps = FALSE}, each temperature T_t
-for t > 1 is given by 1 + \code{temp_multiplier} * (t-1), and T_1 = 1,
+for t > 1 is given by
+1 / (1 + \code{temp_multiplier} * (t-1)), and T_1 = 1,
 while if \code{optimize_temps = TRUE}, the temperature schedule is
 determined according to an optimal temperature finding algorithm
 -- see \code{\link{tune_temperatures}}}
@@ -132,7 +133,76 @@ A numeric matrix giving the parameter values at each iteration
   for the cold chain
 }
 \description{
-Metropolis Coupled Markov Chain Monte Carlo Sampling for the GGUM
+Metropolis Coupled Markov Chain Monte Carlo (MC3) Sampling for the GGUM
+}
+\details{
+\code{ggumMC3} provides \code{R} implementation of the MC3 algorithm
+from Duck-Mayr and Montgomery (2019).
+Some details are provided in this help file, but please see the vignette
+(via \code{vignette("bggum")}) for a full in-depth practical guide to
+Bayesian estimation of GGUM parameters.
+
+Our sampler creates random initial values for the parameters of the model,
+according to their prior distributions.
+N parallel chains are run, each at a different inverse "temperature";
+the first "cold" chain has an inverse temperature of 1, and each subsequent
+chain has increasingly lower values (still greater than zero,
+i.e. fractional values).
+At each iteration, for each chain, new parameter values are proposed
+from a normal distribution with a mean of the current parameter value,
+and the proposal is accepted probabilistically using a
+Metropolis-Hastings acceptance ratio.
+The purpose of the chains' "temperatures" is to increase the probability of
+accepting proposals for chains other than the "cold" chain recorded for
+inference; the acceptance probability in the Metropolis-Hastings
+update steps for parameter values are raised to the power of the chain's
+inverse temperature.
+After every \code{swap_interval}th iteration of the sampler, a proposal is
+made to swap states between adjacent chains as a Metropolis step.
+For details, please read the vignette via \code{vignette("bggum")},
+or see Duck-Mayr and Montgomery (2019);
+see also Gill (2008) and Geyer (1991).
+
+Before burn-in, the standard deviation of the proposal densities can be
+tuned to ensure that the acceptance rate is neither too high nor too low
+(we keep the acceptance rate between 0.2 and 0.25).
+This is done if proposal standard deviations are not provided as an argument
+and \code{sd_tune_iterations} is greater than 0.
+
+The temperature schedule can also be tuned using an implementation of the
+temperature tuning algorithm in Atchadé, Roberts, and Rosenthal (2011).
+This is done if a temperature schedule is not provided as an argument and
+\code{optimize_temps = TRUE}.
+If a temperature schedule is not provided and \code{optimize_temps = FALSE},
+each temperature T_t for t > 1 is given by
+1 / (1 + \code{temp_multiplier} * (t-1)), and T_1 = 1.
+}
+\examples{
+\dontrun{
+## We'll simulate data to use for this example:
+set.seed(123)
+sim_data <- ggum_simulation(1000, 20, 2)
+## Now we can generate posterior draws:
+draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
+}
+
+}
+\references{
+Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S. Rosenthal.
+  2011. “Towards Optimal Scaling of Metropolis-Coupled Markov Chain Monte
+  Carlo.” \emph{Statistics and Computing} 21(4): 555--68.
+
+Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
+  the Middle: Scaling Votes When Ideological Opposites Behave the Same for
+  Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
+
+Geyer, Charles J. 1991. “Markov Chain Monte Carlo Maximum
+  Likelihood.” In Computing Science and Statistics. Proceedings of the 23rd
+  Symposium on the Interface, edited by E. M. Keramides, 156–63. Fairfax
+  Station, VA: Interface Foundation.
+
+Gill, Jeff. 2008. Bayesian Methods: A Social and Behavioral
+  Sciences Approach. 2d ed. Boca Raton, FL: Taylor & Francis.
 }
 \seealso{
 \code{\link{ggumProbability}}, \code{\link{ggumMCMC}},

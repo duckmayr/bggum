@@ -58,6 +58,13 @@ A list with five elements; "theta" containing the theta draws,
 \description{
 Generates randomly drawn item and person parameters, and simluated responses.
 }
+\examples{
+## Simulate data with 10 items, each with four options, and 100 respondents
+set.seed(123)
+sim_data <- ggum_simulation(100, 10, 4)
+str(sim_data)
+
+}
 \seealso{
 \code{\link{ggumProbability}}
 }

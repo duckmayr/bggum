@@ -53,6 +53,24 @@
 #'   colors to return. See \code{\link{color_palettes}} for a list of color
 #'   palettes provided by \code{bggum}. The default is "black" (for all rugs).
 #'
+#' @examples
+#' ## We'll simulate data to use for these examples:
+#' set.seed(123)
+#' sim_data <- ggum_simulation(100, 10, 4)
+#' ## You can plot the IRF for one item:
+#' irf(sim_data$alpha[1], sim_data$delta[1], sim_data$tau[[1]],
+#'     option_names = 0:3)
+#' ## Or multiple items:
+#' irf(sim_data$alpha[1:2], sim_data$delta[1:2], sim_data$tau[1:2],
+#'     option_names = 0:3, sub = 1:2)
+#' ## You can plot it in color:
+#' irf(sim_data$alpha[1], sim_data$delta[1], sim_data$tau[[1]],
+#'     option_names = 0:3, color = tango)
+#' ## You can also plot a rug of the repsondents' theta estimates with the IRF
+#' irf(sim_data$alpha[1], sim_data$delta[1], sim_data$tau[[1]],
+#'     rug = TRUE, responses = sim_data$response_matrix[ , 1],
+#'     thetas = sim_data$theta, option_names = 0:3)
+#'
 #' @export
 irf <- function(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
                 main_title = "Item Response Function", sub = "",

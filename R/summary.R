@@ -2,6 +2,21 @@
 #'
 #' Summarize the results of \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.
 #'
+#' This function provides the posterior mean, median, standard deviation,
+#' and 0.025 and 0.975 quantiles for GGUM parameters from posterior samples
+#' drawn using \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}.
+#' Please note that the quantiles are calculated using the type 8 algorithm
+#' from Hyndman and Fan (1996), as suggested by Hyndman and Fan (1996), rather
+#' than the type 7 algorithm that would be the default from R's
+#' \code{quantile()}).
+#' Before calling this function, care should be taken to ensure that
+#' post-processing has been done if necessary to identify the correct
+#' reflective posterior mode, as discussed in the vignette and Duck-Mayr and
+#' Montgomery (2019).
+#'
+#' Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+#' practical guide to Bayesian estimation of GGUM parameters.
+#'
 #' @param object A numeric matrix of posterior draws as returned by
 #'   \code{\link{ggumMCMC}} or \code{\link{ggumMC3}}, or a list of
 #'   such matrices.
@@ -32,8 +47,34 @@
 #'
 #' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
 #'
+#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
+#'   the Middle: Scaling Votes When Ideological Opposites Behave the Same for
+#'   Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
 #' @references Hyndman, R. J. and Fan, Y. 1996. "Sample Quantiles in
-#'   Packages." American Statistician 50, 361--365.
+#'   Packages." \emph{American Statistician} 50, 361--365.
+#'
+#' @examples
+#' \dontrun{
+#' ## We'll simulate data to use for this example:
+#' set.seed(123)
+#' sim_data <- ggum_simulation(1000, 20, 2)
+#' ## Now we can generate posterior draws
+#' draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
+#' ## Then post-process the output
+#' processed_draws <- post_process(sample = draws,
+#'                                 constraint = which.min(sim_data$theta),
+#'                                 expected_sign = "-")
+#' ## And now we can obtain a summary of the posterior
+#' posterior_summary <- summary(processed_draws)
+#' ## It contains all the parameter estimates
+#' str(posterior_summary$estimates)
+#' ## As well as the posterior standard deviations
+#' str(posterior_summary$sds)
+#' ## And a matrix of the mean (estimates), median, standard deviations,
+#' ## and 0.025 and 0.975 quantiles
+#' head(posterior_summary$statistics)
+#' }
+#'
 #' @name summary.ggum
 #' @rdname summary.ggum
 #' @export

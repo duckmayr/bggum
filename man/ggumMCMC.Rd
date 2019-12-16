@@ -100,6 +100,9 @@ the GGUM, based heavily on the algorithm given in de la Torre et al (2006);
 though the package allows parameter estimation from \code{R},
 the functions are actually written in \code{C++} to allow for reasonable
 execution time.
+Some details are provided in this help file, but please see the vignette
+(via \code{vignette("bggum")}) for a full in-depth practical guide to
+Bayesian estimation of GGUM parameters.
 
 Our sampler creates random initial values for the parameters of the model,
 according to their prior distributions.
@@ -113,6 +116,16 @@ are tuned to ensure that the acceptance rate is neither too high nor too low
 and the parameter draws are not stored.
 Then the proposal densities are fixed and an additional number of draws
 equal to \code{sample_iterations} are stored in a numeric matrix.
+}
+\examples{
+\dontrun{
+## We'll simulate data to use for this example:
+set.seed(123)
+sim_data <- ggum_simulation(100, 10, 4)
+## Now we can generate posterior draws:
+draws <- ggumMCMC(data = sim_data$response_matrix)
+}
+
 }
 \references{
 Roberts, James S., John R. Donoghue, and James E. Laughlin.

@@ -65,6 +65,26 @@ the options are indexed by \eqn{k = 0, \ldots, K-1}.
   Please note that items' options should be zero-indexed.
 }
 
+\examples{
+## What is the probability of a 1 response to a dichotomous item
+## with discrimination parameter 2, location parameter 0, and
+## option threshold vector (0, -1) for respondents at -1, 0, and 1
+## on the latent scale?
+ggumProbability(response = rep(1, 3), theta = c(-1, 0, 1), alpha = 2,
+                delta = 0, tau = c(0, -1))
+## We can also use this function for getting the probability of all
+## observed responses given the data and item and person parameter estimtes.
+## Here's an example of that with some simulated data:
+## Simulate data with 10 items, each with four options, and 100 respondents
+set.seed(123)
+sim_data <- ggum_simulation(100, 10, 4)
+head(ggumProbability(response = sim_data$response_matrix,
+                     theta = sim_data$theta,
+                     alpha = sim_data$alpha,
+                     delta = sim_data$delta,
+                     tau = sim_data$tau))
+
+}
 \references{
 Roberts, James S., John R. Donoghue, and James E. Laughlin.
   2000. ``A General Item Response Theory Model for Unfolding

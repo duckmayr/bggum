@@ -8,6 +8,9 @@
 #' though the package allows parameter estimation from \code{R},
 #' the functions are actually written in \code{C++} to allow for reasonable
 #' execution time.
+#' Some details are provided in this help file, but please see the vignette
+#' (via \code{vignette("bggum")}) for a full in-depth practical guide to
+#' Bayesian estimation of GGUM parameters.
 #'
 #' Our sampler creates random initial values for the parameters of the model,
 #' according to their prior distributions.
@@ -95,6 +98,16 @@
 #'   Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
 #'   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
 #'   Psychological Measurement} 30(3): 216--232.
+#'
+#' @examples
+#' \dontrun{
+#' ## We'll simulate data to use for this example:
+#' set.seed(123)
+#' sim_data <- ggum_simulation(100, 10, 4)
+#' ## Now we can generate posterior draws:
+#' draws <- ggumMCMC(data = sim_data$response_matrix)
+#' }
+#'
 #' @export
 ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
                      tune_iterations = 5000, flip_interval = NA,

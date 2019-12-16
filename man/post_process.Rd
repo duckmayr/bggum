@@ -36,6 +36,23 @@ This function transforms a posterior sample by enforcing a constraint
 that a particular parameter is of a given sign, essentially transforming
 it into a sample from only one of the reflective modes if a suitable
 constraint is chosen; using a sufficiently extreme parameter is suggested.
+
+Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
+practical guide to Bayesian estimation of GGUM parameters.
+}
+\examples{
+\dontrun{
+## We'll simulate data to use for this example:
+set.seed(123)
+sim_data <- ggum_simulation(1000, 20, 2)
+## Now we can generate posterior draws
+draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
+## Then you can post-process the output
+processed_draws <- post_process(sample = draws,
+                                constraint = which.min(sim_data$theta),
+                                expected_sign = "-")
+}
+
 }
 \seealso{
 \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}

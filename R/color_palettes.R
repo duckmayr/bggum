@@ -25,6 +25,14 @@
 #'     Tango Desktop Project. 2013. "Tango Icon Theme Guidelines."
 #'     https://web.archive.org/web/20160202102503/http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines
 #'
+#' @examples
+#' ## Palettes that are a subset of the total available colors
+#' okabe_ito(3)
+#' tango(3)
+#' ## Palettes that need more colors than are available -- leads to recycling
+#' okabe_ito(10)
+#' tango(10)
+#'
 #' @name color_palettes
 NULL
 

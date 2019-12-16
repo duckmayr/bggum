@@ -33,6 +33,15 @@ The \code{tango} palette is comprised of six colors from the Tango palette
 }
 }
 
+\examples{
+## Palettes that are a subset of the total available colors
+okabe_ito(3)
+tango(3)
+## Palettes that need more colors than are available -- leads to recycling
+okabe_ito(10)
+tango(10)
+
+}
 \references{
 Okabe, Masataka and Kei Ito. 2008. "Color Universal Design."
     https://jfly.uni-koeln.de/color/.

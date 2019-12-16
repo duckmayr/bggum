@@ -37,6 +37,13 @@
 #'   simulated response matrix.
 #'
 #' @seealso \code{\link{ggumProbability}}
+#'
+#' @examples
+#' ## Simulate data with 10 items, each with four options, and 100 respondents
+#' set.seed(123)
+#' sim_data <- ggum_simulation(100, 10, 4)
+#' str(sim_data)
+#'
 #' @export
 ggum_simulation <- function(n, m, K, theta = NULL, alpha = NULL, delta = NULL,
                      tau = NULL, theta_params = c(0.0, 1.0),
