@@ -27,8 +27,13 @@ The vignette provides a practical guide; for more details and theoretical discus
 
 ## The GGUM
 
-For voter $i \in \{1, \ldots, N\}$ on vote $j \in \{1, \ldots, J\}$, let $k \in \{0, \ldots, K_j-1\}$ indicate the choice where $K_j$ is the number of choices available for vote $j$.
-We denote the probability of $i$ choosing option $k$ for item $j$ as $P(y_{ij}=k|\theta_i) = P_{jk}(\theta_i)$.
+We use the GGUM to study *respondents*' responses to categorical *items*.
+The number of respondents is denoted by $n$, and respondents are indexed by $i$.
+The number of items is denoted by $m$, and items are indexed by $j$.
+Each item $j$ has observable response categories $\{0, \ldots, K_j - 1\}$;
+that is, $K_j$ indicates the number of response options for item $j$, and the response options are zero-indexed.
+
+Following convention, we denote the probability of $i$ choosing option $k$ for item $j$ as $P(y_{ij}=k|\theta_i) = P_{jk}(\theta_i)$.
 Then
 
 \begin{equation}
@@ -47,13 +52,13 @@ where
   
 ## Estimating GGUM Parameters
 
-@Robertsetal:2000 outline a procedure whereby item parameters are estimated using a marginal maximum likelihood approach and the $\theta$ parameters are then calculated by an expected a posteriori estimator.
+@Robertsetal:2000, the original paper developing the GGUM, provides an estimation procedure where item parameters are estimated using a marginal maximum likelihood approach and the $\theta$ parameters are then calculated by an expected a posteriori estimator.
 @delaTorreetal:2006 provides a Bayesian approach to estimation via Markov chain Monte Carlo (MCMC).
 
 However, for the reasons discussed in @Duck-MayrMontgomery:2019, we prefer a Metropolis coupled Markov chain Monte Carlo (MC3) approach [@Gill:2008, 512--513; @Geyer:1991].
 In MC3 sampling, we use $N$ parallel chains at inverse "temperatures" $\beta_1 = 1 > \beta_2 > \ldots > \beta_N > 0$.
-We update parameters for each chain using Metropolis-Hastings steps, where new parameters are accepted with some probability $p$ that is a function of the current value and the proposed value (e.g., $p\left(\theta_{bi}^*, \theta_{bi}^{t-1}\right)$).
-The "temperatures" modify this probability by making the proposed value more likely to be accepted in chains with lower $\beta_b$; the probability $p$ of accepting a proposed parameter value becomes $p^{\beta_b}$, so that chains become increasingly likely to accept all proposals as $\beta \rightarrow 0$.
+We update parameters for each chain using Metropolis-Hastings steps.
+The "temperatures" modify the probability of accepting proposals; the probability $p$ of accepting a proposed parameter value becomes $p^{\beta_b}$, so that chains become increasingly likely to accept all proposals as $\beta \rightarrow 0$.
 We  then allow adjacent chains to "swap" states periodically as a Metropolis update.
 Only draws from the first "cold" chain are recorded for inference.
 (Interested readers can refer to @Gill:2008 or @Geyer:1991 for more details).
