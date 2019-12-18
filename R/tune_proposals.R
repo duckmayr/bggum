@@ -66,8 +66,8 @@
 #' \dontrun{
 #' ## We'll simulate data to use for this example:
 #' set.seed(123)
-#' sim_data <- ggum_simulation(1000, 20, 2)
-#' ## Now we can generate posterior draws:
+#' sim_data <- ggum_simulation(1000, 100, 2)
+#' ## Now we can tune the proposal densities:
 #' proposal_sds <- tune_proposals(data = sim_data$response_matrix,
 #'                                tune_iterations = 5000)
 #' }

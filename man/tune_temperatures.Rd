@@ -82,8 +82,8 @@ practical guide to Bayesian estimation of GGUM parameters.
 \dontrun{
 ## We'll simulate data to use for this example:
 set.seed(123)
-sim_data <- ggum_simulation(1000, 20, 2)
-## Now we can generate posterior draws:
+sim_data <- ggum_simulation(1000, 100, 2)
+## Now we can tune the temperature schedule:
 temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 6)
 ## You could tune the proposal densities *before* tuning the temperature
 ## schedule (this is our recommendation):

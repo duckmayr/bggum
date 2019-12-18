@@ -62,9 +62,12 @@ practical guide to Bayesian estimation of GGUM parameters.
 }
 \examples{
 \dontrun{
+## NOTE: If you want to see an example of the structure of a summary.ggum
+##       object without running this example, please see the vignette
+##       ( via vignette("bggum") )
 ## We'll simulate data to use for this example:
 set.seed(123)
-sim_data <- ggum_simulation(1000, 20, 2)
+sim_data <- ggum_simulation(1000, 100, 2)
 ## Now we can generate posterior draws
 draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
 ## Then post-process the output

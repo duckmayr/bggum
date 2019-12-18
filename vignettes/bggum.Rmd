@@ -297,21 +297,31 @@ posterior_summary <- summary(processed_chains)
 posterior_summary <- readRDS("posterior_summary.rds")
 ```
 
+The summary will be a list of three elements: the parameter estimates (posterior means), the posterior standard deviations, and a matrix of summary statistics of the posterior draws---the mean (estimates), median, standard deviations, and 0.025 and 0.975 quantiles:
+
+```{r display_summary}
+str(posterior_summary$estimates, max.level = 1)
+str(posterior_summary$sds, max.level = 1)
+head(posterior_summary$statistics)
+```
+
 Let's see how the justices' rank ideologically according to the GGUM:
 
 ```{r plot_thetas, results = 'asis', fig.dim = c(6, 6)}
 theta <- posterior_summary$estimates$theta
 names(theta) <- rownames(responses)
 n <- length(theta)
+ordering <- order(theta)
+theta_sorted <- sort(theta)
 opar <- par(mar = c(3, 6, 1, 1) + 0.1)
-plot(theta, factor(names(theta), levels = names(theta)), pch = 19,
-     xlim = c(-3, 2.5), xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+plot(theta_sorted, factor(names(theta_sorted), levels = names(theta_sorted)),
+     pch = 19, xlim = c(-3, 2.5), xaxt = "n", yaxt = "n", xlab = "", ylab = "")
 axis(side = 1, tick = FALSE, line = -0.75)
-axis(side = 2, tick = FALSE, line = -0.75, las = 1, labels = names(theta),
-     at = 1:n)
+axis(side = 2, tick = FALSE, line = -0.75, las = 1,
+     labels = names(theta_sorted), at = 1:n)
 title(xlab = expression(theta), line = 1.5)
-segments(x0 = posterior_summary$statistics[1:n, 1], y0 = 1:n,
-         x1 = posterior_summary$statistics[1:n, 4], y1 = 1:n)
+segments(x0 = posterior_summary$statistics[ordering, 1], y0 = 1:n,
+         x1 = posterior_summary$statistics[ordering, 4], y1 = 1:n)
 par(opar)
 ```
 

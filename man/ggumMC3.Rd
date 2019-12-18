@@ -181,7 +181,7 @@ each temperature T_t for t > 1 is given by
 \dontrun{
 ## We'll simulate data to use for this example:
 set.seed(123)
-sim_data <- ggum_simulation(1000, 20, 2)
+sim_data <- ggum_simulation(1000, 100, 2)
 ## Now we can generate posterior draws:
 draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
 }
