@@ -5,7 +5,9 @@ sudo: false
 cache: packages
 
 r:
-  - release
+    - oldrel
+    - release
+    - devel
 
 matrix:
     include:
