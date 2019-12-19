@@ -4,3 +4,4 @@
 ^appveyor\.yml$
 CONTRIBUTING.md
 ^data-raw$
+^cran-comments\.md$
