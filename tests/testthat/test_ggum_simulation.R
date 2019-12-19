@@ -8,8 +8,13 @@ ggum_sim <- ggum_simulation(n, m, K)
 
 test_that("ggum_simulation output is structured as expected", {
     expect_length(ggum_sim, 5)
-    expect_named(ggum_sim, c("theta", "alpha", "delta", "tau", "response_matrix"))
-    expect_setequal(sapply(ggum_sim, class), c("numeric", "list", "matrix"))
+    expected_names <-  c("theta", "alpha", "delta", "tau", "response_matrix")
+    expect_named(ggum_sim, expected_names)
+    expected_classes <- c("numeric", "list", "matrix")
+    if ( R.version$major > 3 ) {
+        expected_classes <- c(expected_classes, "array")
+    }
+    expect_setequal(unlist(sapply(ggum_sim, class)), expected_classes)
     expect_length(ggum_sim$theta, n)
     expect_length(ggum_sim$alpha, m)
     expect_length(ggum_sim$delta, m)

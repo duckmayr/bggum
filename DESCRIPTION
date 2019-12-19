@@ -17,9 +17,9 @@ Authors@R: c(person(given = "JBrandon",
                     family = "Ying",
                     role = "ctb")
             )
-Description: Provides an MCMCMC sampler, post-processing and parameter
-    estimation functions, and plotting utilities for the generalized graded
-    unfolding model.
+Description: Provides a Metropolis-coupled Markov chain Monte Carlo sampler,
+    post-processing and parameter estimation functions, and plotting utilities
+    for the generalized graded unfolding model.
 URL: https://github.com/duckmayr/bggum
 BugReports: https://github.com/duckmayr/bggum/issues
 Depends:
