@@ -56,7 +56,7 @@ A list with five elements; "theta" containing the theta draws,
   simulated response matrix.
 }
 \description{
-Generates randomly drawn item and person parameters, and simluated responses.
+Generates randomly drawn item and person parameters, and simulated responses.
 }
 \examples{
 ## Simulate data with 10 items, each with four options, and 100 respondents

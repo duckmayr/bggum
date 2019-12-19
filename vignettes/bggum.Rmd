@@ -47,7 +47,7 @@ where
 - $\alpha_j$ is the discrimination parameter for item $j$,
 - $\delta_j$ is the location parameter for item $j$,
 - $\theta_i$ is respondent $i$'s latent trait, and
-- $\tau_j$ is the vector of option threshold paramters for item $j$,
+- $\tau_j$ is the vector of option threshold parameters for item $j$,
   with $\tau_{j0} \triangleq 0$.
   
 ## Estimating GGUM Parameters
@@ -168,7 +168,7 @@ temps <- c(1, 0.933, 0.870, 0.812, 0.758, 0.706)
 
 The temperature finding routine also relies on running iterations of the sampler (though the tuning process is quite different).
 Although in the authors' experience it happens very rarely, with finite iterations it is possible for the temperature schedule tuning algorithm to become stuck in a non-optimal region resulting in a decidedly not optimal temperature schedule.
-We recommend examining the temerature schedule before proceeding to ensure this has not occurred:
+We recommend examining the temperature schedule before proceeding to ensure this has not occurred:
 
 ```{r check_temps}
 round(temps, 2)
@@ -206,7 +206,7 @@ The GGUM is subject to reflective invariance; the likelihood of a set of respons
 While sometimes informative priors on a few respondents or items is used to identify models with rotational invariance during sampling, we find it more reliable to handle identification in post-processing [@Duck-MayrMontgomery:2019].
 (For the validity of this approach to solving reflective invariance, see Proposition 3.1 and Corollary 3.2 in [@Stephens:1997]).
 
-In this example, the reflectives modes are one in which all the liberal justices, such as Justice Ruth Bader Ginsburg, are scored positively on the latent scale and all the conservative justices, such as Justice Clarence Thomas, are scored negatively; and one in which all the liberal justices are scored negatively on the latent scale and all the conservative justices are scored positively.
+In this example, the reflective modes are one in which all the liberal justices, such as Justice Ruth Bader Ginsburg, are scored positively on the latent scale and all the conservative justices, such as Justice Clarence Thomas, are scored negatively; and one in which all the liberal justices are scored negatively on the latent scale and all the conservative justices are scored positively.
 We will use Justice Ginsburg as a constraint to post-process our posterior samples:
 
 ```{r post_process, eval = FALSE}

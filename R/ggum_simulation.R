@@ -1,6 +1,6 @@
 #' GGUM Simulation
 #'
-#' Generates randomly drawn item and person parameters, and simluated responses.
+#' Generates randomly drawn item and person parameters, and simulated responses.
 #'
 #' @param n An integer vector of length one giving the number of respondents
 #' @param m An integer vector of length one giving the number of items

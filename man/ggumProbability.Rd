@@ -53,8 +53,8 @@ The probability that respondent \eqn{i} chooses option \eqn{k} for item
 \Sigma_{m=0}^l \tau_{jm}]) + exp (\alpha_j [(2K - l - 1)
 (\theta_i - \delta_j) - \Sigma_{m=0}^l \tau_{jm}])])},
 where \eqn{\theta_i} is \eqn{i}'s latent trait parameter,
-\eqn{\alpha_j} is the item's discrimination paramter,
-\eqn{\delta_j} is the item's location paramter,
+\eqn{\alpha_j} is the item's discrimination parameter,
+\eqn{\delta_j} is the item's location parameter,
 \eqn{\tau_{j0}, \ldots, \tau_{j(K-1)}} are the options' threshold
 parameters, and \eqn{\tau_{j0}} is 0,
 \eqn{K} is the number of options for item \eqn{j}, and
