@@ -102,13 +102,15 @@ tune_proposals <- function(data, tune_iterations, K = NULL, thetas = NULL,
         taus <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
                           tau_prior_params[3], tau_prior_params[4], K)
     }
-    return(.tune_proposals(data, thetas, alphas, deltas, taus, K,
-                           tune_iterations, nrow(data), ncol(data),
-                           theta_prior_params[1], theta_prior_params[2],
-                           alpha_prior_params[1], alpha_prior_params[2],
-                           alpha_prior_params[3], alpha_prior_params[4],
-                           delta_prior_params[1], delta_prior_params[2],
-                           delta_prior_params[3], delta_prior_params[4],
-                           tau_prior_params[1], tau_prior_params[2],
-                           tau_prior_params[3], tau_prior_params[4]))
+    return(.tune_proposals(data,
+                           matrix(thetas, ncol = 1),
+                           matrix(alphas, ncol = 1),
+                           matrix(deltas, ncol = 1),
+                           list(taus),
+                           K,
+                           alpha_prior_params,
+                           delta_prior_params,
+                           tau_prior_params,
+                           1, # temps, only a cold chain
+                           tune_iterations))
 }

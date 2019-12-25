@@ -91,31 +91,45 @@ tune_temperatures <- function(data, n_temps, temp_tune_iterations = 5000,
     for ( j in 1:m ) {
         K[j] = length(unique(na.omit(data[ , j])))
     }
+    theta_init <- sapply(1:n_temps, function(x) {
+        init_thetas(n, theta_prior_params[1], theta_prior_params[2])
+    })
+    alpha_init <- sapply(1:n_temps, function(x) {
+        init_alphas(m, alpha_prior_params[1], alpha_prior_params[2],
+                    alpha_prior_params[3], alpha_prior_params[4])
+    })
+    delta_init <- sapply(1:n_temps, function(x) {
+        init_deltas(m, delta_prior_params[1], delta_prior_params[2],
+                    delta_prior_params[3], delta_prior_params[4])
+    })
+    tau_init <- lapply(1:n_temps, function(x) {
+        init_taus(m, tau_prior_params[1], tau_prior_params[2],
+                  tau_prior_params[3], tau_prior_params[4], K)
+    })
     if ( is.null(proposal_sds) ) {
-        theta_init <- init_thetas(n, theta_prior_params[1],
-                                  theta_prior_params[2])
-        alpha_init <- init_alphas(m, alpha_prior_params[1],
-                                  alpha_prior_params[2],
-                                  alpha_prior_params[3],
-                                  alpha_prior_params[4])
-        delta_init <- init_deltas(m, delta_prior_params[1],
-                                  delta_prior_params[2],
-                                  delta_prior_params[3],
-                                  delta_prior_params[4])
-        tau_init <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
-                              tau_prior_params[3], tau_prior_params[4], K)
-        proposal_sds <- tune_proposals(data, sd_tune_iterations, K, theta_init,
-                                       alpha_init, delta_init, tau_init,
-                                       theta_prior_params, alpha_prior_params,
-                                       delta_prior_params, tau_prior_params)
+        proposal_sds <- .tune_proposals(data,
+                                        theta_init,
+                                        alpha_init,
+                                        delta_init,
+                                        tau_init,
+                                        K,
+                                        alpha_prior_params,
+                                        delta_prior_params,
+                                        tau_prior_params,
+                                        1, # temps, just a cold chain
+                                        sd_tune_iterations)
     }
-    return(.tune_temperatures(data, n_temps, temp_tune_iterations, n_draws,
-                              n, m, K, proposal_sds,
-                              theta_prior_params[1], theta_prior_params[2],
-                              alpha_prior_params[1], alpha_prior_params[2],
-                              alpha_prior_params[3], alpha_prior_params[4],
-                              delta_prior_params[1], delta_prior_params[2],
-                              delta_prior_params[3], delta_prior_params[4],
-                              tau_prior_params[1], tau_prior_params[2],
-                              tau_prior_params[3], tau_prior_params[4]))
+    return(.tune_temperatures(data,
+                              theta_init,
+                              alpha_init,
+                              delta_init,
+                              tau_init,
+                              K,
+                              proposal_sds,
+                              alpha_prior_params,
+                              delta_prior_params,
+                              tau_prior_params,
+                              n_temps,
+                              temp_tune_iterations,
+                              n_draws))
 }

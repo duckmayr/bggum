@@ -128,47 +128,79 @@ ggumMCMC <- function(data, sample_iterations = 50000, burn_iterations = 50000,
         K[j] = length(unique(na.omit(data[ , j])))
     }
     if ( is.null(theta_init) ) {
-        theta_init <- init_thetas(n, theta_prior_params[1],
+        theta_init <- init_thetas(n,
+                                  theta_prior_params[1],
                                   theta_prior_params[2])
     }
+    if ( is.vector(theta_init) ) {
+        theta_init <- matrix(theta_init, ncol = 1)
+    }
     if ( is.null(alpha_init) ) {
-        alpha_init <- init_alphas(m, alpha_prior_params[1],
+        alpha_init <- init_alphas(m,
+                                  alpha_prior_params[1],
                                   alpha_prior_params[2],
                                   alpha_prior_params[3],
                                   alpha_prior_params[4])
     }
+    if ( is.vector(alpha_init) ) {
+        alpha_init <- matrix(alpha_init, ncol = 1)
+    }
     if ( is.null(delta_init) ) {
-        delta_init <- init_deltas(m, delta_prior_params[1],
+        delta_init <- init_deltas(m,
+                                  delta_prior_params[1],
                                   delta_prior_params[2],
                                   delta_prior_params[3],
                                   delta_prior_params[4])
     }
+    if ( is.vector(delta_init) ) {
+        delta_init <- matrix(delta_init, ncol = 1)
+    }
     if ( is.null(tau_init) ) {
-        tau_init <- init_taus(m, tau_prior_params[1], tau_prior_params[2],
-                              tau_prior_params[3], tau_prior_params[4], K)
+        tau_init <- init_taus(m,
+                              tau_prior_params[1],
+                              tau_prior_params[2],
+                              tau_prior_params[3],
+                              tau_prior_params[4],
+                              K)
+    }
+    if ( is.atomic(tau_init[[1]]) ) {
+        tau_init <- list(tau_init)
     }
     if ( is.null(proposal_sds) ) {
         if ( tune_iterations > 0 ) {
-            proposal_sds <- tune_proposals(data, tune_iterations, K, theta_init,
-                                           alpha_init, delta_init, tau_init,
-                                           theta_prior_params, alpha_prior_params,
-                                           delta_prior_params, tau_prior_params)
+            proposal_sds <- .tune_proposals(data,
+                                            theta_init,
+                                            alpha_init,
+                                            delta_init,
+                                            tau_init,
+                                            K,
+                                            alpha_prior_params,
+                                            delta_prior_params,
+                                            tau_prior_params,
+                                            1, # temps, just a cold chain
+                                            tune_iterations)
         }
         else {
-            proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+            proposal_sds <- list(rep(1.0, n),
+                                 rep(1.0, m),
+                                 rep(1.0, m),
+                                 rep(1.0, m))
         }
     }
-    result <- .ggumMCMC(data, n, m, sample_iterations, burn_iterations,
-                        flip_interval,
-                        theta_init, alpha_init, delta_init, tau_init, K,
-                        theta_prior_params[1], theta_prior_params[2],
-                        alpha_prior_params[1], alpha_prior_params[2],
-                        alpha_prior_params[3], alpha_prior_params[4],
-                        delta_prior_params[1], delta_prior_params[2],
-                        delta_prior_params[3], delta_prior_params[4],
-                        tau_prior_params[1], tau_prior_params[2],
-                        tau_prior_params[3], tau_prior_params[4],
-                        proposal_sds)
+    result <- .ggumMCMC(data,
+                        theta_init,
+                        alpha_init,
+                        delta_init,
+                        tau_init,
+                        K,
+                        proposal_sds,
+                        1, ## temps = 1, just a cold chain
+                        alpha_prior_params,
+                        delta_prior_params,
+                        tau_prior_params,
+                        sample_iterations,
+                        burn_iterations,
+                        flip_interval)
     colnames(result) <- c(paste0("theta", 1:n),
                           paste0("alpha", 1:m),
                           paste0("delta", 1:m),

@@ -1,143 +1,96 @@
-#include "bggum.h" 
-
-using namespace Rcpp;
+#include "model.h" 
 
 // [[Rcpp::export(.tune_temperatures)]]
-NumericVector tune_temps(IntegerMatrix data, int n_temps, int temp_tune_iters,
-        int n_draws, int n, int m, IntegerVector K, List SDs,
-        double th_prior_mean, double th_prior_sd, double a_shape1,
-        double a_shape2, double a_a, double a_b, double d_shape1,
-        double d_shape2, double d_a, double d_b, double t_shape1,
-        double t_shape2, double t_a, double t_b){
-    NumericVector temps(n_temps, 1.0);
-    NumericVector tmp(n_draws);
-    // set up initial values
-    int N = 2;
-    NumericMatrix thetas(N, n);
-    NumericMatrix alphas(N, m);
-    NumericMatrix deltas(N, m);
-    List taus(N);
-    for ( int t = 0; t < N; ++t ) {
-        thetas(t, _) = rnorm(n, th_prior_mean, th_prior_sd);
-        alphas(t, _) = rep(1.0, m);
-        deltas(t, _) = r4beta(m, d_shape1, d_shape2, d_a, d_b);
-        List t_t(m);
-        for ( int j = 0; j < m; ++j) {
-            NumericVector tau_j(K[j]);
-            for ( int k = 1; k < K[j]; ++k ) {
-                tau_j[k] = r_4beta(t_shape1, t_shape2, t_a, t_b);
-            }
-            t_t[j] = tau_j;
-        }
-        taus[t] = t_t;
-    }
-    NumericVector theta_SDs = as<NumericVector>(SDs[0]);
-    NumericVector alpha_SDs = as<NumericVector>(SDs[1]);
-    NumericVector delta_SDs = as<NumericVector>(SDs[2]);
-    NumericVector tau_SDs = as<NumericVector>(SDs[3]);
+Rcpp::NumericVector tune_temps(Rcpp::IntegerMatrix data_,
+                               Rcpp::NumericMatrix theta_,
+                               Rcpp::NumericMatrix alpha_,
+                               Rcpp::NumericMatrix delta_,
+                               Rcpp::List tau_,
+                               Rcpp::IntegerVector K_,
+                               Rcpp::List SDs,
+                               Rcpp::NumericVector alpha_parameters_,
+                               Rcpp::NumericVector delta_parameters_,
+                               Rcpp::NumericVector tau_parameters_,
+                               int n_temps,
+                               int iterations,
+                               int n_draws) {
+    // Separate the proposal s.d. list
+    Rcpp::NumericVector theta_SDs = get_vec_from_list(SDs, 0);
+    Rcpp::NumericVector alpha_SDs = get_vec_from_list(SDs, 1);
+    Rcpp::NumericVector delta_SDs = get_vec_from_list(SDs, 2);
+    Rcpp::NumericVector tau_SDs   = get_vec_from_list(SDs, 3);
+    // Set up the Model object
+    Rcpp::NumericVector temps(n_temps, 1.0);
+    Model mod(data_, theta_, alpha_, delta_, tau_, K_,
+              theta_SDs, alpha_SDs, delta_SDs, tau_SDs,
+              alpha_parameters_, delta_parameters_, tau_parameters_,
+              temps);
+    // Set up storage for temperature values at each iteration
+    Rcpp::NumericVector tmp(n_draws);
+    // Set up algorithm variables
     double rho1 = -2.0;
-    double z = 1.0; // what Atchade et al. call n
-    temps[1] = 1.0 / (1.0 + exp(rho1));
-    int one = 0, two = 1;
-    // set up progress display
-    Rcout.precision(1);
-    double adv_prog = 100.0 / ((temp_tune_iters / 100.0) * (n_temps - 1));
-    int current_break = 1;
-    Rcout << "\rTuning temperatures: 0%";
     double alph = 0.0;
-    for ( int T = 1; T < n_temps; ++T ) {
-        for ( int iter = 0; iter < temp_tune_iters; ++iter ) {
+    double z = 1.0; // what Atchade et al. call n
+    mod.temps[1] = 1.0 / (1.0 + exp(rho1));
+    // Set up progress display
+    double progress_increment = 100.0 / ((iterations / 100.0) * (n_temps - 1));
+    double progress = 0.0;
+    Rprintf("Tuning temperatures: %7.3f %%", progress);
+    // Run algorithm
+    for ( int t = 1; t < n_temps; ++t ) {
+        for ( int iter = 0; iter < iterations; ++iter ) {
             if ( (iter+1) % 100 == 0 ) {
                 // Every 100 iterations we check for a user interrupt
                 // and update the progress bar
-                checkUserInterrupt();
-                double current_prog = current_break * adv_prog;
-                Rcout << "\rTuning temperatures: " << std::fixed << current_prog << "%";
-                current_break += 1;
+                Rcpp::checkUserInterrupt();
+                progress += progress_increment;
+                Rprintf("\rTuning temperatures: %7.3f %%", progress);
             }
-            for ( int t = one; t < two + 1; ++t ) { // for each temperature
-                int ind = t % 2;
-                NumericVector th_t = thetas(ind, _);
-                NumericVector a_t = alphas(ind, _);
-                NumericVector d_t = deltas(ind, _);
-                List t_t = as<List>(taus[ind]);
-                double temp = temps[t];
-                for ( int i = 0; i < n; ++i ) { // for each respondent
-                    double th = th_t[i];
-                    th = update_theta_MC3(th, data(i, _), a_t, d_t, t_t, temp,
-                            theta_SDs[i], th_prior_mean, th_prior_sd);
-                    thetas(ind, i) = th;
-                }
-                for ( int j = 0; j < m; ++j) { // for each item
-                    double a_j = a_t[j];
-                    double d_j = d_t[j];
-                    NumericVector t_j = as<NumericVector>(t_t[j]);
-                    IntegerVector answers = data(_, j);
-                    d_j = update_delta_MC3(d_j, answers, th_t, a_j, t_j, temp,
-                            delta_SDs[j], d_shape1, d_shape2, d_a, d_b);
-                    for ( int k = 1; k < K[j]; ++k ) {
-                        t_j[k] = update_tau_MC3(k, answers, th_t, a_j, d_j,
-                                t_j, temp, tau_SDs[j], t_shape1, t_shape2,
-                                t_a, t_b);
-                    }
-                    a_j = update_alpha_MC3(a_j, answers, th_t, d_j, t_j, temp,
-                            alpha_SDs[j], a_shape1, a_shape2, a_a, a_b);
-                    deltas(ind, j) = d_j;
-                    t_t[j] = t_j;
-                    alphas(ind, j) = a_j;
-                }
-                taus[ind] = t_t;
+            for ( int l = 0; l < 2; ++l ) {
+                mod.update_theta(t - l);
+                mod.update_alpha(t - l);
+                mod.update_delta(t - l);
+                mod.update_tau(t - l);
             }
-            alph = temps[one] - temps[two];
-            double P1 = 0.0, P2 = 0.0, L1 = 0.0, L2 = 0.0;
-            NumericVector th1 = thetas(one % 2, _);
-            NumericVector th2 = thetas(two % 2, _);
-            NumericVector a1 = alphas(one % 2, _);
-            NumericVector a2 = alphas(two % 2, _);
-            NumericVector d1 = deltas(one % 2, _);
-            NumericVector d2 = deltas(two % 2, _);
-            P1 = sum(dnorm(th1, th_prior_mean, th_prior_sd, true));
-            P1 += sum(d4beta(a1, a_shape1, a_shape2, a_a, a_b, true));
-            P1 += sum(d4beta(d1, d_shape1, d_shape2, d_a, d_b, true));
-            List t1 = as<List>(taus[one % 2]);
-            P2 = sum(dnorm(th2, th_prior_mean, th_prior_sd, true));
-            P2 += sum(d4beta(a2, a_shape1, a_shape2, a_a, a_b, true));
-            P2 += sum(d4beta(d2, d_shape1, d_shape2, d_a, d_b, true));
-            List t2 = as<List>(taus[two % 2]);
-            IntegerVector answers(n);
-            NumericVector t_1j(m), t_2j(m);
-            for ( int j = 0; j < m; ++j ) {
-                t_1j = as<NumericVector>(t1[j]);
-                t_2j = as<NumericVector>(t2[j]);
-                for ( int k = 1; k < t_1j.size(); ++k ) {
-                    P1 += d_4beta(t_1j[k], t_shape1, t_shape2, t_a, t_b, 1);
-                    P2 += d_4beta(t_2j[k], t_shape1, t_shape2, t_a, t_b, 1);
-                }
-                answers = data(_, j);
-                L1 += sum(log_probCol(answers, th1, a1[j], d1[j], t_1j));
-                L2 += sum(log_probCol(answers, th2, a2[j], d2[j], t_2j));
+            alph = mod.temps[t - 1] - mod.temps[t];
+            double chain1_prior = 0.0, chain2_prior = 0.0;
+            for ( int i = 0; i < mod.n; ++i ) {
+                chain1_prior += mod.theta_prior(mod.theta(i, t - 1));
+                chain2_prior += mod.theta_prior(mod.theta(i, t));
             }
-            alph *= (L2 + P2 - L1 - P1);
+            for ( int j = 0; j < mod.m; ++j ) {
+                chain1_prior += mod.alpha_prior(mod.alpha(j, t - 1));
+                chain1_prior += mod.delta_prior(mod.delta(j, t - 1));
+                chain2_prior += mod.alpha_prior(mod.alpha(j, t));
+                chain2_prior += mod.delta_prior(mod.delta(j, t));
+                for ( int k = 1; k < mod.K[j]; ++k ) {
+                    chain1_prior += mod.tau_prior(mod.tau[t - 1][j][k]);
+                    chain2_prior += mod.tau_prior(mod.tau[t][j][k]);
+                }
+            }
+            double chain1_log_likelihood = mod.log_likelihood(t - 1);
+            double chain2_log_likelihood = mod.log_likelihood(t);
+            double multiplier = chain2_log_likelihood - chain1_log_likelihood;
+            multiplier += (chain2_prior - chain1_prior);
+            alph *= multiplier;
             alph = exp(alph);
             if ( alph > 1.0 ) {
                 alph = 1.0;
             }
             rho1 += (1.0 / z) * (alph - 0.2338071);
-            temps[two] = temps[one] / (1.0 + exp(rho1));
-            if ( iter >= temp_tune_iters - n_draws ) {
-                tmp[temp_tune_iters - iter - 1] = temps[two];
+            mod.temps[t] = mod.temps[t - 1] / (1.0 + exp(rho1));
+            if ( iter >= (iterations - n_draws) ) {
+                tmp[iterations - iter - 1] = mod.temps[t];
             }
         }
-        one += 1;
-        two += 1;
         z += 1.0;
         rho1 = -2.0;
-        temps[T] = mean(tmp);
-        if ( two < n_temps ) {
-            temps[two] = temps[one] / (1.0 + exp(rho1));
+        mod.temps[t] = Rcpp::mean(tmp);
+        if ( t < (n_temps-1) ) {
+            mod.temps[t + 1] = mod.temps[t] / (1.0 + exp(rho1));
         }
     }
-    Rcout << "\rTuning temperatures: 100.0%\n";
-    return temps;
+    Rprintf("\rTuning temperatures: %7.3f %%\n", progress);
+    return mod.temps;
 }
 

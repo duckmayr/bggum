@@ -186,30 +186,30 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
         K[j] = length(unique(na.omit(data[ , j])))
     }
     if ( is.null(theta_init) ) {
-        theta_init <- t(sapply(1:n_temps, function(x) {
+        theta_init <- sapply(1:n_temps, function(x) {
             init_thetas(n, theta_prior_params[1], theta_prior_params[2])
-        }))
+        })
     }
     else if ( is.vector(theta_init) ) {
-        theta_init <- matrix(rep(theta_init, n_temps), nrow = n_temps, byrow = TRUE)
+        theta_init <- matrix(rep(theta_init, n_temps), ncol = n_temps)
     }
     if ( is.null(alpha_init) ) {
-        alpha_init <- t(sapply(1:n_temps, function(x) {
+        alpha_init <- sapply(1:n_temps, function(x) {
             init_alphas(m, alpha_prior_params[1], alpha_prior_params[2],
                         alpha_prior_params[3], alpha_prior_params[4])
-        }))
+        })
     }
     else if ( is.vector(alpha_init) ) {
-        alpha_init <- matrix(rep(alpha_init, n_temps), nrow = n_temps, byrow = TRUE)
+        alpha_init <- matrix(rep(alpha_init, n_temps), ncol = n_temps)
     }
     if ( is.null(delta_init) ) {
-        delta_init <- t(sapply(1:n_temps, function(x) {
+        delta_init <- sapply(1:n_temps, function(x) {
             init_deltas(m, delta_prior_params[1], delta_prior_params[2],
                         delta_prior_params[3], delta_prior_params[4])
-        }))
+        })
     }
     else if ( is.vector(delta_init) ) {
-        delta_init <- matrix(rep(delta_init, n_temps), nrow = n_temps, byrow = TRUE)
+        delta_init <- matrix(rep(delta_init, n_temps), ncol = n_temps)
     }
     if ( is.null(tau_init) ) {
         tau_init <- lapply(1:n_temps, function(x) {
@@ -222,14 +222,23 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
     }
     if ( is.null(proposal_sds) ) {
         if ( sd_tune_iterations > 0 ) {
-            proposal_sds <- tune_proposals(data, sd_tune_iterations, K,
-                                           theta_init[1,], alpha_init[1,],
-                                           delta_init[1,], tau_init[[1]],
-                                           theta_prior_params, alpha_prior_params,
-                                           delta_prior_params, tau_prior_params)
+            proposal_sds <- .tune_proposals(data,
+                                            theta_init,
+                                            alpha_init,
+                                            delta_init,
+                                            tau_init,
+                                            K,
+                                            alpha_prior_params,
+                                            delta_prior_params,
+                                            tau_prior_params,
+                                            1, # temps, just a cold chain
+                                            sd_tune_iterations)
         }
         else {
-            proposal_sds <- list(rep(1.0, n), rep(1.0, m), rep(1.0, m), rep(1.0, m))
+            proposal_sds <- list(rep(1.0, n),
+                                 rep(1.0, m),
+                                 rep(1.0, m),
+                                 rep(1.0, m))
         }
     }
     if ( is.null(temps) ) {
@@ -239,28 +248,41 @@ ggumMC3 <- function(data, sample_iterations = 10000, burn_iterations = 10000,
                  call. = FALSE)
         }
         if ( optimize_temps ) {
-            temps <- tune_temperatures(data, n_temps, temp_tune_iterations,
-                                       temp_n_draws, K, proposal_sds,
-                                       theta_prior_params, alpha_prior_params,
-                                       delta_prior_params, tau_prior_params)
-        }
-        else{
+            temps <- .tune_temperatures(data,
+                                        theta_init,
+                                        alpha_init,
+                                        delta_init,
+                                        tau_init,
+                                        K,
+                                        proposal_sds,
+                                        alpha_prior_params,
+                                        delta_prior_params,
+                                        tau_prior_params,
+                                        n_temps,
+                                        temp_tune_iterations,
+                                        temp_n_draws)
+        } else {
             temps <- rep(1.0, n_temps)
             for ( t in 2:n_temps ) {
                 temps[t] <- 1.0 / (1 + temp_multiplier*(t-1))
             }
         }
     }
-    result <- .ggumMC3(data, sample_iterations, burn_iterations, n_temps,
-                       swap_interval, flip_interval, temps, theta_init, alpha_init,
-                       delta_init, tau_init, n, m, K, proposal_sds,
-                       theta_prior_params[1], theta_prior_params[2],
-                       alpha_prior_params[1], alpha_prior_params[2],
-                       alpha_prior_params[3], alpha_prior_params[4],
-                       delta_prior_params[1], delta_prior_params[2],
-                       delta_prior_params[3], delta_prior_params[4],
-                       tau_prior_params[1], tau_prior_params[2],
-                       tau_prior_params[3], tau_prior_params[4])
+    result <- .ggumMC3(data,
+                       theta_init,
+                       alpha_init,
+                       delta_init,
+                       tau_init,
+                       K,
+                       proposal_sds,
+                       temps,
+                       alpha_prior_params,
+                       delta_prior_params,
+                       tau_prior_params,
+                       sample_iterations,
+                       burn_iterations,
+                       swap_interval,
+                       flip_interval)
     colnames(result) <- c(paste0("theta", 1:n),
                           paste0("alpha", 1:m),
                           paste0("delta", 1:m),

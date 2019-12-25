@@ -19,5 +19,5 @@ test_that("tune_proposals() produces expected output", {
 })
 
 test_that("tune_temperatures() produces expected output", {
-    expect_equal(temps, c(1, 0.9798585263, 0.9150885847))
+    expect_equal(temps, c(1, 0.7253554, 0.6013790))
 })

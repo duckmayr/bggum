@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // init_thetas
-NumericVector init_thetas(int n, double mean, double sd);
+Rcpp::NumericVector init_thetas(int n, double mean, double sd);
 RcppExport SEXP _bggum_init_thetas(SEXP nSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -19,7 +19,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // init_alphas
-NumericVector init_alphas(int m, double shape1, double shape2, double a, double b);
+Rcpp::NumericVector init_alphas(int m, double shape1, double shape2, double a, double b);
 RcppExport SEXP _bggum_init_alphas(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -34,7 +34,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // init_deltas
-NumericVector init_deltas(int m, double shape1, double shape2, double a, double b);
+Rcpp::NumericVector init_deltas(int m, double shape1, double shape2, double a, double b);
 RcppExport SEXP _bggum_init_deltas(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -49,7 +49,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // init_taus
-List init_taus(int m, double shape1, double shape2, double a, double b, IntegerVector K);
+Rcpp::List init_taus(int m, double shape1, double shape2, double a, double b, Rcpp::IntegerVector K);
 RcppExport SEXP _bggum_init_taus(SEXP mSEXP, SEXP shape1SEXP, SEXP shape2SEXP, SEXP aSEXP, SEXP bSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -59,83 +59,57 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type shape2(shape2SEXP);
     Rcpp::traits::input_parameter< double >::type a(aSEXP);
     Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type K(KSEXP);
     rcpp_result_gen = Rcpp::wrap(init_taus(m, shape1, shape2, a, b, K));
     return rcpp_result_gen;
 END_RCPP
 }
 // ggumMC3
-NumericMatrix ggumMC3(IntegerMatrix data, int iters, int burn_iters, int N, int W, int flip_interval, NumericVector temps, NumericMatrix thetas, NumericMatrix alphas, NumericMatrix deltas, List taus, int n, int m, IntegerVector K, List SDs, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b);
-RcppExport SEXP _bggum_ggumMC3(SEXP dataSEXP, SEXP itersSEXP, SEXP burn_itersSEXP, SEXP NSEXP, SEXP WSEXP, SEXP flip_intervalSEXP, SEXP tempsSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP nSEXP, SEXP mSEXP, SEXP KSEXP, SEXP SDsSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP) {
+Rcpp::NumericMatrix ggumMC3(Rcpp::IntegerMatrix data_, Rcpp::NumericMatrix theta_, Rcpp::NumericMatrix alpha_, Rcpp::NumericMatrix delta_, Rcpp::List tau_, Rcpp::IntegerVector K_, Rcpp::List SDs, Rcpp::NumericVector temps_, Rcpp::NumericVector alpha_parameters_, Rcpp::NumericVector delta_parameters_, Rcpp::NumericVector tau_parameters_, int sample_iterations, int burn_iterations, int state_swap_interval, int flip_interval);
+RcppExport SEXP _bggum_ggumMC3(SEXP data_SEXP, SEXP theta_SEXP, SEXP alpha_SEXP, SEXP delta_SEXP, SEXP tau_SEXP, SEXP K_SEXP, SEXP SDsSEXP, SEXP temps_SEXP, SEXP alpha_parameters_SEXP, SEXP delta_parameters_SEXP, SEXP tau_parameters_SEXP, SEXP sample_iterationsSEXP, SEXP burn_iterationsSEXP, SEXP state_swap_intervalSEXP, SEXP flip_intervalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type burn_iters(burn_itersSEXP);
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int >::type W(WSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type data_(data_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type theta_(theta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type alpha_(alpha_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type delta_(delta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type tau_(tau_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type K_(K_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type SDs(SDsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type temps_(temps_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha_parameters_(alpha_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type delta_parameters_(delta_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tau_parameters_(tau_parameters_SEXP);
+    Rcpp::traits::input_parameter< int >::type sample_iterations(sample_iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_iterations(burn_iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type state_swap_interval(state_swap_intervalSEXP);
     Rcpp::traits::input_parameter< int >::type flip_interval(flip_intervalSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type temps(tempsSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
-    Rcpp::traits::input_parameter< List >::type SDs(SDsSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_mean(th_prior_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_sd(th_prior_sdSEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape1(a_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape2(a_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a_a(a_aSEXP);
-    Rcpp::traits::input_parameter< double >::type a_b(a_bSEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape1(d_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape2(d_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type d_a(d_aSEXP);
-    Rcpp::traits::input_parameter< double >::type d_b(d_bSEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape1(t_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape2(t_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type t_a(t_aSEXP);
-    Rcpp::traits::input_parameter< double >::type t_b(t_bSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMC3(data, iters, burn_iters, N, W, flip_interval, temps, thetas, alphas, deltas, taus, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b));
+    rcpp_result_gen = Rcpp::wrap(ggumMC3(data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, state_swap_interval, flip_interval));
     return rcpp_result_gen;
 END_RCPP
 }
 // ggumMCMC
-NumericMatrix ggumMCMC(IntegerMatrix data, int n, int m, int iterations, int burn_iterations, int flip_interval, NumericVector thetas, NumericVector alphas, NumericVector deltas, List taus, IntegerVector K, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b, List SDs);
-RcppExport SEXP _bggum_ggumMCMC(SEXP dataSEXP, SEXP nSEXP, SEXP mSEXP, SEXP iterationsSEXP, SEXP burn_iterationsSEXP, SEXP flip_intervalSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP, SEXP SDsSEXP) {
+Rcpp::NumericMatrix ggumMCMC(Rcpp::IntegerMatrix data_, Rcpp::NumericMatrix theta_, Rcpp::NumericMatrix alpha_, Rcpp::NumericMatrix delta_, Rcpp::List tau_, Rcpp::IntegerVector K_, Rcpp::List SDs, Rcpp::NumericVector temps_, Rcpp::NumericVector alpha_parameters_, Rcpp::NumericVector delta_parameters_, Rcpp::NumericVector tau_parameters_, int sample_iterations, int burn_iterations, int flip_interval);
+RcppExport SEXP _bggum_ggumMCMC(SEXP data_SEXP, SEXP theta_SEXP, SEXP alpha_SEXP, SEXP delta_SEXP, SEXP tau_SEXP, SEXP K_SEXP, SEXP SDsSEXP, SEXP temps_SEXP, SEXP alpha_parameters_SEXP, SEXP delta_parameters_SEXP, SEXP tau_parameters_SEXP, SEXP sample_iterationsSEXP, SEXP burn_iterationsSEXP, SEXP flip_intervalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type data_(data_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type theta_(theta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type alpha_(alpha_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type delta_(delta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type tau_(tau_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type K_(K_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type SDs(SDsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type temps_(temps_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha_parameters_(alpha_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type delta_parameters_(delta_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tau_parameters_(tau_parameters_SEXP);
+    Rcpp::traits::input_parameter< int >::type sample_iterations(sample_iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type burn_iterations(burn_iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type flip_interval(flip_intervalSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List >::type taus(tausSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_mean(th_prior_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_sd(th_prior_sdSEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape1(a_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape2(a_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a_a(a_aSEXP);
-    Rcpp::traits::input_parameter< double >::type a_b(a_bSEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape1(d_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape2(d_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type d_a(d_aSEXP);
-    Rcpp::traits::input_parameter< double >::type d_b(d_bSEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape1(t_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape2(t_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type t_a(t_aSEXP);
-    Rcpp::traits::input_parameter< double >::type t_b(t_bSEXP);
-    Rcpp::traits::input_parameter< List >::type SDs(SDsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ggumMCMC(data, n, m, iterations, burn_iterations, flip_interval, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b, SDs));
+    rcpp_result_gen = Rcpp::wrap(ggumMCMC(data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, flip_interval));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -213,67 +187,46 @@ BEGIN_RCPP
 END_RCPP
 }
 // tune_proposals
-List tune_proposals(const IntegerMatrix& responseMatrix, NumericVector& thetas, NumericVector& alphas, NumericVector& deltas, List& taus, const IntegerVector& K, const int tune_iters, int n, int m, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b);
-RcppExport SEXP _bggum_tune_proposals(SEXP responseMatrixSEXP, SEXP thetasSEXP, SEXP alphasSEXP, SEXP deltasSEXP, SEXP tausSEXP, SEXP KSEXP, SEXP tune_itersSEXP, SEXP nSEXP, SEXP mSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP) {
+Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_, Rcpp::NumericMatrix theta_, Rcpp::NumericMatrix alpha_, Rcpp::NumericMatrix delta_, Rcpp::List tau_, Rcpp::IntegerVector K_, Rcpp::NumericVector alpha_parameters_, Rcpp::NumericVector delta_parameters_, Rcpp::NumericVector tau_parameters_, Rcpp::NumericVector temps_, int tune_iterations);
+RcppExport SEXP _bggum_tune_proposals(SEXP data_SEXP, SEXP theta_SEXP, SEXP alpha_SEXP, SEXP delta_SEXP, SEXP tau_SEXP, SEXP K_SEXP, SEXP alpha_parameters_SEXP, SEXP delta_parameters_SEXP, SEXP tau_parameters_SEXP, SEXP temps_SEXP, SEXP tune_iterationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type responseMatrix(responseMatrixSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type thetas(thetasSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type alphas(alphasSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type deltas(deltasSEXP);
-    Rcpp::traits::input_parameter< List& >::type taus(tausSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< const int >::type tune_iters(tune_itersSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_mean(th_prior_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_sd(th_prior_sdSEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape1(a_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape2(a_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a_a(a_aSEXP);
-    Rcpp::traits::input_parameter< double >::type a_b(a_bSEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape1(d_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape2(d_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type d_a(d_aSEXP);
-    Rcpp::traits::input_parameter< double >::type d_b(d_bSEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape1(t_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape2(t_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type t_a(t_aSEXP);
-    Rcpp::traits::input_parameter< double >::type t_b(t_bSEXP);
-    rcpp_result_gen = Rcpp::wrap(tune_proposals(responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b));
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type data_(data_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type theta_(theta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type alpha_(alpha_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type delta_(delta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type tau_(tau_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type K_(K_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha_parameters_(alpha_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type delta_parameters_(delta_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tau_parameters_(tau_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type temps_(temps_SEXP);
+    Rcpp::traits::input_parameter< int >::type tune_iterations(tune_iterationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(tune_proposals(data_, theta_, alpha_, delta_, tau_, K_, alpha_parameters_, delta_parameters_, tau_parameters_, temps_, tune_iterations));
     return rcpp_result_gen;
 END_RCPP
 }
 // tune_temps
-NumericVector tune_temps(IntegerMatrix data, int n_temps, int temp_tune_iters, int n_draws, int n, int m, IntegerVector K, List SDs, double th_prior_mean, double th_prior_sd, double a_shape1, double a_shape2, double a_a, double a_b, double d_shape1, double d_shape2, double d_a, double d_b, double t_shape1, double t_shape2, double t_a, double t_b);
-RcppExport SEXP _bggum_tune_temps(SEXP dataSEXP, SEXP n_tempsSEXP, SEXP temp_tune_itersSEXP, SEXP n_drawsSEXP, SEXP nSEXP, SEXP mSEXP, SEXP KSEXP, SEXP SDsSEXP, SEXP th_prior_meanSEXP, SEXP th_prior_sdSEXP, SEXP a_shape1SEXP, SEXP a_shape2SEXP, SEXP a_aSEXP, SEXP a_bSEXP, SEXP d_shape1SEXP, SEXP d_shape2SEXP, SEXP d_aSEXP, SEXP d_bSEXP, SEXP t_shape1SEXP, SEXP t_shape2SEXP, SEXP t_aSEXP, SEXP t_bSEXP) {
+Rcpp::NumericVector tune_temps(Rcpp::IntegerMatrix data_, Rcpp::NumericMatrix theta_, Rcpp::NumericMatrix alpha_, Rcpp::NumericMatrix delta_, Rcpp::List tau_, Rcpp::IntegerVector K_, Rcpp::List SDs, Rcpp::NumericVector alpha_parameters_, Rcpp::NumericVector delta_parameters_, Rcpp::NumericVector tau_parameters_, int n_temps, int iterations, int n_draws);
+RcppExport SEXP _bggum_tune_temps(SEXP data_SEXP, SEXP theta_SEXP, SEXP alpha_SEXP, SEXP delta_SEXP, SEXP tau_SEXP, SEXP K_SEXP, SEXP SDsSEXP, SEXP alpha_parameters_SEXP, SEXP delta_parameters_SEXP, SEXP tau_parameters_SEXP, SEXP n_tempsSEXP, SEXP iterationsSEXP, SEXP n_drawsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type data_(data_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type theta_(theta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type alpha_(alpha_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type delta_(delta_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type tau_(tau_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type K_(K_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type SDs(SDsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha_parameters_(alpha_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type delta_parameters_(delta_parameters_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tau_parameters_(tau_parameters_SEXP);
     Rcpp::traits::input_parameter< int >::type n_temps(n_tempsSEXP);
-    Rcpp::traits::input_parameter< int >::type temp_tune_iters(temp_tune_itersSEXP);
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type n_draws(n_drawsSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type K(KSEXP);
-    Rcpp::traits::input_parameter< List >::type SDs(SDsSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_mean(th_prior_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type th_prior_sd(th_prior_sdSEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape1(a_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type a_shape2(a_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type a_a(a_aSEXP);
-    Rcpp::traits::input_parameter< double >::type a_b(a_bSEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape1(d_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type d_shape2(d_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type d_a(d_aSEXP);
-    Rcpp::traits::input_parameter< double >::type d_b(d_bSEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape1(t_shape1SEXP);
-    Rcpp::traits::input_parameter< double >::type t_shape2(t_shape2SEXP);
-    Rcpp::traits::input_parameter< double >::type t_a(t_aSEXP);
-    Rcpp::traits::input_parameter< double >::type t_b(t_bSEXP);
-    rcpp_result_gen = Rcpp::wrap(tune_temps(data, n_temps, temp_tune_iters, n_draws, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b));
+    rcpp_result_gen = Rcpp::wrap(tune_temps(data_, theta_, alpha_, delta_, tau_, K_, SDs, alpha_parameters_, delta_parameters_, tau_parameters_, n_temps, iterations, n_draws));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -283,15 +236,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bggum_init_alphas", (DL_FUNC) &_bggum_init_alphas, 5},
     {"_bggum_init_deltas", (DL_FUNC) &_bggum_init_deltas, 5},
     {"_bggum_init_taus", (DL_FUNC) &_bggum_init_taus, 6},
-    {"_bggum_ggumMC3", (DL_FUNC) &_bggum_ggumMC3, 29},
-    {"_bggum_ggumMCMC", (DL_FUNC) &_bggum_ggumMCMC, 26},
+    {"_bggum_ggumMC3", (DL_FUNC) &_bggum_ggumMC3, 15},
+    {"_bggum_ggumMCMC", (DL_FUNC) &_bggum_ggumMCMC, 14},
     {"_bggum_prob", (DL_FUNC) &_bggum_prob, 5},
     {"_bggum_probCol", (DL_FUNC) &_bggum_probCol, 5},
     {"_bggum_probRow", (DL_FUNC) &_bggum_probRow, 5},
     {"_bggum_ggum_simulation", (DL_FUNC) &_bggum_ggum_simulation, 7},
     {"_bggum_summarize_matrix", (DL_FUNC) &_bggum_summarize_matrix, 1},
-    {"_bggum_tune_proposals", (DL_FUNC) &_bggum_tune_proposals, 23},
-    {"_bggum_tune_temps", (DL_FUNC) &_bggum_tune_temps, 22},
+    {"_bggum_tune_proposals", (DL_FUNC) &_bggum_tune_proposals, 11},
+    {"_bggum_tune_temps", (DL_FUNC) &_bggum_tune_temps, 13},
     {NULL, NULL, 0}
 };
 

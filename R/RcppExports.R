@@ -17,12 +17,12 @@ init_taus <- function(m, shape1, shape2, a, b, K) {
     .Call('_bggum_init_taus', PACKAGE = 'bggum', m, shape1, shape2, a, b, K)
 }
 
-.ggumMC3 <- function(data, iters, burn_iters, N, W, flip_interval, temps, thetas, alphas, deltas, taus, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
-    .Call('_bggum_ggumMC3', PACKAGE = 'bggum', data, iters, burn_iters, N, W, flip_interval, temps, thetas, alphas, deltas, taus, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
+.ggumMC3 <- function(data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, state_swap_interval, flip_interval) {
+    .Call('_bggum_ggumMC3', PACKAGE = 'bggum', data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, state_swap_interval, flip_interval)
 }
 
-.ggumMCMC <- function(data, n, m, iterations, burn_iterations, flip_interval, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b, SDs) {
-    .Call('_bggum_ggumMCMC', PACKAGE = 'bggum', data, n, m, iterations, burn_iterations, flip_interval, thetas, alphas, deltas, taus, K, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b, SDs)
+.ggumMCMC <- function(data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, flip_interval) {
+    .Call('_bggum_ggumMCMC', PACKAGE = 'bggum', data_, theta_, alpha_, delta_, tau_, K_, SDs, temps_, alpha_parameters_, delta_parameters_, tau_parameters_, sample_iterations, burn_iterations, flip_interval)
 }
 
 prob <- function(choice, th, a, d, t) {
@@ -45,11 +45,11 @@ summarize_matrix <- function(x) {
     .Call('_bggum_summarize_matrix', PACKAGE = 'bggum', x)
 }
 
-.tune_proposals <- function(responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
-    .Call('_bggum_tune_proposals', PACKAGE = 'bggum', responseMatrix, thetas, alphas, deltas, taus, K, tune_iters, n, m, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
+.tune_proposals <- function(data_, theta_, alpha_, delta_, tau_, K_, alpha_parameters_, delta_parameters_, tau_parameters_, temps_, tune_iterations) {
+    .Call('_bggum_tune_proposals', PACKAGE = 'bggum', data_, theta_, alpha_, delta_, tau_, K_, alpha_parameters_, delta_parameters_, tau_parameters_, temps_, tune_iterations)
 }
 
-.tune_temperatures <- function(data, n_temps, temp_tune_iters, n_draws, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b) {
-    .Call('_bggum_tune_temps', PACKAGE = 'bggum', data, n_temps, temp_tune_iters, n_draws, n, m, K, SDs, th_prior_mean, th_prior_sd, a_shape1, a_shape2, a_a, a_b, d_shape1, d_shape2, d_a, d_b, t_shape1, t_shape2, t_a, t_b)
+.tune_temperatures <- function(data_, theta_, alpha_, delta_, tau_, K_, SDs, alpha_parameters_, delta_parameters_, tau_parameters_, n_temps, iterations, n_draws) {
+    .Call('_bggum_tune_temps', PACKAGE = 'bggum', data_, theta_, alpha_, delta_, tau_, K_, SDs, alpha_parameters_, delta_parameters_, tau_parameters_, n_temps, iterations, n_draws)
 }
 
