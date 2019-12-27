@@ -19,14 +19,29 @@ This is a resubmission. In this version I have:
 * local Manjaro Linux 18.1.4 install, R 3.6.1, 3.6.2, and devel
 * Ubuntu 16.04.6 (on Travis CI), R 3.5.3, 3.6.1, and devel
 * macOS High Sierra 10.13.6 (on Travis CI), R 3.5.3 and 3.6.2
-* Windows Server 2012 R2 (on AppVeyor) R 3.6.2 Patched (2019-12-17 r77592)
-* win-builder (R-devel and 3.6.1)
+* Windows Server 2012 R2 (on AppVeyor) R 3.6.2 Patched (2019-12-26 r77621)
+* win-builder (R-devel and 3.6.2)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-* The only note was the "New submission" note.
+* The only note was:
+  
+checking CRAN incoming feasibility ... NOTE
+
+Maintainer: 'JBrandon Duck-Mayr <j.duckmayr@gmail.com>'
+
+New submission
+
+Possibly mis-spelled words in DESCRIPTION:
+  Donoghue (23:60)
+  Laughlin (24:5)
+
+So there was, of course, the new submission note.
+The flagged words for potential misspelling are last names and are not
+misspelled (they are last names involved in the citation in the DESCRIPTION
+file mentioned above).
 
 ## Reverse dependencies
 
