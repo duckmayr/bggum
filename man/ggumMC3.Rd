@@ -15,25 +15,28 @@ ggumMC3(data, sample_iterations = 10000, burn_iterations = 10000,
   -6, 6), return_sds = TRUE, return_temps = TRUE)
 }
 \arguments{
-\item{data}{A numeric matrix giving the individuals' responses}
+\item{data}{An integer matrix giving the individuals' responses;
+note the item options should be of the form 0, 1, ...
+(an example of preparing data for analysis is given in the vignette,
+available via \code{vignette("bggum")})}
 
-\item{sample_iterations}{A vector of length one giving the number of
-iterations the sampler should complete (default is 10000)}
+\item{sample_iterations}{An integer vector of length one giving the number
+of iterations the sampler should complete (default is 10000)}
 
-\item{burn_iterations}{A vector of length one giving the number of
+\item{burn_iterations}{An integer vector of length one giving the number of
 iterations to burn in (default is 10000)}
 
-\item{sd_tune_iterations}{A numeric vector of length one; the number of
+\item{sd_tune_iterations}{An integer vector of length one; the number of
 iterations to use to tune the proposals before the burn-in period
 begins (default is 5000). If 0 is given, the proposals are not tuned.}
 
-\item{temp_tune_iterations}{A numeric vector of length one; if a temperature
-schedule is not provided in the \code{temps} argument and
+\item{temp_tune_iterations}{An integer vector of length one; if a
+temperature schedule is not provided in the \code{temps} argument and
 \code{optimize_temps} = TRUE, \code{temp_tune_iterations} gives the number
 of iterations to use to tune each temperature before the burn-in period
 begins (default is 5000) -- see \code{\link{tune_temperatures}}}
 
-\item{temp_n_draws}{A numeric vector of length one; if a temperature
+\item{temp_n_draws}{An integer vector of length one; if a temperature
 schedule is not provided in the \code{temps} argument and
 \code{optimize_temps} = TRUE, \code{temp_n_draws} gives the number
 of draws from the temperature finding algorithm to calculate each
@@ -126,11 +129,23 @@ named "proposal_sds." The default is TRUE.}
 
 \item{return_temps}{A logical vector of length one; if TRUE, the temperatures
 of the parallel chains are stored in an attribute of the returned object
-named "proposal_temps." The default is TRUE.}
+named "temps." The default is TRUE.}
 }
 \value{
 A numeric matrix giving the parameter values at each iteration
-  for the cold chain
+  for the cold chain.
+  The matrix will additionally have classes "ggum"
+  (so that \code{\link{summary.ggum}} can be called on the result)
+  and "mcmc" with an "mcpar" attribute
+  (so that functions from the \code{coda} package can be used, e.g.
+  to assess convergence).
+  If \code{return_sds} is \code{TRUE}, the result also has an attribute
+  "proposal_sds", which will be a list of length four giving the standard
+  deviations of the proposal densities for the theta, alpha, delta, and
+  tau parameters respectively.
+  If \code{return_temps} is \code{TRUE}, the result also has an attribute
+  "temps", which will be a numeric vector giving the parallel chains'
+  inverse temperatures.
 }
 \description{
 Metropolis Coupled Markov Chain Monte Carlo (MC3) Sampling for the GGUM
@@ -178,13 +193,20 @@ each temperature T_t for t > 1 is given by
 1 / (1 + \code{temp_multiplier} * (t-1)), and T_1 = 1.
 }
 \examples{
-\dontrun{
+## NOTE: This is a toy example just to demonstrate the function, which uses
+## a small dataset and an unreasonably low number of sampling interations.
+## For a longer practical guide on Bayesian estimation of GGUM parameters,
+## please see the vignette ( via vignette("bggum") ).
 ## We'll simulate data to use for this example:
 set.seed(123)
-sim_data <- ggum_simulation(1000, 100, 2)
+sim_data <- ggum_simulation(100, 10, 2)
 ## Now we can generate posterior draws:
-draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
-}
+## (for the purposes of example, we use 100 iterations,
+## though in practice you would use much more)
+draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 2,
+                 sd_tune_iterations = 100, temp_tune_iterations = 100,
+                 temp_n_draws = 50,
+                 burn_iterations = 100, sample_iterations = 100)
 
 }
 \references{

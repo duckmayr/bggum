@@ -19,7 +19,8 @@ Authors@R: c(person(given = "JBrandon",
             )
 Description: Provides a Metropolis-coupled Markov chain Monte Carlo sampler,
     post-processing and parameter estimation functions, and plotting utilities
-    for the generalized graded unfolding model.
+    for the generalized graded unfolding model of Roberts, Donoghue, and
+    Laughlin (2000) <doi:10.1177/01466216000241001>.
 URL: https://github.com/duckmayr/bggum
 BugReports: https://github.com/duckmayr/bggum/issues
 Depends:

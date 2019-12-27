@@ -2,7 +2,7 @@
 % Please edit documentation in R/icc.R
 \name{icc}
 \alias{icc}
-\title{Item Response Function}
+\title{Item Characteristic Curve}
 \usage{
 icc(a, d, t, from = -3, to = 3, by = 0.01, layout_matrix = 1,
   main_title = "Item Characteristic Curve", sub = "",
@@ -33,7 +33,7 @@ theta values; default is 0.01}
 the default is a one-column matrix with one element for each item}
 
 \item{main_title}{A character vector giving the plots' main titles;
-default is "Item Response Function".}
+default is "Item Characteristic Curve".}
 
 \item{sub}{An optional character vector of subtitles for the resulting plots,
 to be pasted onto the main title (helpful for titling individual plots
@@ -57,7 +57,7 @@ NOTE: The lowest response for each item should be 0, not 1.}
 \code{plot_responses = TRUE}; the default is \code{"#0000005f"}.}
 }
 \description{
-Plots response functions given alpha, delta, and tau parameters.
+Plots item characteristic curves given alpha, delta, and tau parameters.
 }
 \examples{
 ## We'll simulate data to use for these examples:

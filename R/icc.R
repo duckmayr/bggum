@@ -1,6 +1,6 @@
-#' Item Response Function
+#' Item Characteristic Curve
 #'
-#' Plots response functions given alpha, delta, and tau parameters.
+#' Plots item characteristic curves given alpha, delta, and tau parameters.
 #'
 #' @param a A numeric vector of alpha parameters
 #' @param d A numeric vector of delta parameters
@@ -18,7 +18,7 @@
 #' @param layout_matrix An integer matrix dictating the layout of the plot;
 #'   the default is a one-column matrix with one element for each item
 #' @param main_title A character vector giving the plots' main titles;
-#'   default is "Item Response Function".
+#'   default is "Item Characteristic Curve".
 #' @param sub An optional character vector of subtitles for the resulting plots,
 #'   to be pasted onto the main title (helpful for titling individual plots
 #'   when plotting multiple items' ICCs).

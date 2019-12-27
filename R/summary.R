@@ -54,15 +54,20 @@
 #'   Packages." \emph{American Statistician} 50, 361--365.
 #'
 #' @examples
-#' \dontrun{
-#' ## NOTE: If you want to see an example of the structure of a summary.ggum
-#' ##       object without running this example, please see the vignette
-#' ##       ( via vignette("bggum") )
+#' ## NOTE: This is a toy example just to demonstrate the function, which uses
+#' ## a small dataset and an unreasonably low number of sampling interations.
+#' ## For a longer practical guide on Bayesian estimation of GGUM parameters,
+#' ## please see the vignette ( via vignette("bggum") ).
 #' ## We'll simulate data to use for this example:
 #' set.seed(123)
-#' sim_data <- ggum_simulation(1000, 100, 2)
+#' sim_data <- ggum_simulation(100, 10, 2)
 #' ## Now we can generate posterior draws
-#' draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 6)
+#' ## (for the purposes of example, we use 100 iterations,
+#' ## though in practice you would use much more)
+#' draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 2,
+#'                  sd_tune_iterations = 100, temp_tune_iterations = 100,
+#'                  temp_n_draws = 50,
+#'                  burn_iterations = 100, sample_iterations = 100)
 #' ## Then post-process the output
 #' processed_draws <- post_process(sample = draws,
 #'                                 constraint = which.min(sim_data$theta),
@@ -76,7 +81,6 @@
 #' ## And a matrix of the mean (estimates), median, standard deviations,
 #' ## and 0.025 and 0.975 quantiles
 #' head(posterior_summary$statistics)
-#' }
 #'
 #' @name summary.ggum
 #' @rdname summary.ggum

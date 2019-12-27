@@ -11,10 +11,10 @@ tune_proposals(data, tune_iterations, K = NULL, thetas = NULL,
   -6, 6))
 }
 \arguments{
-\item{data}{A numeric matrix giving the response by each
+\item{data}{An integer matrix giving the response by each
 respondent to each item}
 
-\item{tune_iterations}{A numeric vector of length one;
+\item{tune_iterations}{An integer vector of length one;
 the number of iterations to complete}
 
 \item{K}{(Optional) A numeric vector with an element for each item giving
@@ -89,13 +89,17 @@ same values after the function is run
 }
 
 \examples{
-\dontrun{
-## We'll simulate data to use for this example:
+## NOTE: This is a toy example just to demonstrate the function, which uses
+## a small dataset and an unreasonably low number of tuning interations.
+## For a longer practical guide on Bayesian estimation of GGUM parameters,
+## please see the vignette ( via vignette("bggum") ).
+## We'll simulate data to use for this example
 set.seed(123)
-sim_data <- ggum_simulation(1000, 100, 2)
-## Now we can tune the proposal densities:
+sim_data <- ggum_simulation(100, 10, 2)
+## Now we can tune the proposal densities
+## (for the purposes of example, we use 100 iterations,
+## though in practice you would use much more)
 proposal_sds <- tune_proposals(data = sim_data$response_matrix,
-                               tune_iterations = 5000)
-}
+                               tune_iterations = 100)
 
 }

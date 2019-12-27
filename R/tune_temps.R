@@ -11,7 +11,7 @@
 #' Please see the vignette (via \code{vignette("bggum")}) for a full in-depth
 #' practical guide to Bayesian estimation of GGUM parameters.
 #'
-#' @param data A numeric matrix giving the response by each
+#' @param data An integer matrix giving the response by each
 #'   respondent to each item
 #' @param n_temps How many temperatures to make?
 #' @param temp_tune_iterations How many iterations should the temperature
@@ -61,21 +61,19 @@
 #'   chain Monte Carlo." \emph{Statistics and Computing} 21(4): 555--568.
 #'
 #' @examples
-#' \dontrun{
+#' ## NOTE: This is a toy example just to demonstrate the function, which uses
+#' ## a small dataset and an unreasonably low number of sampling interations.
+#' ## For a longer practical guide on Bayesian estimation of GGUM parameters,
+#' ## please see the vignette ( via vignette("bggum") ).
 #' ## We'll simulate data to use for this example:
 #' set.seed(123)
-#' sim_data <- ggum_simulation(1000, 100, 2)
+#' sim_data <- ggum_simulation(100, 10, 2)
 #' ## Now we can tune the temperature schedule:
-#' temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 6)
-#' ## You could tune the proposal densities *before* tuning the temperature
-#' ## schedule (this is our recommendation):
-#' proposal_sds <- tune_proposals(data = sim_data$response_matrix,
-#'                                tune_iterations = 5000)
-#' temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 6,
-#'                            proposal_sds = proposal_sds)
-#' ## (We recommend tuning the proposals first so you can retain that same list
-#' ## of proposal standard deviations to pass to posterior sampling functions)
-#' }
+#' ## (for the purposes of example, we use 100 iterations,
+#' ## though in practice you would use much more)
+#' temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 5,
+#'                            temp_tune_iterations = 100, n_draws = 50,
+#'                            sd_tune_iterations = 100)
 #'
 #' @export
 tune_temperatures <- function(data, n_temps, temp_tune_iterations = 5000,
