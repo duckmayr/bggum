@@ -19,11 +19,12 @@
 #'   "#555753")}
 #' }
 #'
-#' @references Okabe, Masataka and Kei Ito. 2008. "Color Universal Design."
-#'     https://jfly.uni-koeln.de/color/.
-#'
-#'     Tango Desktop Project. 2013. "Tango Icon Theme Guidelines."
-#'     https://web.archive.org/web/20160202102503/http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines
+#' @references Okabe, Masataka and Kei Ito. 2008.
+#'   \dQuote{Color Universal Design.}
+#'   \url{https://jfly.uni-koeln.de/color/}.
+#' @references Tango Desktop Project. 2013.
+#'   \dQuote{Tango Icon Theme Guidelines.}
+#'   \url{https://web.archive.org/web/20160202102503/http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines}
 #'
 #' @examples
 #' ## Palettes that are a subset of the total available colors

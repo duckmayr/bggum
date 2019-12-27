@@ -47,11 +47,11 @@ The probability that respondent \eqn{i} chooses option \eqn{k} for item
 \sum_{m=0}^l \tau_{jm}]) + \exp (\alpha_j [(2K - l - 1)
 (\theta_i - \delta_j) - \sum_{m=0}^l \tau_{jm}])]}}{%
 (exp(\alpha_j [k(\theta_i-\delta_j) -
-\Sigma_{m=0}^k \tau_{jm}]) + exp(\alpha_j [(2K - k - 1)
-(\theta_i - \delta_j) - \Sigma_{m=0}^k \tau_{jm}])) /
-(\Sigma_{l=0}^{K-1} [exp (\alpha_j [l (\theta_i - \delta_j) -
-\Sigma_{m=0}^l \tau_{jm}]) + exp (\alpha_j [(2K - l - 1)
-(\theta_i - \delta_j) - \Sigma_{m=0}^l \tau_{jm}])])},
+\sum_{m=0}^k \tau_{jm}]) + exp(\alpha_j [(2K - k - 1)
+(\theta_i - \delta_j) - \sum_{m=0}^k \tau_{jm}])) /
+(\sum_{l=0}^{K-1} [exp (\alpha_j [l (\theta_i - \delta_j) -
+\sum_{m=0}^l \tau_{jm}]) + exp (\alpha_j [(2K - l - 1)
+(\theta_i - \delta_j) - \sum_{m=0}^l \tau_{jm}])])},
 where \eqn{\theta_i} is \eqn{i}'s latent trait parameter,
 \eqn{\alpha_j} is the item's discrimination parameter,
 \eqn{\delta_j} is the item's location parameter,
@@ -86,13 +86,13 @@ head(ggumProbability(response = sim_data$response_matrix,
 
 }
 \references{
-Roberts, James S., John R. Donoghue, and James E. Laughlin.
-  2000. ``A General Item Response Theory Model for Unfolding
-  Unidimensional Polytomous Responses." \emph{Applied Psychological
-  Measurement} 24(1): 3--32.
-
 de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
-  Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
-  Parameters for the Generalized Graded Unfolding Model." \emph{Applied
+  Chernyshenko. 2006. \dQuote{Markov Chain Monte Carlo Estimation of Item
+  Parameters for the Generalized Graded Unfolding Model.} \emph{Applied
   Psychological Measurement} 30(3): 216--232.
+
+Roberts, James S., John R. Donoghue, and James E. Laughlin. 2000.
+  \dQuote{A General Item Response Theory Model for Unfolding Unidimensional
+  Polytomous Responses.} \emph{Applied Psychological Measurement}
+  24(1): 3--32.
 }

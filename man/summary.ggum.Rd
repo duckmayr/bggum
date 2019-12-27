@@ -91,12 +91,13 @@ head(posterior_summary$statistics)
 
 }
 \references{
-Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
-  the Middle: Scaling Votes When Ideological Opposites Behave the Same for
-  Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
+Duck-Mayr, JBrandon, and Jacob Montgomery. 2019.
+  \dQuote{Ends Against the Middle: Scaling Votes When Ideological Opposites
+  Behave the Same for Antithetical Reasons.}
+  \url{http://jbduckmayr.com/papers/ggum.pdf}.
 
-Hyndman, R. J. and Fan, Y. 1996. "Sample Quantiles in
-  Packages." \emph{American Statistician} 50, 361--365.
+Hyndman, R. J. and Fan, Y. 1996. \dQuote{Sample Quantiles in
+  Packages.} \emph{American Statistician} 50, 361--365.
 }
 \seealso{
 \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}

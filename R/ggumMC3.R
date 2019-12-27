@@ -156,17 +156,18 @@
 #'   \code{\link{tune_temperatures}}
 #'
 #' @references Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S. Rosenthal.
-#'   2011. “Towards Optimal Scaling of Metropolis-Coupled Markov Chain Monte
-#'   Carlo.” \emph{Statistics and Computing} 21(4): 555--68.
-#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
-#'   the Middle: Scaling Votes When Ideological Opposites Behave the Same for
-#'   Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
-#' @references Geyer, Charles J. 1991. “Markov Chain Monte Carlo Maximum
-#'   Likelihood.” In Computing Science and Statistics. Proceedings of the 23rd
+#'   2011.  \dQuote{Towards Optimal Scaling of Metropolis-Coupled Markov Chain
+#'   Monte Carlo.} \emph{Statistics and Computing} 21(4): 555--68.
+#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019.
+#'   \dQuote{Ends Against the Middle: Scaling Votes When Ideological Opposites
+#'   Behave the Same for Antithetical Reasons.}
+#'   \url{http://jbduckmayr.com/papers/ggum.pdf}.
+#' @references Geyer, Charles J. 1991. \dQuote{Markov Chain Monte Carlo Maximum
+#'   Likelihood.} In Computing Science and Statistics. Proceedings of the 23rd
 #'   Symposium on the Interface, edited by E. M. Keramides, 156–63. Fairfax
 #'   Station, VA: Interface Foundation.
-#' @references Gill, Jeff. 2008. Bayesian Methods: A Social and Behavioral
-#'   Sciences Approach. 2d ed. Boca Raton, FL: Taylor & Francis.
+#' @references Gill, Jeff. 2008. \emph{Bayesian Methods: A Social and Behavioral
+#'   Sciences Approach}. 2d ed. Boca Raton, FL: Taylor & Francis.
 #'
 #' @examples
 #' ## NOTE: This is a toy example just to demonstrate the function, which uses

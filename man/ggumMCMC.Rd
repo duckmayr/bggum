@@ -145,19 +145,19 @@ draws <- ggumMCMC(data = sim_data$response_matrix,
 }
 \references{
 de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
-  Chernyshenko. 2006. ``Markov Chain Monte Carlo Estimation of Item
-  Parameters for the Generalized Graded Unfolding Model." \emph{Applied
+  Chernyshenko. 2006. \dQuote{Markov Chain Monte Carlo Estimation of Item
+  Parameters for the Generalized Graded Unfolding Model.} \emph{Applied
   Psychological Measurement} 30(3): 216--232.
 
-Geyer, Charles J. 1991. “Markov Chain Monte Carlo Maximum
-  Likelihood.” In Computing Science and Statistics. Proceedings of the 23rd
+Geyer, Charles J. 1991. \dQuote{Markov Chain Monte Carlo Maximum
+  Likelihood.} In Computing Science and Statistics. Proceedings of the 23rd
   Symposium on the Interface, edited by E. M. Keramides, 156–63. Fairfax
   Station, VA: Interface Foundation.
 
-Roberts, James S., John R. Donoghue, and James E. Laughlin.
-  2000. ``A General Item Response Theory Model for Unfolding
-  Unidimensional Polytomous Responses." \emph{Applied Psychological
-  Measurement} 24(1): 3--32.
+Roberts, James S., John R. Donoghue, and James E. Laughlin. 2000.
+  \dQuote{A General Item Response Theory Model for Unfolding Unidimensional
+  Polytomous Responses.} \emph{Applied Psychological Measurement}
+  24(1): 3--32.
 }
 \seealso{
 \code{\link{ggumProbability}}, \code{\link{ggumMC3}}

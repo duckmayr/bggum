@@ -56,9 +56,9 @@
 #'
 #' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
 #'
-#' @references Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S.
-#'   Rosenthal. 2011. ``Towards optimal scaling of metropolis-coupled Markov
-#'   chain Monte Carlo." \emph{Statistics and Computing} 21(4): 555--568.
+#' @references Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S. Rosenthal.
+#'   2011.  \dQuote{Towards Optimal Scaling of Metropolis-Coupled Markov Chain
+#'   Monte Carlo.} \emph{Statistics and Computing} 21(4): 555--68.
 #'
 #' @examples
 #' ## NOTE: This is a toy example just to demonstrate the function, which uses

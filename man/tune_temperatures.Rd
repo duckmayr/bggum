@@ -95,9 +95,9 @@ temps <- tune_temperatures(data = sim_data$response_matrix, n_temps = 5,
 
 }
 \references{
-Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S.
-  Rosenthal. 2011. ``Towards optimal scaling of metropolis-coupled Markov
-  chain Monte Carlo." \emph{Statistics and Computing} 21(4): 555--568.
+Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S. Rosenthal.
+  2011.  \dQuote{Towards Optimal Scaling of Metropolis-Coupled Markov Chain
+  Monte Carlo.} \emph{Statistics and Computing} 21(4): 555--68.
 }
 \seealso{
 \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}

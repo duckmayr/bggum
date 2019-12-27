@@ -49,14 +49,14 @@
 #' @section Note:
 #'   Please note that items' options should be zero-indexed.
 #'
-#' @references Roberts, James S., John R. Donoghue, and James E. Laughlin.
-#'   2000. "A General Item Response Theory Model for Unfolding
-#'   Unidimensional Polytomous Responses." \emph{Applied Psychological
-#'   Measurement} 24(1): 3--32.
 #' @references de la Torre, Jimmy, Stephen Stark, and Oleksandr S.
-#'   Chernyshenko. 2006. "Markov Chain Monte Carlo Estimation of Item
-#'   Parameters for the Generalized Graded Unfolding Model." \emph{Applied
+#'   Chernyshenko. 2006. \dQuote{Markov Chain Monte Carlo Estimation of Item
+#'   Parameters for the Generalized Graded Unfolding Model.} \emph{Applied
 #'   Psychological Measurement} 30(3): 216--232.
+#' @references Roberts, James S., John R. Donoghue, and James E. Laughlin. 2000.
+#'   \dQuote{A General Item Response Theory Model for Unfolding Unidimensional
+#'   Polytomous Responses.} \emph{Applied Psychological Measurement}
+#'   24(1): 3--32.
 #'
 #' @examples
 #' ## What is the probability of a 1 response to a dichotomous item

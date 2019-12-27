@@ -11,13 +11,14 @@
 #' @docType package
 #' @author  JBrandon Duck-Mayr and Jacob Montgomery
 #'
-#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. "Ends Against
-#'   the Middle: Scaling Votes When Ideological Opposites Behave the Same for
-#'   Antithetical Reasons." http://jbduckmayr.com/papers/ggum.pdf.
-#' @references Roberts, James S., John R. Donoghue, and James E. Laughlin.
-#'   2000. "A General Item Response Theory Model for Unfolding
-#'   Unidimensional Polytomous Responses." \emph{Applied Psychological
-#'   Measurement} 24(1): 3--32.
+#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019.
+#'   \dQuote{Ends Against the Middle: Scaling Votes When Ideological Opposites
+#'   Behave the Same for Antithetical Reasons.}
+#'   \url{http://jbduckmayr.com/papers/ggum.pdf}.
+#' @references Roberts, James S., John R. Donoghue, and James E. Laughlin. 2000.
+#'   \dQuote{A General Item Response Theory Model for Unfolding Unidimensional
+#'   Polytomous Responses.} \emph{Applied Psychological Measurement}
+#'   24(1): 3--32.
 #' 
 #' @useDynLib bggum
 #' @importFrom Rcpp sourceCpp

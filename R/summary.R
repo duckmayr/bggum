@@ -47,11 +47,12 @@
 #'
 #' @seealso \code{\link{ggumMCMC}}, \code{\link{ggumMC3}}
 #'
-#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
-#'   the Middle: Scaling Votes When Ideological Opposites Behave the Same for
-#'   Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
-#' @references Hyndman, R. J. and Fan, Y. 1996. "Sample Quantiles in
-#'   Packages." \emph{American Statistician} 50, 361--365.
+#' @references Duck-Mayr, JBrandon, and Jacob Montgomery. 2019.
+#'   \dQuote{Ends Against the Middle: Scaling Votes When Ideological Opposites
+#'   Behave the Same for Antithetical Reasons.}
+#'   \url{http://jbduckmayr.com/papers/ggum.pdf}.
+#' @references Hyndman, R. J. and Fan, Y. 1996. \dQuote{Sample Quantiles in
+#'   Packages.} \emph{American Statistician} 50, 361--365.
 #'
 #' @examples
 #' ## NOTE: This is a toy example just to demonstrate the function, which uses

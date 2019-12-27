@@ -211,20 +211,21 @@ draws <- ggumMC3(data = sim_data$response_matrix, n_temps = 2,
 }
 \references{
 Atchadé, Yves F., Gareth O. Roberts, and Jeffrey S. Rosenthal.
-  2011. “Towards Optimal Scaling of Metropolis-Coupled Markov Chain Monte
-  Carlo.” \emph{Statistics and Computing} 21(4): 555--68.
+  2011.  \dQuote{Towards Optimal Scaling of Metropolis-Coupled Markov Chain
+  Monte Carlo.} \emph{Statistics and Computing} 21(4): 555--68.
 
-Duck-Mayr, JBrandon, and Jacob Montgomery. 2019. “Ends Against
-  the Middle: Scaling Votes When Ideological Opposites Behave the Same for
-  Antithetical Reasons.” http://jbduckmayr.com/papers/ggum.pdf.
+Duck-Mayr, JBrandon, and Jacob Montgomery. 2019.
+  \dQuote{Ends Against the Middle: Scaling Votes When Ideological Opposites
+  Behave the Same for Antithetical Reasons.}
+  \url{http://jbduckmayr.com/papers/ggum.pdf}.
 
-Geyer, Charles J. 1991. “Markov Chain Monte Carlo Maximum
-  Likelihood.” In Computing Science and Statistics. Proceedings of the 23rd
+Geyer, Charles J. 1991. \dQuote{Markov Chain Monte Carlo Maximum
+  Likelihood.} In Computing Science and Statistics. Proceedings of the 23rd
   Symposium on the Interface, edited by E. M. Keramides, 156–63. Fairfax
   Station, VA: Interface Foundation.
 
-Gill, Jeff. 2008. Bayesian Methods: A Social and Behavioral
-  Sciences Approach. 2d ed. Boca Raton, FL: Taylor & Francis.
+Gill, Jeff. 2008. \emph{Bayesian Methods: A Social and Behavioral
+  Sciences Approach}. 2d ed. Boca Raton, FL: Taylor & Francis.
 }
 \seealso{
 \code{\link{ggumProbability}}, \code{\link{ggumMCMC}},
