@@ -1,3 +1,19 @@
+## Resubmission
+
+This is a resubmission. In this version I have:
+
+* Added a citation to the paper developing the generalized graded unfolding
+  model (GGUM -- the statistical model our package implements) to the
+  DESCRIPTION file, as requested by Swetlana Herbrandt.
+* Removed all instances of \dontrun{}. Swetlana Herbrandt suggested either
+  replacing them with \donttest{} or unwrapping any examples that can be
+  executed in less than 5 seconds per Rd-file. As originally constituted,
+  not all examples could have done that, but I scaled them down a bit and
+  they easily passed that mark by far.
+* Unrelated to requests by the CRAN team, when editing the documentation as
+  described above, I found various small tweaks to improve clarity. None of
+  the R or C++ functions have been altered, just tweaks to the documentation.
+
 ## Test environments
 
 * local Manjaro Linux 18.1.4 install, R 3.6.1, 3.6.2, and devel
@@ -10,11 +26,9 @@
 
 0 errors | 0 warnings | 1 note
 
-* checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'JBrandon Duck-Mayr <j.duckmayr@gmail.com>'
-
-  New submission
+* The only note was the "New submission" note.
 
 ## Reverse dependencies
 
 This is a new release, so there are no reverse dependencies.
+
