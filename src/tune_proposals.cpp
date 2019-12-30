@@ -43,47 +43,43 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
             for ( int i = 0; i < mod.n; ++i ) {
                 if ( theta_accepts[i] < 20 ) {
                     mod.theta_sds[i] -= ((20.0 - theta_accepts[i]) * 0.01);
-                }
-                if ( theta_accepts[i] > 25 ) {
+                } else if ( theta_accepts[i] > 25 ) {
                     mod.theta_sds[i] += ((theta_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.theta_sds[i] < 0 ) {
-                    mod.theta_sds[i] = 0.01;
+                if ( mod.theta_sds[i] < 0.000001 ) {
+                    mod.theta_sds[i] = 0.000001;
                 }
                 theta_accepts[i] = 0;
             }
             for ( int i = 0; i < mod.m; ++i ) {
                 if ( alpha_accepts[i] < 20 ) {
                     mod.alpha_sds[i] -= ((20.0 - alpha_accepts[i]) * 0.01);
-                }
-                if ( alpha_accepts[i] > 25 ) {
+                } else if ( alpha_accepts[i] > 25 ) {
                     mod.alpha_sds[i] += ((alpha_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.alpha_sds[i] < 0 ) {
-                    mod.alpha_sds[i] = 0.01;
+                if ( mod.alpha_sds[i] < 0.000001 ) {
+                    mod.alpha_sds[i] = 0.000001;
                 }
                 alpha_accepts[i] = 0;
                 if ( delta_accepts[i] < 20 ) {
                     mod.delta_sds[i] -= ((20.0 - delta_accepts[i]) * 0.01);
-                }
-                if ( delta_accepts[i] > 25 ) {
+                } else if ( delta_accepts[i] > 25 ) {
                     mod.delta_sds[i] += ((delta_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.delta_sds[i] < 0 ) {
-                    mod.delta_sds[i] = 0.01;
+                if ( mod.delta_sds[i] < 0.000001 ) {
+                    mod.delta_sds[i] = 0.000001;
                 }
                 delta_accepts[i] = 0;
                 int Kj = mod.K[i] - 1;
                 if ( tau_accepts[i] < (20 * Kj) ) {
                     mod.tau_sds[i] -= (((20.0 * Kj) - tau_accepts[i])
                                        * (0.01 / Kj));
-                }
-                if ( tau_accepts[i] > (25 * Kj) ) {
+                } else if ( tau_accepts[i] > (25 * Kj) ) {
                     mod.tau_sds[i] += ((tau_accepts[i] - (25.0 * Kj))
                                        * (0.01 / Kj));
                 }
-                if ( mod.tau_sds[i] < 0 ) {
-                    mod.tau_sds[i] = 0.01;
+                if ( mod.tau_sds[i] < 0.000001 ) {
+                    mod.tau_sds[i] = 0.000001;
                 }
                 tau_accepts[i] = 0;
             }
