@@ -21,6 +21,7 @@ void Model::update_alpha(int t) {
         double proposal       = R::rnorm(alpha(j, t), alpha_sds[j]);
         double proposal_prior = alpha_prior(proposal);
         if ( proposal_prior == R_NegInf ) {
+            alpha_auto_rejects[j] += 1;
             return;
         }
         double current_prior = alpha_prior(alpha(j, t));

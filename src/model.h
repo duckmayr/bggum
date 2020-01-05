@@ -3,19 +3,12 @@
 
 #include <Rcpp.h>
 #include <4beta.h>
+#include "RaggedArray.h"
 
 // This is a helper function to extract a Rcpp::NumericVector from a Rcpp::List
 inline Rcpp::NumericVector get_vec_from_list(Rcpp::List x, int i) {
     return Rcpp::as<Rcpp::NumericVector>(x[i]);
 }
-
-/* tau storage
- * We do not need to take advantage of the potential for data heterogeneity
- * that Rcpp::List was designed for; so, even though on the R side, tau will
- * be stored in a list, on the C++ side we will use ragged arrays.
- */
-typedef std::vector<Rcpp::NumericVector> ragged_array;
-typedef std::vector<std::vector<Rcpp::NumericVector> > nested_ragged_array;
 
 class Model {
 
@@ -28,7 +21,7 @@ class Model {
         Rcpp::NumericMatrix theta;
         Rcpp::NumericMatrix alpha;
         Rcpp::NumericMatrix delta;
-        nested_ragged_array tau;
+        NestedRaggedArray tau;
         //     - size variables
         int n;
         int m;
@@ -51,6 +44,8 @@ class Model {
         //     - state swap attempt tracking
         Rcpp::IntegerVector attempted_swaps;
         Rcpp::IntegerVector successful_swaps;
+        //     - alpha auto-rejection tracking (temporary)
+        Rcpp::IntegerVector alpha_auto_rejects;
         
         // CONSTRUCTOR
         Model(Rcpp::IntegerMatrix data_,
@@ -74,6 +69,7 @@ class Model {
             m = data.ncol();
             K = K_;
             T = temps_.size();
+            alpha_auto_rejects = Rcpp::rep(0, m);
 
             // Set up the NA index tracking
             for ( int i = 0; i < n; ++i ) {
@@ -104,7 +100,7 @@ class Model {
                 // make it a vector of vectors,
                 // then put them all together as a vector of vectors of vectors
                 Rcpp::List l_tau_t = tau_[t];
-                ragged_array tau_t;
+                RaggedArray tau_t;
                 for ( int j = 0; j < m; ++j ) {
                     Rcpp::NumericVector tau_tj = get_vec_from_list(l_tau_t, j);
                     tau_t.push_back(tau_tj);
@@ -148,6 +144,7 @@ class Model {
         void update_tau(int t);
         //     - attempt state swap
         void swap_states(int t1, int t2);
+        void swap_states_burn(int t1, int t2);
 
 };
 

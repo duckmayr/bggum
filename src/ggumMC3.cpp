@@ -54,12 +54,13 @@ Rcpp::NumericMatrix ggumMC3(Rcpp::IntegerMatrix data_,
             Rprintf("\rBurning in:          %7.3f %%", progress);
         }
         if ( iter % state_swap_interval == 0 ) {
-            mod.swap_states(one, two);
+            mod.swap_states_burn(one, two);
             one = (one + 1) % (mod.T - 1);
             two = (two % (mod.T - 1)) + 1;
         }
     }
     if ( burn_iterations > 0 ) {
+        progress = 100.0;
         Rprintf("\rBurning in:          %7.3f %%\n", progress);
     }
     one = 0;
@@ -103,7 +104,7 @@ Rcpp::NumericMatrix ggumMC3(Rcpp::IntegerMatrix data_,
             result(iter, idx) = mod.delta(j, 0);
             idx += (mod.m + K_ind - 1);
             for ( int k = 1; k < mod.K[j]; ++k ) {
-                idx += k;
+                idx += 1;
                 result(iter, idx) = mod.tau[0][j][k];
             }
             K_ind += (mod.K[j] - 2);
@@ -113,6 +114,7 @@ Rcpp::NumericMatrix ggumMC3(Rcpp::IntegerMatrix data_,
     result.attr("attempted_swaps") = mod.attempted_swaps;
     result.attr("successful_swaps") = mod.successful_swaps;
     // return the cold chain
+    progress = 100.0;
     Rprintf("\rSampling posterior:  %7.3f %%\n", progress);
     return result;
 }

@@ -17,10 +17,10 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
     double progress = 0.0;
     Rprintf("Tuning proposals:    %7.3f %%", progress);
     // set up vectors for proposal SDs
-    Rcpp::NumericVector theta_SD(data_.nrow(), 0.01);
-    Rcpp::NumericVector alpha_SD(data_.ncol(), 0.01);
-    Rcpp::NumericVector delta_SD(data_.ncol(), 0.01);
-    Rcpp::NumericVector tau_SD(data_.ncol(), 0.01);
+    Rcpp::NumericVector theta_SD(data_.nrow(), 1.0);
+    Rcpp::NumericVector alpha_SD(data_.ncol(), 1.0);
+    Rcpp::NumericVector delta_SD(data_.ncol(), 1.0);
+    Rcpp::NumericVector tau_SD(data_.ncol(), 1.0);
     // Set up the Model object
     Model mod(data_, theta_, alpha_, delta_, tau_, K_,
               theta_SD, alpha_SD, delta_SD, tau_SD,
@@ -46,8 +46,8 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
                 } else if ( theta_accepts[i] > 25 ) {
                     mod.theta_sds[i] += ((theta_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.theta_sds[i] < 0.000001 ) {
-                    mod.theta_sds[i] = 0.000001;
+                if ( mod.theta_sds[i] < 0.01 ) {
+                    mod.theta_sds[i] = 0.01;
                 }
                 theta_accepts[i] = 0;
             }
@@ -57,8 +57,8 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
                 } else if ( alpha_accepts[i] > 25 ) {
                     mod.alpha_sds[i] += ((alpha_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.alpha_sds[i] < 0.000001 ) {
-                    mod.alpha_sds[i] = 0.000001;
+                if ( mod.alpha_sds[i] < 0.01 ) {
+                    mod.alpha_sds[i] = 0.01;
                 }
                 alpha_accepts[i] = 0;
                 if ( delta_accepts[i] < 20 ) {
@@ -66,8 +66,8 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
                 } else if ( delta_accepts[i] > 25 ) {
                     mod.delta_sds[i] += ((delta_accepts[i] - 25.0) * 0.01);
                 }
-                if ( mod.delta_sds[i] < 0.000001 ) {
-                    mod.delta_sds[i] = 0.000001;
+                if ( mod.delta_sds[i] < 0.01 ) {
+                    mod.delta_sds[i] = 0.01;
                 }
                 delta_accepts[i] = 0;
                 int Kj = mod.K[i] - 1;
@@ -78,8 +78,8 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
                     mod.tau_sds[i] += ((tau_accepts[i] - (25.0 * Kj))
                                        * (0.01 / Kj));
                 }
-                if ( mod.tau_sds[i] < 0.000001 ) {
-                    mod.tau_sds[i] = 0.000001;
+                if ( mod.tau_sds[i] < 0.01 ) {
+                    mod.tau_sds[i] = 0.01;
                 }
                 tau_accepts[i] = 0;
             }
@@ -93,7 +93,7 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
         }
         Rcpp::NumericVector old_alpha = mod.alpha(Rcpp::_, 0);
         Rcpp::NumericVector old_delta = mod.delta(Rcpp::_, 0);
-        ragged_array old_tau = mod.tau[0];
+        RaggedArray old_tau = clone(mod.tau[0]);
         mod.update_alpha(0);
         mod.update_delta(0);
         mod.update_tau(0);
@@ -117,5 +117,6 @@ Rcpp::List tune_proposals(Rcpp::IntegerMatrix data_,
     return Rcpp::List::create(mod.theta_sds,
                               mod.alpha_sds,
                               mod.delta_sds,
-                              mod.tau_sds);
+                              mod.tau_sds,
+                              mod.alpha_auto_rejects);
 }

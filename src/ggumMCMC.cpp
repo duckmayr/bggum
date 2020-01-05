@@ -83,7 +83,7 @@ Rcpp::NumericMatrix ggumMCMC(Rcpp::IntegerMatrix data_,
             result(iter, idx) = mod.delta(j, 0);
             idx += (mod.m + K_ind - 1);
             for ( int k = 1; k < mod.K[j]; ++k ) {
-                idx += k;
+                idx += 1;
                 result(iter, idx) = mod.tau[0][j][k];
             }
             K_ind += (mod.K[j] - 2);
