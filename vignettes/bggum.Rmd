@@ -328,7 +328,7 @@ par(opar)
 The justices are arrayed on the left-right continuum largely as we'd expect (Justices John Paul Stevens, Ruth Bader Ginsburg, and Sonia Sotomayor well to the left; Justices Clarence Thomas, Antonin Scalia, and Samuel Alito well to right; Justice Anthony Kennedy just right of center).
 The estimates are also fairly precise, with the exception of Justice Sandra Day O'Connor (who only participated in 1.5% of the cases in our data), Justice Brett Kavanaugh (who only participated in 6.1% of the cases in our data), and Justice Neil Gorsuch (who participated in 14.5% of the cases in our data).
 
-We can also oberve the item characteristic curves:
+We can also observe the item characteristic curves:
 
 ```{r plot_items, results = 'asis', fig.dim = c(6, 4)}
 alpha <- posterior_summary$estimates$alpha
