@@ -1,7 +1,7 @@
 Package: bggum
 Title: Bayesian Estimation of Generalized Graded Unfolding Model Parameters
-Version: 1.0.1
-Date: 2019-12-27
+Version: 1.0.2
+Date: 2020-01-11
 Authors@R: c(person(given = "JBrandon",
                     family = "Duck-Mayr",
                     email = "j.duckmayr@gmail.com",
