@@ -17,7 +17,7 @@ each item; note the item options should be of the form 0, 1, ...
 (an example of preparing data for analysis is given in the vignette,
 available via \code{vignette("bggum")})}
 
-\item{sample_iterations}{An inteer vector of length one;
+\item{sample_iterations}{An integer vector of length one;
 the number of iterations the sampler should store (default is 50000)}
 
 \item{burn_iterations}{An integer vector of length one; the number of
