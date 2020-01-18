@@ -9,9 +9,9 @@ This is a resubmission. In this version I have:
 ## Test environments
 
 * local Manjaro Linux 18.1.4 install, R 3.6.2
-* Ubuntu 16.04.6 (on Travis CI), R 3.5.3, 3.6.1, and devel
+* Ubuntu 16.04.6 (on Travis CI), R 3.5.3, 3.6.2, and devel
 * macOS High Sierra 10.13.6 (on Travis CI), R 3.5.3 and 3.6.2
-* Windows Server 2012 R2 (on AppVeyor) R 3.6.2 Patched (2019-12-26 r77621)
+* Windows Server 2012 R2 (on AppVeyor) R 3.6.2 Patched (2020-01-13 r77670)
 * win-builder (R-devel and 3.6.2)
 
 
